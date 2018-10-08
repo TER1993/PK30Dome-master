@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/menu_background"
+    android:orientation="vertical"
+    tools:context=".menu.view.MenuActivity">
+
+    <ImageView
+        android:id="@+id/iv_bluetooth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp80"
+        android:layout_marginEnd="@dimen/dp80"
+        android:src="@drawable/menu_bluetooth_button"
+        tools:ignore="ContentDescription" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="63dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/quick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableEnd="@drawable/menu_quick_record"
+            android:minHeight="63dp" />
+
+        <TextView
+            android:id="@+id/heavy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableStart="@drawable/menu_weight_inspection"
+            android:minHeight="63dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:minHeight="35dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/history"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableEnd="@drawable/menu_history_off"
+            android:minHeight="35dp"
+            android:layout_marginEnd="30dp"
+             />
+
+        <TextView
+            android:id="@+id/search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableStart="@drawable/menu_search_off"
+            android:minHeight="35dp"
+            android:layout_marginStart="30dp"
+             />
+
+    </LinearLayout>
+
+
+    <ListView
+        android:id="@+id/rv_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:background="@color/white">
+
+    </ListView>
+
+
+</LinearLayout>
