@@ -7,7 +7,7 @@ import com.speedata.pk30dome.R;
 import com.speedata.pk30dome.base.BaseActivity;
 
 /**
- * @author xuyan  查重
+ * @author xuyan  重量稽查
  */
 public class HeavyActivity extends BaseActivity {
 
@@ -24,7 +24,7 @@ public class HeavyActivity extends BaseActivity {
 
     @Override
     protected void initToolBar() {
-
+        mTitle.setText("重量稽查");
     }
 
     @Override

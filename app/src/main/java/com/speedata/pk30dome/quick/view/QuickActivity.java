@@ -7,7 +7,7 @@ import com.speedata.pk30dome.R;
 import com.speedata.pk30dome.base.BaseActivity;
 
 /**
- * @author xuyan  快速
+ * @author xuyan  快速录单
  */
 public class QuickActivity extends BaseActivity {
 
@@ -24,7 +24,7 @@ public class QuickActivity extends BaseActivity {
 
     @Override
     protected void initToolBar() {
-
+        mTitle.setText("快速录单");
     }
 
     @Override

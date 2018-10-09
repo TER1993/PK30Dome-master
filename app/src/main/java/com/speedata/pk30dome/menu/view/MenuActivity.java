@@ -12,6 +12,7 @@ import android.bluetooth.le.ScanResult;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,8 +28,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.speedata.pk30dome.MyApp;
 import com.speedata.pk30dome.R;
 import com.speedata.pk30dome.base.BaseActivity;
+import com.speedata.pk30dome.heavy.view.HeavyActivity;
+import com.speedata.pk30dome.quick.view.QuickActivity;
 
 import java.util.ArrayList;
 
@@ -131,16 +135,34 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
                 break;
             case R.id.heavy:
                 //重量稽查
+                startActivity(new Intent(MyApp.getInstance(), HeavyActivity.class));
                 break;
             case R.id.quick:
                 //快速录单
+                startActivity(new Intent(MyApp.getInstance(), QuickActivity.class));
                 break;
-            case R.id.history:
+            case R.id.history: {
                 //历史连接
-                break;
-            case R.id.search:
+                Drawable navUp = getResources().getDrawable(R.drawable.menu_history_on);
+                navUp.setBounds(0, 0, navUp.getMinimumWidth(), navUp.getMinimumHeight());
+                mHistory.setCompoundDrawables(null, null, navUp, null);
+
+                navUp = getResources().getDrawable(R.drawable.menu_search_off);
+                navUp.setBounds(0, 0, navUp.getMinimumWidth(), navUp.getMinimumHeight());
+                mSearch.setCompoundDrawables(navUp, null, null, null);
+            }
+            break;
+            case R.id.search: {
                 //查找设备
-                break;
+                Drawable navUp = getResources().getDrawable(R.drawable.menu_search_on);
+                navUp.setBounds(0, 0, navUp.getMinimumWidth(), navUp.getMinimumHeight());
+                mSearch.setCompoundDrawables(navUp, null, null, null);
+
+                navUp = getResources().getDrawable(R.drawable.menu_history_off);
+                navUp.setBounds(0, 0, navUp.getMinimumWidth(), navUp.getMinimumHeight());
+                mHistory.setCompoundDrawables(null, null, navUp, null);
+            }
+            break;
             default:
                 break;
         }
@@ -285,7 +307,7 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
         // Initializes list view adapter.
         mLeDeviceListAdapter = new LeDeviceListAdapter();
         //更新adapter显示数据
-         mListView.setAdapter(mLeDeviceListAdapter);
+        mListView.setAdapter(mLeDeviceListAdapter);
         scanLeDevice(true);
     }
 
