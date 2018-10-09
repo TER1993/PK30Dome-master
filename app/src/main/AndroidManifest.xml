@@ -40,12 +40,10 @@
             android:name="com.liang.scancode.CommonScanActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name=".ui.main.MainActivity" />
-        <activity
-            android:name=".heavy.view.HeavyActivity" />
-        <activity
-            android:name=".quick.view.QuickActivity" />
+        <activity android:name=".ui.main.MainActivity" />
+        <activity android:name=".heavy.view.HeavyActivity" />
+        <activity android:name=".quick.view.QuickActivity" />
+        <activity android:name=".settings.view.SettingsActivity"></activity>
     </application>
 
 </manifest>

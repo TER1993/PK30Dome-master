@@ -102,7 +102,7 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected void initToolBar() {
-        mTitle.setText("首页面");
+        mTitle.setText("智能尺连接");
     }
 
     @Override

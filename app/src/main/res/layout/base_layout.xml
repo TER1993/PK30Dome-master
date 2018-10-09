@@ -36,7 +36,8 @@
             android:textColor="@android:color/white"
             android:textSize="13sp"
             android:textStyle="bold"
-            android:drawableBottom="@drawable/ic_bluetooth"
+            android:drawableStart="@drawable/ic_settings"
+            android:layout_marginEnd="@dimen/dp8"
             />
 
     </android.support.v7.widget.Toolbar>

@@ -2,6 +2,7 @@ package com.speedata.pk30dome.base;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
@@ -13,7 +14,9 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.speedata.pk30dome.MyApp;
 import com.speedata.pk30dome.R;
+import com.speedata.pk30dome.settings.view.SettingsActivity;
 import com.speedata.pk30dome.utils.AlertUtils;
 import com.speedata.pk30dome.utils.ToastUtils;
 
@@ -47,7 +50,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         mToolBar.setNavigationOnClickListener(view -> finish());
         initView(savedInstanceState);
         mEnd.setText("");
-        mEnd.setOnClickListener(view -> showExitDialog());
+        mEnd.setOnClickListener(view -> showSettingsAct());
     }
 
     @Override
@@ -183,6 +186,13 @@ public abstract class BaseActivity extends AppCompatActivity {
                     dialog.dismiss();
                     finish();
                 }, (dialog, which) -> dialog.dismiss());
+    }
+
+    /**
+     * 页面跳转
+     */
+    public void showSettingsAct() {
+        startActivity(new Intent(MyApp.getInstance(), SettingsActivity.class));
     }
 
 }
