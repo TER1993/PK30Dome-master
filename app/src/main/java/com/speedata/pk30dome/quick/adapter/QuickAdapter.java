@@ -24,5 +24,8 @@ public class QuickAdapter extends BaseQuickAdapter<QuickBean, BaseViewHolder> {
         helper.setText(R.id.quick_two, item.getBubbleWeight());
         helper.setText(R.id.quick_three, item.getCargoSize());
         helper.setText(R.id.quick_four, item.getQuickNumber());
+
+        helper.addOnClickListener(R.id.quick_one).addOnClickListener(R.id.quick_two)
+                .addOnClickListener(R.id.quick_three).addOnClickListener(R.id.quick_four);
     }
 }
