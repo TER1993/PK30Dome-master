@@ -43,7 +43,9 @@
         <activity android:name=".ui.main.MainActivity" />
         <activity android:name=".heavy.view.HeavyActivity" />
         <activity android:name=".quick.view.QuickActivity" />
-        <activity android:name=".settings.view.SettingsActivity"></activity>
+        <activity android:name=".settings.view.SettingsActivity" />
+        <activity android:name=".quick.view.SenderActivity" />
+        <activity android:name=".quick.view.CollectionActivity"></activity>
     </application>
 
 </manifest>

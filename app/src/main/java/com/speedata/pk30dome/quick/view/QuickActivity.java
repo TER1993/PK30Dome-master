@@ -2,6 +2,7 @@ package com.speedata.pk30dome.quick.view;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -107,6 +108,30 @@ public class QuickActivity extends BaseActivity implements View.OnClickListener,
                 break;
             case R.id.quick_next:
                 //下一步，先检测输入内容全不全
+                if (mListBeans.size() > 0) {
+                    if ("".equals(mListBeans.get(mListBeans.size() - 1).getActualWeight()) || "".equals(mListBeans.get(mListBeans.size() - 1).getBubbleWeight())
+                            || "".equals(mListBeans.get(mListBeans.size() - 1).getCargoSize()) || "".equals(mListBeans.get(mListBeans.size() - 1).getQuickNumber())) {
+                        ToastUtils.showShortToastSafe("请先补全货物数据");
+                        return;
+                    }
+                } else {
+                    ToastUtils.showShortToastSafe("没有货物数据，请先添加货物信息");
+                    return;
+                }
+
+                String price = mPrice.getText().toString();
+                String mreturn = mReturn.getText().toString();
+                String goodType = mGoodsType.getText().toString();
+                String packingType = mPackingType.getText().toString();
+
+                if ("".equals(price) || "".equals(mreturn) || "".equals(goodType) || "".equals(packingType)) {
+                    ToastUtils.showShortToastSafe("存在空白项，请补全信息");
+                    return;
+                }
+                //检测完毕，进入下一页面（到时保存传递1个实体类数据和一个list）
+
+                startActivity(new Intent(MyApp.getInstance(), SenderActivity.class));
+                finish();
                 break;
             default:
                 break;
