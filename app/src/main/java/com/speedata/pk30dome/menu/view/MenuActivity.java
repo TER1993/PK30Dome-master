@@ -52,6 +52,7 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         blueCreate();
     }
 
@@ -301,14 +302,19 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
             if (!mBluetoothAdapter.isEnabled()) {
                 Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                 startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+                return;
             }
         }
 
-        // Initializes list view adapter.
-        mLeDeviceListAdapter = new LeDeviceListAdapter();
-        //更新adapter显示数据
-        mListView.setAdapter(mLeDeviceListAdapter);
-        scanLeDevice(true);
+        if (mBluetoothAdapter.isEnabled()) {
+
+            // Initializes list view adapter.
+            mLeDeviceListAdapter = new LeDeviceListAdapter();
+            //更新adapter显示数据
+            mListView.setAdapter(mLeDeviceListAdapter);
+            scanLeDevice(true);
+        }
+
     }
 
     @Override
@@ -318,6 +324,7 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
             finish();
             return;
         }
+
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -325,11 +332,18 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onPause() {
         super.onPause();
-        scanLeDevice(false);
-        mLeDeviceListAdapter.clear();
+        if (mBluetoothAdapter.isEnabled()) {
+            if (mBluetoothAdapter.isEnabled()) {
+                scanLeDevice(false);
+                mLeDeviceListAdapter.clear();
+            }
+        }
+
     }
 
-    // Device scan callback.返蓝牙信息更新到界面
+    /**
+     *  Device scan callback.返蓝牙信息更新到界面
+      */
     private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
 
         @Override
