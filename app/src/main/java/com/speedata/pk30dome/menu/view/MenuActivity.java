@@ -296,18 +296,14 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onResume() {
         super.onResume();
-
         // 为了确保设备上蓝牙能使用, 如果当前蓝牙设备没启用,弹出对话框向用户要求授予权限来启用
         if (!mBluetoothAdapter.isEnabled()) {
-            if (!mBluetoothAdapter.isEnabled()) {
-                Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-                return;
-            }
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+            return;
         }
 
         if (mBluetoothAdapter.isEnabled()) {
-
             // Initializes list view adapter.
             mLeDeviceListAdapter = new LeDeviceListAdapter();
             //更新adapter显示数据
@@ -342,8 +338,8 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
     }
 
     /**
-     *  Device scan callback.返蓝牙信息更新到界面
-      */
+     * Device scan callback.返蓝牙信息更新到界面
+     */
     private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
 
         @Override
