@@ -15,11 +15,14 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.speedata.pk30dome.MyApp;
 import com.speedata.pk30dome.R;
 import com.speedata.pk30dome.base.BaseActivity;
+import com.speedata.pk30dome.database.QuickBean;
+import com.speedata.pk30dome.database.QuickDataBean;
 import com.speedata.pk30dome.quick.adapter.QuickAdapter;
-import com.speedata.pk30dome.quick.model.QuickBean;
+import com.speedata.pk30dome.quick.model.QuickModel;
 import com.speedata.pk30dome.utils.Logcat;
 import com.speedata.pk30dome.utils.ToastUtils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -129,8 +132,14 @@ public class QuickActivity extends BaseActivity implements View.OnClickListener,
                     return;
                 }
                 //检测完毕，进入下一页面（到时保存传递1个实体类数据和一个list）
+                QuickDataBean quickDataBean = new QuickDataBean();
+                quickDataBean.setMQuotedPrice(price);
+                quickDataBean.setMQuickReturn(mreturn);
+                quickDataBean.setMTypeOfGoods(goodType);
+                quickDataBean.setMPackingType(packingType);
 
-                startActivity(new Intent(MyApp.getInstance(), SenderActivity.class));
+                startActivity(new Intent(MyApp.getInstance(), SenderActivity.class)
+                .putExtra(QuickModel.INTENT_ONE, (Serializable) mListBeans).putExtra(QuickModel.INTENT_TWO, quickDataBean));
                 finish();
                 break;
             default:

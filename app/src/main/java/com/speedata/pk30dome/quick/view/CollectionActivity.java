@@ -9,7 +9,15 @@ import android.widget.TextView;
 
 import com.speedata.pk30dome.R;
 import com.speedata.pk30dome.base.BaseActivity;
+import com.speedata.pk30dome.database.DaoOptions;
+import com.speedata.pk30dome.database.QuickBean;
+import com.speedata.pk30dome.database.QuickDataBean;
+import com.speedata.pk30dome.quick.model.QuickModel;
+import com.speedata.pk30dome.utils.Logcat;
 import com.speedata.pk30dome.utils.ToastUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author xuyan  收件人信息
@@ -25,11 +33,16 @@ public class CollectionActivity extends BaseActivity implements View.OnClickList
     private Button mPrint;
     private Button mUpload;
 
+    private List<QuickBean> mList;
+    private QuickDataBean quickDataBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        mList = new ArrayList<>();
+        mList = (List<QuickBean>) getIntent().getSerializableExtra(QuickModel.INTENT_ONE);
+        quickDataBean = getIntent().getParcelableExtra(QuickModel.INTENT_TWO);
+        Logcat.d(mList.toString() + quickDataBean.toString());
     }
 
     @Override
@@ -79,6 +92,20 @@ public class CollectionActivity extends BaseActivity implements View.OnClickList
                     ToastUtils.showShortToastSafe("存在空白项，请补全信息");
                     return;
                 }
+
+                //处理并保存数据
+                quickDataBean.setMCollectionTheSender(two);
+                quickDataBean.setMCollectionPhoneNumber(three);
+                quickDataBean.setMCollectionCompany(four);
+                quickDataBean.setMCollectionAddress(five);
+
+                for (int i = 0; i < mList.size(); i++) {
+                    mList.get(i).setMSenderOddNumber(quickDataBean.getMSenderOddNumber());
+                }
+
+                DaoOptions.saveQuickDataBean(quickDataBean);
+                DaoOptions.saveQuickBeanData(mList);
+                ToastUtils.showShortToastSafe("已保存");
             }
             break;
             case R.id.collection_print: {

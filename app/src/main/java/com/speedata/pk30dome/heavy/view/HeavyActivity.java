@@ -17,9 +17,11 @@ import com.scandecode.inf.ScanInterface;
 import com.speedata.pk30dome.MyApp;
 import com.speedata.pk30dome.R;
 import com.speedata.pk30dome.base.BaseActivity;
+import com.speedata.pk30dome.database.DaoOptions;
+import com.speedata.pk30dome.database.QuickDataBean;
 import com.speedata.pk30dome.heavy.adapter.HeavyAdapter;
 import com.speedata.pk30dome.heavy.adapter.HeavyLoadAdapter;
-import com.speedata.pk30dome.quick.model.QuickBean;
+import com.speedata.pk30dome.database.QuickBean;
 import com.speedata.pk30dome.utils.Logcat;
 import com.speedata.pk30dome.utils.ToastUtils;
 
@@ -55,13 +57,28 @@ public class HeavyActivity extends BaseActivity implements View.OnClickListener,
     private List<QuickBean> mList;
     private List<QuickBean> mLoadList;
 
+    private QuickDataBean quickDataBean;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //初始化扫描服务
         scanDecode = new ScanDecode(this);
         scanDecode.initService("true");
-        scanDecode.getBarCode(s -> mOddNumber.setText(s));
+        scanDecode.getBarCode(s -> {
+            mOddNumber.setText(s);
+            if (!"".equals(s)) {
+                quickDataBean = DaoOptions.queryQuickDataBean(s);
+                mLoadList = DaoOptions.queryQuickBean(s);
+
+                mPriceLoad.setText(quickDataBean.getMQuotedPrice());
+                mReturnLoad.setText(quickDataBean.getMQuickReturn());
+                mGoodsTypeLoad.setText(quickDataBean.getMTypeOfGoods());
+                mPackingTypeLoad.setText(quickDataBean.getMPackingType());
+
+                mLoadAdapter.replaceData(mLoadList);
+            }
+        });
     }
 
     @Override
@@ -106,14 +123,14 @@ public class HeavyActivity extends BaseActivity implements View.OnClickListener,
 
 
         //初始化只显示的数据
-        RecyclerView mRecyclerView = findViewById(R.id.heavy_rv_content);
+        RecyclerView mRecyclerView = findViewById(R.id.rv_content);
         mLoadList = new ArrayList<>();
         mLoadAdapter = new HeavyLoadAdapter(mLoadList);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mLoadAdapter);
 
         //初始化可编辑的显示数据
-        RecyclerView recyclerView = findViewById(R.id.rv_content);
+        RecyclerView recyclerView = findViewById(R.id.heavy_rv_content);
         mList = new ArrayList<>();
         mAdapter = new HeavyAdapter(mList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

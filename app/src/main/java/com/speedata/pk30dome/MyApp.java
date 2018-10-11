@@ -15,9 +15,9 @@ import android.widget.Toast;
 import com.liang.scancode.MsgEvent;
 import com.speedata.pk30dome.bean.DaoMaster;
 import com.speedata.pk30dome.bean.DaoSession;
+import com.speedata.pk30dome.database.DaoManager;
 
 import org.greenrobot.eventbus.EventBus;
-
 
 import speedata.com.blelib.base.BaseBleApplication;
 import speedata.com.blelib.service.BluetoothLeService;
@@ -58,6 +58,7 @@ public class MyApp extends BaseBleApplication {
     public void onCreate() {
         super.onCreate();
         m_application = this;
+        DaoManager.init(this);
         setupDatabase();
     }
 

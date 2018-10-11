@@ -13,6 +13,7 @@ android {
     //greendao 配置版本号
     greendao {
         schemaVersion 1
+        targetGenDir 'src/main/java'
     }
     buildTypes {
         release {

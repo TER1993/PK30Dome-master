@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.speedata.pk30dome.R;
-import com.speedata.pk30dome.quick.model.QuickBean;
+import com.speedata.pk30dome.database.QuickBean;
 
 import java.util.List;
 

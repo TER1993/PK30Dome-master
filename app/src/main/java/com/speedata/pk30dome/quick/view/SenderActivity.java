@@ -13,7 +13,15 @@ import com.scandecode.inf.ScanInterface;
 import com.speedata.pk30dome.MyApp;
 import com.speedata.pk30dome.R;
 import com.speedata.pk30dome.base.BaseActivity;
+import com.speedata.pk30dome.database.QuickBean;
+import com.speedata.pk30dome.database.QuickDataBean;
+import com.speedata.pk30dome.quick.model.QuickModel;
+import com.speedata.pk30dome.utils.Logcat;
 import com.speedata.pk30dome.utils.ToastUtils;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author xuyan  寄件人信息
@@ -31,9 +39,17 @@ public class SenderActivity extends BaseActivity implements View.OnClickListener
 
     private ScanInterface scanDecode;
 
+    private List<QuickBean> mList;
+    private QuickDataBean quickDataBean;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mList = new ArrayList<>();
+        mList = (List<QuickBean>) getIntent().getSerializableExtra(QuickModel.INTENT_ONE);
+        quickDataBean = getIntent().getParcelableExtra(QuickModel.INTENT_TWO);
+        Logcat.d(mList.toString() + quickDataBean.toString());
+
         //初始化扫描服务
         scanDecode = new ScanDecode(this);
         scanDecode.initService("true");
@@ -91,7 +107,14 @@ public class SenderActivity extends BaseActivity implements View.OnClickListener
                     return;
                 }
 
-                startActivity(new Intent(MyApp.getInstance(), CollectionActivity.class));
+                quickDataBean.setMSenderOddNumber(one);
+                quickDataBean.setMSenderTheSender(two);
+                quickDataBean.setMSenderPhoneNumber(three);
+                quickDataBean.setMSenderCompany(four);
+                quickDataBean.setMSenderAddress(five);
+
+                startActivity(new Intent(MyApp.getInstance(), CollectionActivity.class)
+                        .putExtra(QuickModel.INTENT_ONE, (Serializable) mList).putExtra(QuickModel.INTENT_TWO, quickDataBean));
                 finish();
 
                 break;
