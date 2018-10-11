@@ -70,6 +70,9 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
         final BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
         if (bluetoothManager != null) {
             mBluetoothAdapter = bluetoothManager.getAdapter();
+            if (!mBluetoothAdapter.isEnabled()) {
+                mBluetoothAdapter.enable();
+            }
         }
         mBluetoothLeScanner = mBluetoothAdapter.getBluetoothLeScanner();
 
