@@ -10,8 +10,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.liang.scancode.MsgEvent;
 import com.speedata.pk30dome.MyApp;
 import com.speedata.pk30dome.R;
 import com.speedata.pk30dome.base.BaseActivity;
@@ -22,9 +24,18 @@ import com.speedata.pk30dome.quick.model.QuickModel;
 import com.speedata.pk30dome.utils.Logcat;
 import com.speedata.pk30dome.utils.ToastUtils;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
+
+import speedata.com.blelib.utils.DataManageUtils;
+import speedata.com.blelib.utils.PK30DataUtils;
 
 /**
  * @author xuyan  快速录单
@@ -46,7 +57,13 @@ public class QuickActivity extends BaseActivity implements View.OnClickListener,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
+    }
 
+    @Override
+    protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
     }
 
     @Override
@@ -286,4 +303,138 @@ public class QuickActivity extends BaseActivity implements View.OnClickListener,
         }
 
     }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(MsgEvent mEvent) {
+        String type = mEvent.getType();
+        Object msg = mEvent.getMsg();
+        if ("ServiceConnectedStatus".equals(type)) {
+            boolean result = (boolean) msg;
+            Logcat.d("First:" + result);
+            if (result) {
+                Logcat.d("Address：" + MyApp.address + "Name：" + MyApp.name);
+            } else {
+
+                Logcat.d("未连接");
+
+            }
+            Logcat.d("" + result);
+
+        } else if ("Save6DataErr".equals(type)) {
+            Toast.makeText(MyApp.getInstance(), (String) msg, Toast.LENGTH_SHORT).show();
+        } else if ("L".equals(type)) {
+            String string = (String) msg;
+            Logcat.d("L:" + string);
+            doLoop();
+        } else if ("W".equals(type)) {
+            String string = (String) msg;
+            Logcat.d("W:" + string);
+            doLoop();
+        } else if ("H".equals(type)) {
+            String string = (String) msg;
+            Logcat.d("H:" + string);
+            doLoop();
+        } else if ("G".equals(type)) {
+            String string = (String) msg;
+            Logcat.d("G:" + string);
+            doLoop();
+        } else if ("SOFT".equals(type)) {
+            Logcat.d(msg + "");
+        } else if ("HARD".equals(type)) {
+            Logcat.d(msg + "");
+        } else if (type.equals("codeResult")) {
+            Logcat.d(msg + "");
+            doLoop();
+
+        } else if ("MODEL".equals(type)) {
+            String string = (String) msg;
+            switch (string) {
+                case "00":
+                    string = "模式更改为长度测量";
+                    break;
+                case "02":
+                    string = "模式更改为宽度测量";
+                    break;
+                case "03":
+                    string = "模式更改为高度测量";
+                    break;
+                case "01":
+                    string = "模式更改为重量测量";
+                    break;
+            }
+            Toast.makeText(this, string, Toast.LENGTH_SHORT).show();
+        } else if ("SHUTDOWN".equals(type)) {
+            String string = (String) msg;
+            if ("01".equals(string)) {
+                Toast.makeText(MyApp.getInstance(), "关机成功", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(MyApp.getInstance(), "关机失败", Toast.LENGTH_SHORT).show();
+            }
+        } else if ("FENGMING".equals(type)) {
+            String string = (String) msg;
+            int toInt = DataManageUtils.HexToInt(string);
+            Toast.makeText(MyApp.getInstance(), "蜂鸣器时长设置为" + toInt, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * 循环执行测量
+     */
+    private void doLoop() {
+        if (isTest && queue != null) {
+            Integer integer = queue.poll();
+            if (integer != null) {
+                PK30DataUtils.setModel(integer);
+            } else {
+                test();
+            }
+
+        }
+    }
+
+    private Queue<Integer> queue;
+    //开始测试
+    private boolean isTest = false;
+
+    /**
+     * 启动测试
+     */
+    private boolean test() {
+        queue = new LinkedList<Integer>();
+        isTest = true;
+
+        boolean lengthChecked = false;
+        if (lengthChecked) {
+            queue.offer(0);
+        }
+        boolean widthChecked = false;
+        if (widthChecked) {
+            queue.offer(1);
+        }
+        boolean heightChecked = false;
+        if (heightChecked) {
+            queue.offer(2);
+        }
+        boolean weightChecked = false;
+        if (weightChecked) {
+            queue.offer(3);
+        }
+
+        boolean checked = false;
+        if (checked) {
+
+        } else {
+            if (queue.size() != 0) {
+                doLoop();
+            } else {
+                Toast.makeText(this, "请先勾选需要启动的测量模式", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+
+        }
+        return true;
+    }
+
+
 }

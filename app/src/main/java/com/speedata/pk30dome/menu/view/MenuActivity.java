@@ -19,6 +19,7 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +56,8 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
 
         blueCreate();
     }
+
+
 
     //连接蓝牙的创建部分
     private void blueCreate() {
@@ -353,4 +356,30 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
             });
         }
     };
+
+    private long mkeyTime = 0;
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_BACK:
+            case KeyEvent.ACTION_DOWN:
+                if ((System.currentTimeMillis() - mkeyTime) > 2000) {
+                    mkeyTime = System.currentTimeMillis();
+                    Toast.makeText(MenuActivity.this, "再按一次退出", Toast.LENGTH_SHORT).show();
+                } else {
+                    try {
+                        finish();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                return false;
+                default:
+                    break;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+
 }
