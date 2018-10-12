@@ -57,9 +57,9 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
         blueCreate();
     }
 
-
-
-    //连接蓝牙的创建部分
+    /**
+     * 连接蓝牙的创建部分
+     */
     private void blueCreate() {
         mHandler = new Handler();
 
@@ -85,15 +85,15 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
             finish();
             return;
         }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {//如果 API level 是大于等于 23(Android 6.0) 时
+        //如果 API level 是大于等于 23(Android 6.0) 时
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             //判断是否具有权限
             if (ContextCompat.checkSelfPermission(this,
                     Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 //判断是否需要向用户解释为什么需要申请该权限
                 if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                         Manifest.permission.ACCESS_COARSE_LOCATION)) {
-//                    showToast("自Android 6.0开始需要打开位置权限才可以搜索到Ble设备");
+            // showToast("自Android 6.0开始需要打开位置权限才可以搜索到Ble设备");
                 }
                 //请求权限
                 ActivityCompat.requestPermissions(this,
@@ -192,18 +192,20 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
     private BluetoothLeScanner mBluetoothLeScanner;
     private static final int REQUEST_CODE_ACCESS_COARSE_LOCATION = 1;
 
-    // Adapter for holding devices found through scanning.
+    /**
+     * Adapter for holding devices found through scanning.
+      */
     private class LeDeviceListAdapter extends BaseAdapter {
         private ArrayList<BluetoothDevice> mLeDevices;
         private LayoutInflater mInflator;
 
-        public LeDeviceListAdapter() {
+        LeDeviceListAdapter() {
             super();
-            mLeDevices = new ArrayList<BluetoothDevice>();
+            mLeDevices = new ArrayList<>();
             mInflator = getLayoutInflater();
         }
 
-        public void addDevice(BluetoothDevice device) {
+        void addDevice(BluetoothDevice device) {
             if (!mLeDevices.contains(device)) {
                 mLeDevices.add(device);
             }
@@ -260,7 +262,9 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
-    // 5.0+.返蓝牙信息更新到界面
+    /**
+     *  5.0+.返蓝牙信息更新到界面
+      */
     private ScanCallback mScanCallback = new ScanCallback() {
         @Override
         public void onScanResult(int callbackType, ScanResult result) {
@@ -280,7 +284,9 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
         TextView deviceAddress;
     }
 
-    //是否扫描蓝牙设备
+    /**
+     * 是否扫描蓝牙设备
+     */
     private void scanLeDevice(final boolean enable) {
         if (enable) {
             mHandler.postDelayed(() -> {
