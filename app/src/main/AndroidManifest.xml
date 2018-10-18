@@ -18,6 +18,7 @@
 
     <uses-permission android:name="android.permission.FLASHLIGHT" />
     <uses-permission android:name="com.android.browser.permission.READ_HISTORY_BOOKMARKS" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
 
     <application
         android:name=".MyApp"
@@ -45,7 +46,9 @@
         <activity android:name=".quick.view.QuickActivity" />
         <activity android:name=".settings.view.SettingsActivity" />
         <activity android:name=".quick.view.SenderActivity" />
-        <activity android:name=".quick.view.CollectionActivity"></activity>
+        <activity android:name=".quick.view.CollectionActivity" />
+        <activity android:name=".settings.view.SoundActivity" />
+        <activity android:name=".settings.view.ChooseActivity"></activity>
     </application>
 
 </manifest>
