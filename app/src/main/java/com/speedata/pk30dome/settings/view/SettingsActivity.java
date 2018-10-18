@@ -20,10 +20,10 @@ import com.speedata.pk30dome.base.BaseActivity;
  */
 public class SettingsActivity extends BaseActivity implements SeekBar.OnSeekBarChangeListener {
 
-    SeekBar searchBar;
-    AudioManager audioManager;
-    int currentBell;
-    int curSound;
+    private SeekBar searchBar;
+    private AudioManager audioManager;
+    private int currentBell;
+    private int curSound;
     private MediaPlayer mMediaPlayer;
     private VolumeReceiver receiver;
 
