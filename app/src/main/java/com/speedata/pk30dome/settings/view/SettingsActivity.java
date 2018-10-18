@@ -9,16 +9,19 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.SeekBar;
 
 import com.speedata.pk30dome.MyApp;
 import com.speedata.pk30dome.R;
 import com.speedata.pk30dome.base.BaseActivity;
+import com.speedata.pk30dome.utils.ToastUtils;
 
 /**
  * @author xuyan  右上角设置页面
  */
-public class SettingsActivity extends BaseActivity implements SeekBar.OnSeekBarChangeListener {
+public class SettingsActivity extends BaseActivity implements SeekBar.OnSeekBarChangeListener, RadioGroup.OnCheckedChangeListener {
 
     private SeekBar searchBar;
     private AudioManager audioManager;
@@ -26,6 +29,12 @@ public class SettingsActivity extends BaseActivity implements SeekBar.OnSeekBarC
     private int curSound;
     private MediaPlayer mMediaPlayer;
     private VolumeReceiver receiver;
+
+    private RadioGroup radioGroup;
+    private RadioButton radioButton1;
+    private RadioButton radioButton2;
+    private RadioButton radioButton3;
+    private RadioButton radioButton4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +64,7 @@ public class SettingsActivity extends BaseActivity implements SeekBar.OnSeekBarC
                     setVolumeControlStream(AudioManager.STREAM_SYSTEM);
                 });
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
-       // mMediaPlayer.start();
+        // mMediaPlayer.start();
 
         audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
         currentBell = audioManager
@@ -72,6 +81,16 @@ public class SettingsActivity extends BaseActivity implements SeekBar.OnSeekBarC
         filter.addAction("android.media.VOLUME_CHANGED_ACTION");
         MyApp.getInstance().registerReceiver(receiver, filter);
 
+        //radio部分
+        radioGroup = findViewById(R.id.radioGroup);
+        radioButton1 = findViewById(R.id.radioButton1);
+        radioButton2 = findViewById(R.id.radioButton2);
+        radioButton3 = findViewById(R.id.radioButton3);
+        radioButton4 = findViewById(R.id.radioButton4);
+
+        radioGroup.setOnCheckedChangeListener(this);
+        //sp保存状态
+        radioButton1.setChecked(true);
 
     }
 
@@ -126,6 +145,31 @@ public class SettingsActivity extends BaseActivity implements SeekBar.OnSeekBarC
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
+        switch (checkedId) {
+            case R.id.radioButton1:
+                //sp保存结果
+                ToastUtils.showShortToastSafe("radioButton1");
+                break;
+            case R.id.radioButton2:
+                //sp保存结果
+                ToastUtils.showShortToastSafe("radioButton2");
+                break;
+            case R.id.radioButton3:
+                //sp保存结果
+                ToastUtils.showShortToastSafe("radioButton3");
+                break;
+            case R.id.radioButton4:
+                //sp保存结果
+                ToastUtils.showShortToastSafe("radioButton4");
+                break;
+            default:
+                break;
+        }
 
     }
 
