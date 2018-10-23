@@ -417,16 +417,16 @@ public class QuickActivity extends BaseActivity implements View.OnClickListener,
             queue.offer(1);
             queue.offer(2);
             queue.offer(3);
-        } else if ((Integer) SpUtils.get(MyApp.getInstance(), SettingsModel.MODEL, 1) == 1) {
+        } else if ((Integer) SpUtils.get(MyApp.getInstance(), SettingsModel.MODEL, 0) == 1) {
             //重量长宽高
             queue.offer(3);
             queue.offer(0);
             queue.offer(1);
             queue.offer(2);
-        } else if ((Integer) SpUtils.get(MyApp.getInstance(), SettingsModel.MODEL, 2) == 2) {
+        } else if ((Integer) SpUtils.get(MyApp.getInstance(), SettingsModel.MODEL, 0) == 2) {
             //长
             queue.offer(0);
-        } else if ((Integer) SpUtils.get(MyApp.getInstance(), SettingsModel.MODEL, 3) == 3) {
+        } else if ((Integer) SpUtils.get(MyApp.getInstance(), SettingsModel.MODEL, 0) == 3) {
             //重量
             queue.offer(3);
         }
