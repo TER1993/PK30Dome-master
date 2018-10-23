@@ -18,10 +18,12 @@ import com.speedata.pk30dome.MyApp;
 import com.speedata.pk30dome.R;
 import com.speedata.pk30dome.base.BaseActivity;
 import com.speedata.pk30dome.database.DaoOptions;
+import com.speedata.pk30dome.database.HeavyBean;
+import com.speedata.pk30dome.database.HeavyDataBean;
+import com.speedata.pk30dome.database.QuickBean;
 import com.speedata.pk30dome.database.QuickDataBean;
 import com.speedata.pk30dome.heavy.adapter.HeavyAdapter;
 import com.speedata.pk30dome.heavy.adapter.HeavyLoadAdapter;
-import com.speedata.pk30dome.database.QuickBean;
 import com.speedata.pk30dome.utils.Logcat;
 import com.speedata.pk30dome.utils.ToastUtils;
 
@@ -54,7 +56,7 @@ public class HeavyActivity extends BaseActivity implements View.OnClickListener,
 
     private HeavyAdapter mAdapter;
     private HeavyLoadAdapter mLoadAdapter;
-    private List<QuickBean> mList;
+    private List<HeavyBean> mList;
     private List<QuickBean> mLoadList;
 
     private QuickDataBean quickDataBean;
@@ -163,8 +165,8 @@ public class HeavyActivity extends BaseActivity implements View.OnClickListener,
                 }
 
                 //添加，list长度+1
-                QuickBean quickBean = new QuickBean();
-                mList.add(quickBean);
+                HeavyBean heavyBean = new HeavyBean();
+                mList.add(heavyBean);
                 mAdapter.replaceData(mList);
                 break;
             case R.id.heavy_clear:
@@ -173,8 +175,45 @@ public class HeavyActivity extends BaseActivity implements View.OnClickListener,
                 mAdapter.replaceData(mList);
                 break;
             case R.id.heavy_upload:
-                break;
+                //保存mList到一个列表中，保存其他位置数据到一个表中。
 
+                //下一步，先检测输入内容全不全
+                if (mList.size() > 0) {
+                    if ("".equals(mList.get(mList.size() - 1).getActualWeight()) || "".equals(mList.get(mList.size() - 1).getBubbleWeight())
+                            || "".equals(mList.get(mList.size() - 1).getCargoSize()) || "".equals(mList.get(mList.size() - 1).getQuickNumber())) {
+                        ToastUtils.showShortToastSafe("请先补全货物数据");
+                        return;
+                    }
+                } else {
+                    ToastUtils.showShortToastSafe("没有货物数据，请先添加货物信息");
+                    return;
+                }
+
+                String price = mPrice.getText().toString();
+                String mreturn = mReturn.getText().toString();
+                String goodType = mGoodsType.getText().toString();
+                String packingType = mPackingType.getText().toString();
+
+                if ("".equals(price) || "".equals(mreturn) || "".equals(goodType) || "".equals(packingType)) {
+                    ToastUtils.showShortToastSafe("存在空白项，请补全信息");
+                    return;
+                }
+                //检测完毕，进入下一页面（到时保存传递1个实体类数据和一个list）
+                HeavyDataBean heavyDataBean = new HeavyDataBean();
+                heavyDataBean.setMQuotedPrice(price);
+                heavyDataBean.setMQuickReturn(mreturn);
+                heavyDataBean.setMTypeOfGoods(goodType);
+                heavyDataBean.setMPackingType(packingType);
+
+                for (int i = 0; i < mList.size(); i++) {
+                    mList.get(i).setMSenderOddNumber(heavyDataBean.getMSenderOddNumber());
+                }
+
+                DaoOptions.saveHeavyDataBean(heavyDataBean);
+                DaoOptions.saveHeavyBeanData(mList);
+                ToastUtils.showShortToastSafe("已保存");
+
+                break;
 
             default:
                 break;

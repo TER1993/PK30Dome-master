@@ -21,7 +21,9 @@ import com.speedata.pk30dome.database.QuickBean;
 import com.speedata.pk30dome.database.QuickDataBean;
 import com.speedata.pk30dome.quick.adapter.QuickAdapter;
 import com.speedata.pk30dome.quick.model.QuickModel;
+import com.speedata.pk30dome.settings.model.SettingsModel;
 import com.speedata.pk30dome.utils.Logcat;
+import com.speedata.pk30dome.utils.SpUtils;
 import com.speedata.pk30dome.utils.ToastUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -115,11 +117,12 @@ public class QuickActivity extends BaseActivity implements View.OnClickListener,
                     }
                 }
 
-
                 //添加，list长度+1
                 QuickBean quickBean = new QuickBean();
                 mListBeans.add(quickBean);
                 mAdapter.replaceData(mListBeans);
+                //开始测量
+                test();
                 break;
             case R.id.quick_clear:
                 //清除，list清除
@@ -156,7 +159,7 @@ public class QuickActivity extends BaseActivity implements View.OnClickListener,
                 quickDataBean.setMPackingType(packingType);
 
                 startActivity(new Intent(MyApp.getInstance(), SenderActivity.class)
-                .putExtra(QuickModel.INTENT_ONE, (Serializable) mListBeans).putExtra(QuickModel.INTENT_TWO, quickDataBean));
+                        .putExtra(QuickModel.INTENT_ONE, (Serializable) mListBeans).putExtra(QuickModel.INTENT_TWO, quickDataBean));
                 finish();
                 break;
             default:
@@ -315,29 +318,34 @@ public class QuickActivity extends BaseActivity implements View.OnClickListener,
             if (result) {
                 Logcat.d("Address：" + MyApp.address + "Name：" + MyApp.name);
             } else {
-
                 Logcat.d("未连接");
-
             }
             Logcat.d("" + result);
-
         } else if ("Save6DataErr".equals(type)) {
             Toast.makeText(MyApp.getInstance(), (String) msg, Toast.LENGTH_SHORT).show();
         } else if ("L".equals(type)) {
             String string = (String) msg;
             Logcat.d("L:" + string);
+            String s = mListBeans.get(mListBeans.size() - 1).getCargoSize();
+            mListBeans.get(mListBeans.size() - 1).setCargoSize(string);
             doLoop();
         } else if ("W".equals(type)) {
             String string = (String) msg;
             Logcat.d("W:" + string);
+            String s = mListBeans.get(mListBeans.size() - 1).getCargoSize();
+            mListBeans.get(mListBeans.size() - 1).setCargoSize(s + "-" + string);
             doLoop();
         } else if ("H".equals(type)) {
             String string = (String) msg;
             Logcat.d("H:" + string);
+            String s = mListBeans.get(mListBeans.size() - 1).getCargoSize();
+            mListBeans.get(mListBeans.size() - 1).setCargoSize(s + "-" + string);
             doLoop();
         } else if ("G".equals(type)) {
             String string = (String) msg;
             Logcat.d("G:" + string);
+            String s = mListBeans.get(mListBeans.size() - 1).getActualWeight();
+            mListBeans.get(mListBeans.size() - 1).setActualWeight(string);
             doLoop();
         } else if ("SOFT".equals(type)) {
             Logcat.d(msg + "");
@@ -403,38 +411,32 @@ public class QuickActivity extends BaseActivity implements View.OnClickListener,
     private boolean test() {
         queue = new LinkedList<Integer>();
         isTest = true;
-
-        boolean lengthChecked = false;
-        if (lengthChecked) {
+        if ((Integer) SpUtils.get(MyApp.getInstance(), SettingsModel.MODEL, 0) == 0) {
+            //长宽高重量
             queue.offer(0);
-        }
-        boolean widthChecked = false;
-        if (widthChecked) {
             queue.offer(1);
-        }
-        boolean heightChecked = false;
-        if (heightChecked) {
             queue.offer(2);
-        }
-        boolean weightChecked = false;
-        if (weightChecked) {
+            queue.offer(3);
+        } else if ((Integer) SpUtils.get(MyApp.getInstance(), SettingsModel.MODEL, 1) == 1) {
+            //重量长宽高
+            queue.offer(3);
+            queue.offer(0);
+            queue.offer(1);
+            queue.offer(2);
+        } else if ((Integer) SpUtils.get(MyApp.getInstance(), SettingsModel.MODEL, 2) == 2) {
+            //长
+            queue.offer(0);
+        } else if ((Integer) SpUtils.get(MyApp.getInstance(), SettingsModel.MODEL, 3) == 3) {
+            //重量
             queue.offer(3);
         }
-
-        boolean checked = false;
-        if (checked) {
-
+        if (queue.size() != 0) {
+            doLoop();
         } else {
-            if (queue.size() != 0) {
-                doLoop();
-            } else {
-                Toast.makeText(this, "请先勾选需要启动的测量模式", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-
+            Toast.makeText(this, "请先勾选需要启动的测量模式", Toast.LENGTH_SHORT).show();
+            return false;
         }
         return true;
     }
-
 
 }

@@ -62,21 +62,23 @@
             android:id="@+id/radioButton1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="测量长度" />
+            android:text="依次测量：长度、宽度、高度、重量" />
 
         <RadioButton
             android:id="@+id/radioButton2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="测量宽度" />
+            android:text="依次测量：重量、长度、宽度、高度" />
 
         <RadioButton
+
             android:id="@+id/radioButton3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="测量高度" />
+            android:text="测量长度" />
 
         <RadioButton
+
             android:id="@+id/radioButton4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
