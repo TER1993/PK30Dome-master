@@ -16,7 +16,13 @@ import android.widget.SeekBar;
 import com.speedata.pk30dome.MyApp;
 import com.speedata.pk30dome.R;
 import com.speedata.pk30dome.base.BaseActivity;
+import com.speedata.pk30dome.utils.SpUtils;
 import com.speedata.pk30dome.utils.ToastUtils;
+
+import speedata.com.blelib.base.BaseBleApplication;
+import speedata.com.blelib.utils.PK30DataUtils;
+
+import static com.speedata.pk30dome.settings.model.SettingsModel.MODEL;
 
 /**
  * @author xuyan  右上角设置页面
@@ -90,8 +96,32 @@ public class SettingsActivity extends BaseActivity implements SeekBar.OnSeekBarC
 
         radioGroup.setOnCheckedChangeListener(this);
         //sp保存状态
-        radioButton1.setChecked(true);
+        seButtonChecked();
 
+
+    }
+
+    private void seButtonChecked() {
+        if (BaseBleApplication.mNotifyCharacteristic3 != null) {
+            switch ((Integer) SpUtils.get(MyApp.getInstance(), MODEL, 0)) {
+                case 0:
+                    radioButton1.setChecked(true);
+                    break;
+                case 1:
+                    radioButton2.setChecked(true);
+                    break;
+                case 2:
+                    radioButton3.setChecked(true);
+                    break;
+                case 3:
+                    radioButton4.setChecked(true);
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            ToastUtils.showShortToastSafe("请先连接PK30设备");
+        }
     }
 
     @Override
@@ -153,18 +183,26 @@ public class SettingsActivity extends BaseActivity implements SeekBar.OnSeekBarC
         switch (checkedId) {
             case R.id.radioButton1:
                 //sp保存结果
+                SpUtils.put(MyApp.getInstance(), MODEL, 0);
+                PK30DataUtils.setModel(0);
                 ToastUtils.showShortToastSafe("radioButton1");
                 break;
             case R.id.radioButton2:
                 //sp保存结果
+                SpUtils.put(MyApp.getInstance(), MODEL, 1);
+                PK30DataUtils.setModel(1);
                 ToastUtils.showShortToastSafe("radioButton2");
                 break;
             case R.id.radioButton3:
                 //sp保存结果
+                SpUtils.put(MyApp.getInstance(), MODEL, 2);
+                PK30DataUtils.setModel(2);
                 ToastUtils.showShortToastSafe("radioButton3");
                 break;
             case R.id.radioButton4:
                 //sp保存结果
+                SpUtils.put(MyApp.getInstance(), MODEL, 3);
+                PK30DataUtils.setModel(3);
                 ToastUtils.showShortToastSafe("radioButton4");
                 break;
             default:
