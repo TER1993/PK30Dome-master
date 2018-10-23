@@ -10,8 +10,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.liang.scancode.MsgEvent;
 import com.scandecode.ScanDecode;
 import com.scandecode.inf.ScanInterface;
 import com.speedata.pk30dome.MyApp;
@@ -24,11 +26,22 @@ import com.speedata.pk30dome.database.QuickBean;
 import com.speedata.pk30dome.database.QuickDataBean;
 import com.speedata.pk30dome.heavy.adapter.HeavyAdapter;
 import com.speedata.pk30dome.heavy.adapter.HeavyLoadAdapter;
+import com.speedata.pk30dome.settings.model.SettingsModel;
 import com.speedata.pk30dome.utils.Logcat;
+import com.speedata.pk30dome.utils.SpUtils;
 import com.speedata.pk30dome.utils.ToastUtils;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
+
+import speedata.com.blelib.utils.DataManageUtils;
+import speedata.com.blelib.utils.PK30DataUtils;
 
 /**
  * @author xuyan  重量稽查
@@ -81,10 +94,13 @@ public class HeavyActivity extends BaseActivity implements View.OnClickListener,
                 mLoadAdapter.replaceData(mLoadList);
             }
         });
+        EventBus.getDefault().register(this);
     }
+
 
     @Override
     protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
         scanDecode.onDestroy();
         super.onDestroy();
     }
@@ -357,4 +373,137 @@ public class HeavyActivity extends BaseActivity implements View.OnClickListener,
         }
 
     }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(MsgEvent mEvent) {
+        String type = mEvent.getType();
+        Object msg = mEvent.getMsg();
+        if ("ServiceConnectedStatus".equals(type)) {
+            boolean result = (boolean) msg;
+            Logcat.d("First:" + result);
+            if (result) {
+                Logcat.d("Address：" + MyApp.address + "Name：" + MyApp.name);
+            } else {
+                Logcat.d("未连接");
+            }
+            Logcat.d("" + result);
+        } else if ("Save6DataErr".equals(type)) {
+            Toast.makeText(MyApp.getInstance(), (String) msg, Toast.LENGTH_SHORT).show();
+        } else if ("L".equals(type)) {
+            String string = (String) msg;
+            Logcat.d("L:" + string);
+            String s = mList.get(mList.size() - 1).getCargoSize();
+            mList.get(mList.size() - 1).setCargoSize(string);
+            doLoop();
+        } else if ("W".equals(type)) {
+            String string = (String) msg;
+            Logcat.d("W:" + string);
+            String s = mList.get(mList.size() - 1).getCargoSize();
+            mList.get(mList.size() - 1).setCargoSize(s + "-" + string);
+            doLoop();
+        } else if ("H".equals(type)) {
+            String string = (String) msg;
+            Logcat.d("H:" + string);
+            String s = mList.get(mList.size() - 1).getCargoSize();
+            mList.get(mList.size() - 1).setCargoSize(s + "-" + string);
+            doLoop();
+        } else if ("G".equals(type)) {
+            String string = (String) msg;
+            Logcat.d("G:" + string);
+            String s = mList.get(mList.size() - 1).getActualWeight();
+            mList.get(mList.size() - 1).setActualWeight(string);
+            doLoop();
+        } else if ("SOFT".equals(type)) {
+            Logcat.d(msg + "");
+        } else if ("HARD".equals(type)) {
+            Logcat.d(msg + "");
+        } else if (type.equals("codeResult")) {
+            Logcat.d(msg + "");
+            doLoop();
+
+        } else if ("MODEL".equals(type)) {
+            String string = (String) msg;
+            switch (string) {
+                case "00":
+                    string = "模式更改为长度测量";
+                    break;
+                case "02":
+                    string = "模式更改为宽度测量";
+                    break;
+                case "03":
+                    string = "模式更改为高度测量";
+                    break;
+                case "01":
+                    string = "模式更改为重量测量";
+                    break;
+            }
+            Toast.makeText(this, string, Toast.LENGTH_SHORT).show();
+        } else if ("SHUTDOWN".equals(type)) {
+            String string = (String) msg;
+            if ("01".equals(string)) {
+                Toast.makeText(MyApp.getInstance(), "关机成功", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(MyApp.getInstance(), "关机失败", Toast.LENGTH_SHORT).show();
+            }
+        } else if ("FENGMING".equals(type)) {
+            String string = (String) msg;
+            int toInt = DataManageUtils.HexToInt(string);
+            Toast.makeText(MyApp.getInstance(), "蜂鸣器时长设置为" + toInt, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * 循环执行测量
+     */
+    private void doLoop() {
+        if (isTest && queue != null) {
+            Integer integer = queue.poll();
+            if (integer != null) {
+                PK30DataUtils.setModel(integer);
+            } else {
+                test();
+            }
+
+        }
+    }
+
+    private Queue<Integer> queue;
+    //开始测试
+    private boolean isTest = false;
+
+    /**
+     * 启动测试
+     */
+    private boolean test() {
+        queue = new LinkedList<Integer>();
+        isTest = true;
+        if ((Integer) SpUtils.get(MyApp.getInstance(), SettingsModel.MODEL, 0) == 0) {
+            //长宽高重量
+            queue.offer(0);
+            queue.offer(1);
+            queue.offer(2);
+            queue.offer(3);
+        } else if ((Integer) SpUtils.get(MyApp.getInstance(), SettingsModel.MODEL, 1) == 1) {
+            //重量长宽高
+            queue.offer(3);
+            queue.offer(0);
+            queue.offer(1);
+            queue.offer(2);
+        } else if ((Integer) SpUtils.get(MyApp.getInstance(), SettingsModel.MODEL, 2) == 2) {
+            //长
+            queue.offer(0);
+        } else if ((Integer) SpUtils.get(MyApp.getInstance(), SettingsModel.MODEL, 3) == 3) {
+            //重量
+            queue.offer(3);
+        }
+        if (queue.size() != 0) {
+            doLoop();
+        } else {
+            Toast.makeText(this, "请先勾选需要启动的测量模式", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+
 }
