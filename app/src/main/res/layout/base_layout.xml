@@ -37,7 +37,7 @@
             android:textColor="@android:color/white"
             android:textSize="13sp"
             android:textStyle="bold"
-            android:drawableStart="@drawable/ic_settings"
+            android:drawableStart="@drawable/ic_setting"
             android:layout_marginEnd="@dimen/dp8"
             />
 

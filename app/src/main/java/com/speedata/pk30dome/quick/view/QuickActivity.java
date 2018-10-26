@@ -1,6 +1,5 @@
 package com.speedata.pk30dome.quick.view;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -220,7 +219,7 @@ public class QuickActivity extends BaseActivity implements View.OnClickListener,
         }
     }
 
-    @SuppressLint("NewApi")
+
     @Override
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
 
@@ -230,7 +229,7 @@ public class QuickActivity extends BaseActivity implements View.OnClickListener,
             case R.id.quick_one: {
                 DialogButtonOnClickListener dialogButtonOnClickListener = new DialogButtonOnClickListener();
                 etTxtInput = new EditText(MyApp.getInstance());
-                etTxtInput.setTextColor(getResources().getColor(R.color.black, null));
+                etTxtInput.setTextColor(getResources().getColor(R.color.black));
                 mDialog = new AlertDialog.Builder(QuickActivity.this)
                         .setTitle("请输入或修改实际重量")
                         .setView(etTxtInput)
@@ -250,7 +249,7 @@ public class QuickActivity extends BaseActivity implements View.OnClickListener,
             case R.id.quick_two: {
                 DialogButtonOnClickListener dialogButtonOnClickListener = new DialogButtonOnClickListener();
                 etTxtInput = new EditText(MyApp.getInstance());
-                etTxtInput.setTextColor(getResources().getColor(R.color.black, null));
+                etTxtInput.setTextColor(getResources().getColor(R.color.black));
                 mDialog = new AlertDialog.Builder(QuickActivity.this)
                         .setTitle("请输入或修改泡重")
                         .setView(etTxtInput)
@@ -270,7 +269,7 @@ public class QuickActivity extends BaseActivity implements View.OnClickListener,
             case R.id.quick_three: {
                 DialogButtonOnClickListener dialogButtonOnClickListener = new DialogButtonOnClickListener();
                 etTxtInput = new EditText(MyApp.getInstance());
-                etTxtInput.setTextColor(getResources().getColor(R.color.black, null));
+                etTxtInput.setTextColor(getResources().getColor(R.color.black));
                 mDialog = new AlertDialog.Builder(QuickActivity.this)
                         .setTitle("请输入或修改货物尺寸")
                         .setView(etTxtInput)
@@ -290,7 +289,7 @@ public class QuickActivity extends BaseActivity implements View.OnClickListener,
             case R.id.quick_four: {
                 DialogButtonOnClickListener dialogButtonOnClickListener = new DialogButtonOnClickListener();
                 etTxtInput = new EditText(MyApp.getInstance());
-                etTxtInput.setTextColor(getResources().getColor(R.color.black, null));
+                etTxtInput.setTextColor(getResources().getColor(R.color.black));
                 mDialog = new AlertDialog.Builder(QuickActivity.this)
                         .setTitle("请输入或修改件数")
                         .setView(etTxtInput)
