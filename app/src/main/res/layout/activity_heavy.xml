@@ -181,7 +181,7 @@
             <Button
                 android:id="@+id/heavy_add"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="38dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/dp10"
                 android:background="@drawable/add_good_message" />
@@ -189,7 +189,7 @@
             <Button
                 android:id="@+id/heavy_clear"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="38dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/dp10"
                 android:layout_marginBottom="@dimen/dp30"
@@ -291,7 +291,7 @@
             <Button
                 android:id="@+id/heavy_upload"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="38dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/dp30"
                 android:layout_marginBottom="@dimen/dp30"

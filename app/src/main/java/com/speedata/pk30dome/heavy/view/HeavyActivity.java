@@ -1,5 +1,6 @@
 package com.speedata.pk30dome.heavy.view;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -286,6 +287,7 @@ public class HeavyActivity extends BaseActivity implements View.OnClickListener,
         }
     }
 
+    @SuppressLint("NewApi")
     @Override
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
 
@@ -295,6 +297,7 @@ public class HeavyActivity extends BaseActivity implements View.OnClickListener,
             case R.id.quick_one: {
                 DialogButtonOnClickListener dialogButtonOnClickListener = new DialogButtonOnClickListener();
                 etTxtInput = new EditText(MyApp.getInstance());
+                etTxtInput.setTextColor(getResources().getColor(R.color.black, null));
                 mDialog = new AlertDialog.Builder(HeavyActivity.this)
                         .setTitle("请输入或修改实际重量")
                         .setView(etTxtInput)
@@ -314,6 +317,7 @@ public class HeavyActivity extends BaseActivity implements View.OnClickListener,
             case R.id.quick_two: {
                 DialogButtonOnClickListener dialogButtonOnClickListener = new DialogButtonOnClickListener();
                 etTxtInput = new EditText(MyApp.getInstance());
+                etTxtInput.setTextColor(getResources().getColor(R.color.black, null));
                 mDialog = new AlertDialog.Builder(HeavyActivity.this)
                         .setTitle("请输入或修改泡重")
                         .setView(etTxtInput)
@@ -333,6 +337,7 @@ public class HeavyActivity extends BaseActivity implements View.OnClickListener,
             case R.id.quick_three: {
                 DialogButtonOnClickListener dialogButtonOnClickListener = new DialogButtonOnClickListener();
                 etTxtInput = new EditText(MyApp.getInstance());
+                etTxtInput.setTextColor(getResources().getColor(R.color.black, null));
                 mDialog = new AlertDialog.Builder(HeavyActivity.this)
                         .setTitle("请输入或修改货物尺寸")
                         .setView(etTxtInput)
@@ -352,6 +357,7 @@ public class HeavyActivity extends BaseActivity implements View.OnClickListener,
             case R.id.quick_four: {
                 DialogButtonOnClickListener dialogButtonOnClickListener = new DialogButtonOnClickListener();
                 etTxtInput = new EditText(MyApp.getInstance());
+                etTxtInput.setTextColor(getResources().getColor(R.color.black, null));
                 mDialog = new AlertDialog.Builder(HeavyActivity.this)
                         .setTitle("请输入或修改件数")
                         .setView(etTxtInput)
@@ -395,24 +401,28 @@ public class HeavyActivity extends BaseActivity implements View.OnClickListener,
             Logcat.d("L:" + string);
             String s = mList.get(mList.size() - 1).getCargoSize();
             mList.get(mList.size() - 1).setCargoSize(string);
+            mAdapter.notifyDataSetChanged();
             doLoop();
         } else if ("W".equals(type)) {
             String string = (String) msg;
             Logcat.d("W:" + string);
             String s = mList.get(mList.size() - 1).getCargoSize();
             mList.get(mList.size() - 1).setCargoSize(s + "-" + string);
+            mAdapter.notifyDataSetChanged();
             doLoop();
         } else if ("H".equals(type)) {
             String string = (String) msg;
             Logcat.d("H:" + string);
             String s = mList.get(mList.size() - 1).getCargoSize();
             mList.get(mList.size() - 1).setCargoSize(s + "-" + string);
+            mAdapter.notifyDataSetChanged();
             doLoop();
         } else if ("G".equals(type)) {
             String string = (String) msg;
             Logcat.d("G:" + string);
             String s = mList.get(mList.size() - 1).getActualWeight();
             mList.get(mList.size() - 1).setActualWeight(string);
+            mAdapter.notifyDataSetChanged();
             doLoop();
         } else if ("SOFT".equals(type)) {
             Logcat.d(msg + "");
