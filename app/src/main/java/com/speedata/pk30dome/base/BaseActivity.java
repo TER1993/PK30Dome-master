@@ -47,7 +47,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         mEnd = findViewById(R.id.toolbar_end);
         mToolBar.setTitle("");
         setSupportActionBar(mToolBar);
-        mToolBar.setNavigationOnClickListener(view -> finish());
+        mToolBar.setNavigationOnClickListener(view -> showFinishDialog());
         initView(savedInstanceState);
         mEnd.setText("");
         mEnd.setOnClickListener(view -> showSettingsAct());
@@ -110,7 +110,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         mEnd = findViewById(R.id.toolbar_end);
         mToolBar.setTitle("");
         setSupportActionBar(mToolBar);
-        mToolBar.setNavigationOnClickListener(view -> finish());
+        mToolBar.setNavigationOnClickListener(view -> showFinishDialog());
 
     }
 
@@ -182,7 +182,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     public void showFinishDialog() {
         AlertUtils.dialog(mContext, "退出",
-                "是否退出程序？", (dialog, which) -> {
+                "是否退出当前页面？", (dialog, which) -> {
                     dialog.dismiss();
                     finish();
                 }, (dialog, which) -> dialog.dismiss());

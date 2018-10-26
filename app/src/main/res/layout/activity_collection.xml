@@ -183,7 +183,7 @@
                 android:gravity="start"
                 android:id="@+id/collection_upload"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="38dp"
                 android:layout_weight="1"
                 android:background="@drawable/quick_upload"
                 tools:ignore="ButtonStyle" />
@@ -194,7 +194,7 @@
                 android:id="@+id/collection_print"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_height="wrap_content"
+                android:layout_height="38dp"
                 android:background="@drawable/print"
                 android:gravity="end"
                 tools:ignore="ButtonStyle" />

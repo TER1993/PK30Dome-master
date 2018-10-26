@@ -190,7 +190,7 @@ public class SettingsActivity extends BaseActivity implements SeekBar.OnSeekBarC
             case R.id.radioButton2:
                 //sp保存结果
                 SpUtils.put(MyApp.getInstance(), MODEL, 1);
-                PK30DataUtils.setModel(0);
+                PK30DataUtils.setModel(3);
                 ToastUtils.showShortToastSafe("重量、长、宽、高");
                 break;
             case R.id.radioButton3:
