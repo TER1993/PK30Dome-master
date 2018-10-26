@@ -23,6 +23,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -40,7 +41,7 @@ import java.util.ArrayList;
 /**
  * @author xuyan  主页面
  */
-public class MenuActivity extends BaseActivity implements View.OnClickListener {
+public class MenuActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     private ImageView mImageView;
     private TextView mHistory;
@@ -125,7 +126,7 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
         mSearch = findViewById(R.id.search);
 
         mListView = findViewById(R.id.rv_content);
-
+        mListView.setOnItemClickListener(this);
         mImageView.setOnClickListener(this);
         mHistory.setOnClickListener(this);
         mHeavy.setOnClickListener(this);
@@ -191,6 +192,7 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
     private static final long SCAN_PERIOD = 10000;
     private BluetoothLeScanner mBluetoothLeScanner;
     private static final int REQUEST_CODE_ACCESS_COARSE_LOCATION = 1;
+
 
     /**
      * Adapter for holding devices found through scanning.
@@ -387,5 +389,19 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener {
         return super.onKeyDown(keyCode, event);
     }
 
+    //点击蓝牙设备的事件。
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        System.out.println("==position==" + position);
+        final BluetoothDevice device = mLeDeviceListAdapter.getDevice(position);
+        if (device == null) {
+            return;
+        }
+        if (mScanning) {
+            mBluetoothLeScanner.stopScan(mScanCallback);
+            mScanning = false;
+        }
+        MyApp.getInstance().getDeviceName(device);
+    }
 
 }
