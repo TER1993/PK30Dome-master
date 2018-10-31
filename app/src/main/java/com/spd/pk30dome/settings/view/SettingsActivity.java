@@ -65,7 +65,7 @@ public class SettingsActivity extends BaseActivity implements SeekBar.OnSeekBarC
         currentBell = 50;
         mTextView2 = findViewById(R.id.textView2);
         mTextView2.setText(String.valueOf(currentBell));
-        searchBar.setProgress(currentBell);
+        searchBar.setProgress(0);
         int max = 150;
         searchBar.setMax(max);
         searchBar.setOnSeekBarChangeListener(this);

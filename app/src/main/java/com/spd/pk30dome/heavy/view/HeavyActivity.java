@@ -415,7 +415,7 @@ public class HeavyActivity extends BaseActivity implements View.OnClickListener,
                     double b = Double.parseDouble(x[1]);
                     double c = Double.parseDouble(x[2]);
                     //不足1位,会以0补足.
-                    DecimalFormat format=new DecimalFormat(".0");
+                    DecimalFormat format=new DecimalFormat(".00");
                     String y = format.format((a * b * c) / QuickModel.XISHU_XU);
                     mList.get(mList.size() - 1).setBubbleWeight(y);
                 }
@@ -437,7 +437,7 @@ public class HeavyActivity extends BaseActivity implements View.OnClickListener,
                     double b = Double.parseDouble(x[1]);
                     double c = Double.parseDouble(x[2]);
                     //不足1位,会以0补足.
-                    DecimalFormat format=new DecimalFormat(".0");
+                    DecimalFormat format=new DecimalFormat(".00");
                     String y = format.format((a * b * c) / QuickModel.XISHU_XU);
                     mList.get(mList.size() - 1).setBubbleWeight(y);
                 }
