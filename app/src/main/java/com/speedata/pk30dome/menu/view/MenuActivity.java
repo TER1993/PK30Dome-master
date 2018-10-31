@@ -158,6 +158,8 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener, 
                 navUp = getResources().getDrawable(R.drawable.menu_search_off);
                 navUp.setBounds(0, 0, navUp.getMinimumWidth(), navUp.getMinimumHeight());
                 mSearch.setCompoundDrawables(navUp, null, null, null);
+
+                //ToastUtils.showShortToastSafe("暂不提供历史连接等功能");
             }
             break;
             case R.id.search: {
@@ -178,6 +180,7 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener, 
     }
 
 
+
     /**
      * 蓝牙连接部分
      */
@@ -188,7 +191,9 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener, 
     private Handler mHandler;
 
     private static final int REQUEST_ENABLE_BT = 1;
-    // 10秒后停止查找搜索.
+    /**
+     *  10秒后停止查找搜索.
+     */
     private static final long SCAN_PERIOD = 10000;
     private BluetoothLeScanner mBluetoothLeScanner;
     private static final int REQUEST_CODE_ACCESS_COARSE_LOCATION = 1;
@@ -389,7 +394,9 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener, 
         return super.onKeyDown(keyCode, event);
     }
 
-    //点击蓝牙设备的事件。
+    /**
+     * 点击蓝牙设备的事件
+     */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         System.out.println("==position==" + position);
