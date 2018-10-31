@@ -29,7 +29,7 @@ import com.liang.scancode.zxing.utils.BeepManager;
 import com.liang.scancode.zxing.utils.BitmapUtil;
 import com.liang.scancode.zxing.utils.CaptureActivityHandler;
 import com.liang.scancode.zxing.utils.InactivityTimer;
-import com.speedata.pk30dome.R;
+import com.spd.pk30dome.R;
 
 import java.io.IOException;
 import java.lang.reflect.Field;

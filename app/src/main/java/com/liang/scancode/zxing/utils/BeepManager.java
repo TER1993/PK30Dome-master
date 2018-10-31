@@ -26,7 +26,7 @@ import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.speedata.pk30dome.R;
+import com.spd.pk30dome.R;
 
 import java.io.Closeable;
 import java.io.IOException;

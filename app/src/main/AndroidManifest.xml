@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.speedata.pk30dome">
+    package="com.spd.pk30dome">
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -21,34 +21,34 @@
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
 
     <application
-        android:name=".MyApp"
+        android:name="com.spd.pk30dome.MyApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".menu.view.MenuActivity">
+        <activity android:name="com.spd.pk30dome.menu.view.MenuActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.DeviceScanActivity" />
+        <activity android:name="com.spd.pk30dome.ui.DeviceScanActivity" />
         <!-- 扫描界面 -->
         <activity
             android:name="com.liang.scancode.CommonScanActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity android:name=".ui.main.MainActivity" />
-        <activity android:name=".heavy.view.HeavyActivity" />
-        <activity android:name=".quick.view.QuickActivity" />
-        <activity android:name=".settings.view.SettingsActivity" />
-        <activity android:name=".quick.view.SenderActivity" />
-        <activity android:name=".quick.view.CollectionActivity" />
-        <activity android:name=".settings.view.SoundActivity" />
-        <activity android:name=".settings.view.ChooseActivity"></activity>
+        <activity android:name="com.spd.pk30dome.ui.main.MainActivity" />
+        <activity android:name="com.spd.pk30dome.heavy.view.HeavyActivity" />
+        <activity android:name="com.spd.pk30dome.quick.view.QuickActivity" />
+        <activity android:name="com.spd.pk30dome.settings.view.SettingsActivity" />
+        <activity android:name="com.spd.pk30dome.quick.view.SenderActivity" />
+        <activity android:name="com.spd.pk30dome.quick.view.CollectionActivity" />
+        <activity android:name="com.spd.pk30dome.settings.view.SoundActivity" />
+        <activity android:name="com.spd.pk30dome.settings.view.ChooseActivity"></activity>
     </application>
 
 </manifest>

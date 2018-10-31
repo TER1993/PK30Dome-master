@@ -39,7 +39,7 @@ import com.liang.scancode.zxing.ScanListener;
 import com.liang.scancode.zxing.ScanManager;
 import com.liang.scancode.zxing.decode.DecodeThread;
 import com.liang.scancode.zxing.decode.Utils;
-import com.speedata.pk30dome.R;
+import com.spd.pk30dome.R;
 
 import org.greenrobot.eventbus.EventBus;
 

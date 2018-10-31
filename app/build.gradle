@@ -3,7 +3,7 @@ apply plugin: 'org.greenrobot.greendao'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.speedata.pk30dome"
+        applicationId "com.spd.pk30dome"
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1

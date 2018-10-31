@@ -24,7 +24,7 @@ import com.google.zxing.Result;
 import com.liang.scancode.zxing.ScanManager;
 import com.liang.scancode.zxing.camera.CameraManager;
 import com.liang.scancode.zxing.decode.DecodeThread;
-import com.speedata.pk30dome.R;
+import com.spd.pk30dome.R;
 
 /**
  * This class handles shouquan_ic_all the messaging which comprises the state machine for
