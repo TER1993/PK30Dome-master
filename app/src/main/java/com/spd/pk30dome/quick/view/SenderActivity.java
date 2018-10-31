@@ -8,8 +8,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.scandecode.ScanDecode;
-import com.scandecode.inf.ScanInterface;
+import com.liang.scancode.CommonScanActivity;
+import com.liang.scancode.MsgEvent;
+import com.liang.scancode.utils.Constant;
 import com.spd.pk30dome.MyApp;
 import com.spd.pk30dome.R;
 import com.spd.pk30dome.base.BaseActivity;
@@ -18,6 +19,10 @@ import com.spd.pk30dome.database.QuickDataBean;
 import com.spd.pk30dome.quick.model.QuickModel;
 import com.spd.pk30dome.utils.Logcat;
 import com.spd.pk30dome.utils.ToastUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -37,7 +42,6 @@ public class SenderActivity extends BaseActivity implements View.OnClickListener
     private TextView mScan;
     private Button mNext;
 
-    private ScanInterface scanDecode;
 
     private List<QuickBean> mList;
     private QuickDataBean quickDataBean;
@@ -45,20 +49,17 @@ public class SenderActivity extends BaseActivity implements View.OnClickListener
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         mList = new ArrayList<>();
         mList = (List<QuickBean>) getIntent().getSerializableExtra(QuickModel.INTENT_ONE);
         quickDataBean = getIntent().getParcelableExtra(QuickModel.INTENT_TWO);
         Logcat.d(mList.toString() + quickDataBean.toString());
 
-        //初始化扫描服务
-        scanDecode = new ScanDecode(this);
-        scanDecode.initService("true");
-        scanDecode.getBarCode(s -> mOddNumber.setText(s));
     }
 
     @Override
     protected void onDestroy() {
-        scanDecode.onDestroy();
+        EventBus.getDefault().unregister(this);
         super.onDestroy();
     }
 
@@ -91,8 +92,7 @@ public class SenderActivity extends BaseActivity implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.sender_scan:
-                //用jar包处理扫描即可
-                scanDecode.starScan();
+                startScanAct();
                 break;
             case R.id.sender_next:
                 //下一步,先检测填写的信息
@@ -121,6 +121,22 @@ public class SenderActivity extends BaseActivity implements View.OnClickListener
             default:
                 break;
 
+        }
+    }
+
+    private void startScanAct() {
+        Intent intent = new Intent(this, CommonScanActivity.class);
+        intent.putExtra(Constant.REQUEST_SCAN_MODE, Constant.REQUEST_SCAN_MODE_BARCODE_MODE);
+        startActivity(intent);
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(MsgEvent mEvent) {
+        String type = mEvent.getType();
+        Object msg = mEvent.getMsg();
+        if (type.equals("codeResult")) {
+            mOddNumber.setText(msg + "");
         }
     }
 

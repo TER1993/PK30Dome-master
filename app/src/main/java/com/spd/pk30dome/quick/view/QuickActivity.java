@@ -31,6 +31,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -347,6 +348,21 @@ public class QuickActivity extends BaseActivity implements View.OnClickListener,
             Logcat.d("H:" + string);
             String s = mListBeans.get(mListBeans.size() - 1).getCargoSize();
             mListBeans.get(mListBeans.size() - 1).setCargoSize(s + "-" + string);
+
+            if ((Integer) SpUtils.get(MyApp.getInstance(), SettingsModel.MODEL, 0) == 1) {
+                //重量长宽高
+                String[] x = mListBeans.get(mListBeans.size() - 1).getCargoSize().split("-");
+                if (x.length == 3){
+                    double a = Double.parseDouble(x[0]);
+                    double b = Double.parseDouble(x[1]);
+                    double c = Double.parseDouble(x[2]);
+                    //不足1位,会以0补足.
+                    DecimalFormat format=new DecimalFormat(".0");
+                    String y = format.format((a * b * c) / QuickModel.XISHU_XU);
+                    mListBeans.get(mListBeans.size() - 1).setBubbleWeight(y);
+                }
+            }
+
             mAdapter.notifyDataSetChanged();
             doLoop();
         } else if ("G".equals(type)) {
@@ -354,6 +370,21 @@ public class QuickActivity extends BaseActivity implements View.OnClickListener,
             Logcat.d("G:" + string);
             String s = mListBeans.get(mListBeans.size() - 1).getActualWeight();
             mListBeans.get(mListBeans.size() - 1).setActualWeight(string);
+
+            if ((Integer) SpUtils.get(MyApp.getInstance(), SettingsModel.MODEL, 0) == 0) {
+                //长宽高重量
+                String[] x = mListBeans.get(mListBeans.size() - 1).getCargoSize().split("-");
+                if (x.length == 3){
+                    double a = Double.parseDouble(x[0]);
+                    double b = Double.parseDouble(x[1]);
+                    double c = Double.parseDouble(x[2]);
+                    //不足1位,会以0补足.
+                    DecimalFormat format=new DecimalFormat(".0");
+                    String y = format.format((a * b * c) / QuickModel.XISHU_XU);
+                    mListBeans.get(mListBeans.size() - 1).setBubbleWeight(y);
+                }
+            }
+
             mAdapter.notifyDataSetChanged();
             doLoop();
         } else if ("SOFT".equals(type)) {
@@ -362,7 +393,6 @@ public class QuickActivity extends BaseActivity implements View.OnClickListener,
             Logcat.d(msg + "");
         } else if (type.equals("codeResult")) {
             Logcat.d(msg + "");
-            doLoop();
 
         } else if ("MODEL".equals(type)) {
             String string = (String) msg;

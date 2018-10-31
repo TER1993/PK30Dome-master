@@ -2,6 +2,7 @@ package com.spd.pk30dome.heavy.view;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,9 +14,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.liang.scancode.CommonScanActivity;
 import com.liang.scancode.MsgEvent;
-import com.scandecode.ScanDecode;
-import com.scandecode.inf.ScanInterface;
+import com.liang.scancode.utils.Constant;
 import com.spd.pk30dome.MyApp;
 import com.spd.pk30dome.R;
 import com.spd.pk30dome.base.BaseActivity;
@@ -26,6 +27,7 @@ import com.spd.pk30dome.database.QuickBean;
 import com.spd.pk30dome.database.QuickDataBean;
 import com.spd.pk30dome.heavy.adapter.HeavyAdapter;
 import com.spd.pk30dome.heavy.adapter.HeavyLoadAdapter;
+import com.spd.pk30dome.quick.model.QuickModel;
 import com.spd.pk30dome.settings.model.SettingsModel;
 import com.spd.pk30dome.utils.Logcat;
 import com.spd.pk30dome.utils.SpUtils;
@@ -35,6 +37,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -65,7 +68,6 @@ public class HeavyActivity extends BaseActivity implements View.OnClickListener,
     private Button mClear;
     private Button mUpload;
 
-    private ScanInterface scanDecode;
 
     private HeavyAdapter mAdapter;
     private HeavyLoadAdapter mLoadAdapter;
@@ -77,23 +79,6 @@ public class HeavyActivity extends BaseActivity implements View.OnClickListener,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //初始化扫描服务
-        scanDecode = new ScanDecode(this);
-        scanDecode.initService("true");
-        scanDecode.getBarCode(s -> {
-            mOddNumber.setText(s);
-            if (!"".equals(s)) {
-                quickDataBean = DaoOptions.queryQuickDataBean(s);
-                mLoadList = DaoOptions.queryQuickBean(s);
-
-                mPriceLoad.setText(quickDataBean.getMQuotedPrice());
-                mReturnLoad.setText(quickDataBean.getMQuickReturn());
-                mGoodsTypeLoad.setText(quickDataBean.getMTypeOfGoods());
-                mPackingTypeLoad.setText(quickDataBean.getMPackingType());
-
-                mLoadAdapter.replaceData(mLoadList);
-            }
-        });
         EventBus.getDefault().register(this);
     }
 
@@ -101,7 +86,7 @@ public class HeavyActivity extends BaseActivity implements View.OnClickListener,
     @Override
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);
-        scanDecode.onDestroy();
+
         super.onDestroy();
     }
 
@@ -162,8 +147,7 @@ public class HeavyActivity extends BaseActivity implements View.OnClickListener,
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.heavy_scan:
-                //用jar包处理扫描即可
-                scanDecode.starScan();
+                startScanAct();
                 break;
             case R.id.heavy_add:
                 //先判断数据是否为空（空白则不添加）
@@ -235,6 +219,14 @@ public class HeavyActivity extends BaseActivity implements View.OnClickListener,
                 break;
         }
     }
+
+
+    private void startScanAct() {
+        Intent intent = new Intent(this, CommonScanActivity.class);
+        intent.putExtra(Constant.REQUEST_SCAN_MODE, Constant.REQUEST_SCAN_MODE_BARCODE_MODE);
+        startActivity(intent);
+    }
+
 
     /**
      * item控件点击显示
@@ -414,6 +406,21 @@ public class HeavyActivity extends BaseActivity implements View.OnClickListener,
             Logcat.d("H:" + string);
             String s = mList.get(mList.size() - 1).getCargoSize();
             mList.get(mList.size() - 1).setCargoSize(s + "-" + string);
+
+            if ((Integer) SpUtils.get(MyApp.getInstance(), SettingsModel.MODEL, 0) == 1) {
+                //重量长宽高
+                String[] x = mList.get(mList.size() - 1).getCargoSize().split("-");
+                if (x.length == 3){
+                    double a = Double.parseDouble(x[0]);
+                    double b = Double.parseDouble(x[1]);
+                    double c = Double.parseDouble(x[2]);
+                    //不足1位,会以0补足.
+                    DecimalFormat format=new DecimalFormat(".0");
+                    String y = format.format((a * b * c) / QuickModel.XISHU_XU);
+                    mList.get(mList.size() - 1).setBubbleWeight(y);
+                }
+            }
+
             mAdapter.notifyDataSetChanged();
             doLoop();
         } else if ("G".equals(type)) {
@@ -421,6 +428,21 @@ public class HeavyActivity extends BaseActivity implements View.OnClickListener,
             Logcat.d("G:" + string);
             String s = mList.get(mList.size() - 1).getActualWeight();
             mList.get(mList.size() - 1).setActualWeight(string);
+
+            if ((Integer) SpUtils.get(MyApp.getInstance(), SettingsModel.MODEL, 0) == 0) {
+                //长宽高重量
+                String[] x = mList.get(mList.size() - 1).getCargoSize().split("-");
+                if (x.length == 3){
+                    double a = Double.parseDouble(x[0]);
+                    double b = Double.parseDouble(x[1]);
+                    double c = Double.parseDouble(x[2]);
+                    //不足1位,会以0补足.
+                    DecimalFormat format=new DecimalFormat(".0");
+                    String y = format.format((a * b * c) / QuickModel.XISHU_XU);
+                    mList.get(mList.size() - 1).setBubbleWeight(y);
+                }
+            }
+
             mAdapter.notifyDataSetChanged();
             doLoop();
         } else if ("SOFT".equals(type)) {
@@ -428,9 +450,17 @@ public class HeavyActivity extends BaseActivity implements View.OnClickListener,
         } else if ("HARD".equals(type)) {
             Logcat.d(msg + "");
         } else if (type.equals("codeResult")) {
-            Logcat.d(msg + "");
-            doLoop();
-
+            String s = msg + "";
+            mOddNumber.setText(s);
+            if (!"".equals(s)) {
+                quickDataBean = DaoOptions.queryQuickDataBean(s);
+                mLoadList = DaoOptions.queryQuickBean(s);
+                mPriceLoad.setText(quickDataBean.getMQuotedPrice());
+                mReturnLoad.setText(quickDataBean.getMQuickReturn());
+                mGoodsTypeLoad.setText(quickDataBean.getMTypeOfGoods());
+                mPackingTypeLoad.setText(quickDataBean.getMPackingType());
+                mLoadAdapter.replaceData(mLoadList);
+            }
         } else if ("MODEL".equals(type)) {
             String string = (String) msg;
             switch (string) {

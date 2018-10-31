@@ -8,4 +8,8 @@ import com.spd.pk30dome.base.BaseModel;
 public class QuickModel extends BaseModel {
     public static final String INTENT_ONE = "INTENTONE";
     public static final String INTENT_TWO = "INTENTTWO";
+
+    public static final int XISHU_XU = 6000;
+
+
 }
