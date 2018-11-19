@@ -30,13 +30,21 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.liang.scancode.MsgEvent;
 import com.spd.pk30dome.MyApp;
 import com.spd.pk30dome.R;
 import com.spd.pk30dome.base.BaseActivity;
 import com.spd.pk30dome.heavy.view.HeavyActivity;
 import com.spd.pk30dome.quick.view.QuickActivity;
+import com.spd.pk30dome.utils.SpUtils;
+import com.spd.pk30dome.utils.ToastUtils;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+
+import static com.spd.pk30dome.quick.model.QuickModel.MENU_ADD;
 
 /**
  * @author xuyan  主页面
@@ -49,7 +57,7 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener, 
     private TextView mQuick;
     private TextView mHeavy;
     private ListView mListView;
-
+    private boolean connect;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,6 +147,15 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener, 
         switch (v.getId()) {
             case R.id.iv_bluetooth:
                 //连接上一次的蓝牙设备
+                if (connect) {
+                    //断开连接
+                    MyApp.getInstance().disconnect();
+                    ToastUtils.showShortToastSafe("断开连接");
+                } else {
+                    //尝试连接
+                    tryConnect();
+                }
+
                 break;
             case R.id.heavy:
                 //重量稽查
@@ -178,6 +195,25 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener, 
 
     }
 
+    private void tryConnect() {
+        String add = (String) SpUtils.get(MyApp.getInstance(), MENU_ADD, "");
+        for (int i = 0; i < mLeDeviceListAdapter.mLeDevices.size(); i++) {
+            if (add.equals(mLeDeviceListAdapter.mLeDevices.get(i).getAddress())) {
+                //做类似position点击操作
+                System.out.println("==position==" + i);
+                final BluetoothDevice device = mLeDeviceListAdapter.getDevice(i);
+                if (device == null) {
+                    return;
+                }
+                if (mScanning) {
+                    mBluetoothLeScanner.stopScan(mScanCallback);
+                    mScanning = false;
+                }
+                MyApp.getInstance().getDeviceName(device);
+            }
+        }
+
+    }
 
 
     /**
@@ -408,6 +444,25 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener, 
             mScanning = false;
         }
         MyApp.getInstance().getDeviceName(device);
+
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMain(MsgEvent msgEvent) {
+        String type = msgEvent.getType();
+        Object msg = msgEvent.getMsg();
+        if ("ServiceConnectedStatus".equals(type)) {
+            boolean result = (boolean) msg;
+            if (result) {
+                SpUtils.put(MyApp.getInstance(), MENU_ADD, MyApp.address);
+                connect = true;
+            } else {
+                connect = false;
+            }
+
+        }
+
     }
 
 }

@@ -71,6 +71,7 @@ public class SenderActivity extends BaseActivity implements View.OnClickListener
     @Override
     protected void initToolBar() {
         mTitle.setText("智能录单");
+        mEnd.setVisibility(View.INVISIBLE);
     }
 
     @Override

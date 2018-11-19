@@ -12,4 +12,6 @@ public class QuickModel extends BaseModel {
     public static final int XISHU_XU = 6000;
 
 
+    public static final String MENU_ADD = "MENU_ADD";
+
 }

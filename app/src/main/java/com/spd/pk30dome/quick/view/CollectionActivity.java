@@ -58,6 +58,7 @@ public class CollectionActivity extends BaseActivity implements View.OnClickList
     @Override
     protected void initToolBar() {
         mTitle.setText("智能录单");
+        mEnd.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -106,6 +107,7 @@ public class CollectionActivity extends BaseActivity implements View.OnClickList
                 DaoOptions.saveQuickDataBean(quickDataBean);
                 DaoOptions.saveQuickBeanData(mList);
                 ToastUtils.showShortToastSafe("已保存");
+                finish();
             }
             break;
             case R.id.collection_print: {
