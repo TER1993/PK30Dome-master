@@ -58,6 +58,7 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener, 
     private TextView mHeavy;
     private ListView mListView;
     private boolean connect;
+    private TextView mMenuTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,7 +132,7 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener, 
         mHeavy = findViewById(R.id.heavy);
         mQuick = findViewById(R.id.quick);
         mSearch = findViewById(R.id.search);
-
+        mMenuTitle = findViewById(R.id.menu_title);
         mListView = findViewById(R.id.rv_content);
         mListView.setOnItemClickListener(this);
         mImageView.setOnClickListener(this);
@@ -457,8 +458,10 @@ public class MenuActivity extends BaseActivity implements View.OnClickListener, 
             if (result) {
                 SpUtils.put(MyApp.getInstance(), MENU_ADD, MyApp.address);
                 connect = true;
+                mMenuTitle.setText("  设备:" + MyApp.name + "  地址：" + MyApp.address);
             } else {
                 connect = false;
+                mMenuTitle.setText("  已断开连接");
             }
 
         }
