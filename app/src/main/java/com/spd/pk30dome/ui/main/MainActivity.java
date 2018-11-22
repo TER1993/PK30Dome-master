@@ -16,8 +16,9 @@ import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +30,7 @@ import com.liang.scancode.utils.Constant;
 import com.spd.pk30dome.MyApp;
 import com.spd.pk30dome.R;
 import com.spd.pk30dome.mvp.MVPBaseActivity;
+import com.spd.pk30dome.utils.SpUtils;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.PermissionListener;
 import com.yanzhenjie.permission.Rationale;
@@ -46,13 +48,15 @@ import speedata.com.blelib.base.BaseBleApplication;
 import speedata.com.blelib.utils.DataManageUtils;
 import speedata.com.blelib.utils.PK30DataUtils;
 
+import static com.spd.pk30dome.settings.model.SettingsModel.MODEL;
+
 
 /**
  * MVPPlugin
  * 邮箱 784787081@qq.com
  */
 @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
-public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresenter> implements MainContract.View, View.OnClickListener {
+public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresenter> implements MainContract.View, View.OnClickListener, RadioGroup.OnCheckedChangeListener {
 
     private Button mBtnScan;
     private TextView mTvCode;
@@ -65,11 +69,23 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
     private Button mBtnWeight;
     private TextView mTvWeight;
     private Button mBtnTest;
-    private CheckBox mCbScan;
-    private CheckBox mCbLength;
-    private CheckBox mCbWidth;
-    private CheckBox mCbHeight;
-    private CheckBox mCbWeight;
+
+    /**
+     *  几个选项。把条码扫描放到外面，其他的先放到这里面。
+     */
+//    private CheckBox mCbScan;
+//    private CheckBox mCbLength;
+//    private CheckBox mCbWidth;
+//    private CheckBox mCbHeight;
+//    private CheckBox mCbWeight;
+
+    private RadioGroup radioGroup;
+    private RadioButton radioButton1;
+    private RadioButton radioButton2;
+    private RadioButton radioButton3;
+    private RadioButton radioButton4;
+
+
     private TextView mTvSoftware;
     private TextView mTvHardware;
     private Button mBtnFengming;
@@ -138,11 +154,25 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
         mBtnTest = findViewById(R.id.btn_test);
         mBtnTest.setOnClickListener(this);
 
-        mCbScan = findViewById(R.id.cb_scan);
-        mCbLength = findViewById(R.id.cb_length);
-        mCbWidth = findViewById(R.id.cb_width);
-        mCbHeight = findViewById(R.id.cb_height);
-        mCbWeight = findViewById(R.id.cb_weight);
+        /*
+         *  注意这几个checkbox
+         */
+//        mCbScan = findViewById(R.id.cb_scan);
+//        mCbLength = findViewById(R.id.cb_length);
+//        mCbWidth = findViewById(R.id.cb_width);
+//        mCbHeight = findViewById(R.id.cb_height);
+//        mCbWeight = findViewById(R.id.cb_weight);
+
+        //radio部分
+        radioGroup = findViewById(R.id.radioGroup);
+        radioButton1 = findViewById(R.id.radioButton1);
+        radioButton2 = findViewById(R.id.radioButton2);
+        radioButton3 = findViewById(R.id.radioButton3);
+        radioButton4 = findViewById(R.id.radioButton4);
+
+        radioGroup.setOnCheckedChangeListener(this);
+
+
         mTvSoftware = findViewById(R.id.tv_software);
         mTvHardware = findViewById(R.id.tv_hardware);
         mBtnFengming = findViewById(R.id.btn_fengming);
@@ -380,6 +410,34 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
         mBtnTestClose.setEnabled(false);
     }
 
+    @Override
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
+        switch (checkedId) {
+            case R.id.radioButton1:
+                //sp保存结果
+                SpUtils.put(MyApp.getInstance(), MODEL, 0);
+                //PK30DataUtils.setModel(0);
+                break;
+            case R.id.radioButton2:
+                //sp保存结果
+                SpUtils.put(MyApp.getInstance(), MODEL, 1);
+                //PK30DataUtils.setModel(3);
+                break;
+            case R.id.radioButton3:
+                //sp保存结果
+                SpUtils.put(MyApp.getInstance(), MODEL, 2);
+                //PK30DataUtils.setModel(0);
+                break;
+            case R.id.radioButton4:
+                //sp保存结果
+                SpUtils.put(MyApp.getInstance(), MODEL, 3);
+                //PK30DataUtils.setModel(3);
+                break;
+            default:
+                break;
+        }
+    }
+
     /**
      * 启动测试
      */
@@ -387,27 +445,34 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
         queue = new LinkedList<Integer>();
         isTest = true;
 
-        boolean lengthChecked = mCbLength.isChecked();
-        if (lengthChecked) {
+        boolean ckgzChecked = radioButton1.isChecked();
+        boolean zckghChecked = radioButton2.isChecked();
+        boolean changChecked = radioButton3.isChecked();
+        boolean zhongChecked = radioButton4.isChecked();
+        if (ckgzChecked) {
+            //长宽高重量
             queue.offer(0);
-        }
-        boolean widthChecked = mCbWidth.isChecked();
-        if (widthChecked) {
             queue.offer(1);
-        }
-        boolean heightChecked = mCbHeight.isChecked();
-        if (heightChecked) {
             queue.offer(2);
-        }
-        boolean weightChecked = mCbWeight.isChecked();
-        if (weightChecked) {
+            queue.offer(3);
+        } else if (zckghChecked) {
+            //重量长宽高
+            queue.offer(3);
+            queue.offer(0);
+            queue.offer(1);
+            queue.offer(2);
+        } else if (changChecked) {
+            //长
+            queue.offer(0);
+        } else if (zhongChecked) {
+            //重量
             queue.offer(3);
         }
 
-        boolean checked = mCbScan.isChecked();
-        if (checked) {
-            startScanAct();
-        } else {
+//        boolean checked = mCbScan.isChecked();
+//        if (checked) {
+//            startScanAct();
+//        } else {
             if (queue.size() != 0) {
                 doLoop();
             } else {
@@ -415,7 +480,7 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
                 return false;
             }
 
-        }
+  //      }
         return true;
     }
 
@@ -487,4 +552,6 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
         }
         return verName;
     }
+
+
 }
