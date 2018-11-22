@@ -92,6 +92,7 @@
                 android:textSize="15sp" />
 
             <EditText
+                android:inputType="number"
                 android:background="@drawable/bg_input_work"
                 android:id="@+id/sender_odd_number"
                 android:layout_width="0dp"
@@ -315,6 +316,7 @@
                 android:textSize="15sp" />
 
             <EditText
+                android:inputType="number"
                 android:background="@drawable/bg_input_work"
                 android:text="1"
                 android:id="@+id/quick_four"
@@ -441,6 +443,7 @@
                 android:textSize="15sp" />
 
             <EditText
+                android:inputType="number"
                 android:background="@drawable/bg_input_work"
                 android:id="@+id/sender_phone_number"
                 android:layout_width="0dp"
@@ -572,6 +575,7 @@
                 android:textSize="15sp" />
 
             <EditText
+                android:inputType="number"
                 android:background="@drawable/bg_input_work"
                 android:id="@+id/collection_phone_number"
                 android:layout_width="0dp"
