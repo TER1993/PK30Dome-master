@@ -66,4 +66,18 @@ public class DaoOptions {
         return DaoManager.getInstance().getDao().getHeavyDataBeanDao().queryBuilder().where(HeavyDataBeanDao.Properties.MSenderOddNumber.eq(workNo)).unique();
     }
 
+    /**
+     * 保存配置单条信息到greendao数据库（单条数据）
+     * q
+     *
+     * @param oldBean 用户数据y
+     */
+    public static void saveOldBean(OldBean oldBean) {
+        DaoManager.getInstance().getDao().getOldBeanDao().insertOrReplaceInTx(oldBean);
+    }
+
+    public static OldBean queryOldBean(String workNo) {
+        return DaoManager.getInstance().getDao().getOldBeanDao().queryBuilder().where(OldBeanDao.Properties.MSenderOddNumber.eq(workNo)).unique();
+    }
+
 }

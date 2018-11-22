@@ -9,9 +9,10 @@ public class QuickModel extends BaseModel {
     public static final String INTENT_ONE = "INTENTONE";
     public static final String INTENT_TWO = "INTENTTWO";
 
-    public static final int XISHU_XU = 6000;
+    public static final int XISHU_XU = 5000;
 
 
     public static final String MENU_ADD = "MENU_ADD";
+    public static final String MAIN_NUMBER = "MAIN_NUMBER";
 
 }

@@ -16,6 +16,7 @@ import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -29,8 +30,13 @@ import com.liang.scancode.MsgEvent;
 import com.liang.scancode.utils.Constant;
 import com.spd.pk30dome.MyApp;
 import com.spd.pk30dome.R;
+import com.spd.pk30dome.database.DaoOptions;
+import com.spd.pk30dome.database.OldBean;
 import com.spd.pk30dome.mvp.MVPBaseActivity;
+import com.spd.pk30dome.quick.model.QuickModel;
+import com.spd.pk30dome.settings.model.SettingsModel;
 import com.spd.pk30dome.utils.SpUtils;
+import com.spd.pk30dome.utils.ToastUtils;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.PermissionListener;
 import com.yanzhenjie.permission.Rationale;
@@ -40,6 +46,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.text.DecimalFormat;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -48,6 +55,7 @@ import speedata.com.blelib.base.BaseBleApplication;
 import speedata.com.blelib.utils.DataManageUtils;
 import speedata.com.blelib.utils.PK30DataUtils;
 
+import static com.spd.pk30dome.quick.model.QuickModel.MAIN_NUMBER;
 import static com.spd.pk30dome.settings.model.SettingsModel.MODEL;
 
 
@@ -58,20 +66,20 @@ import static com.spd.pk30dome.settings.model.SettingsModel.MODEL;
 @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
 public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresenter> implements MainContract.View, View.OnClickListener, RadioGroup.OnCheckedChangeListener {
 
-    private Button mBtnScan;
-    private TextView mTvCode;
-    private Button mBtnLength;
-    private TextView mTvLength;
-    private Button mBtnWidth;
-    private TextView mTvWidth;
-    private Button mBtnHeight;
-    private TextView mTvHeight;
-    private Button mBtnWeight;
-    private TextView mTvWeight;
+    //    private Button mBtnScan;
+//    private TextView mTvCode;
+//    private Button mBtnLength;
+//    private TextView mTvLength;
+//    private Button mBtnWidth;
+//    private TextView mTvWidth;
+//    private Button mBtnHeight;
+//    private TextView mTvHeight;
+//    private Button mBtnWeight;
+//    private TextView mTvWeight;
     private Button mBtnTest;
 
     /**
-     *  几个选项。把条码扫描放到外面，其他的先放到这里面。
+     * 几个选项。把条码扫描放到外面，其他的先放到这里面。
      */
 //    private CheckBox mCbScan;
 //    private CheckBox mCbLength;
@@ -106,6 +114,43 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
     private TextView mTvVersion;
 
 
+    /**
+     * 新的页面，取自其他页面
+     *
+     */
+    /**
+     * 取自寄件人页面
+     */
+    private EditText mOddNumber;
+    private EditText mTheSender;
+    private EditText mPhoneNumber;
+    private EditText mCompany;
+    private EditText mAddress;
+
+    private TextView mScan;
+    private Button mNext;
+
+    /**
+     * 取自收件人页面
+     */
+    private EditText mTheCollection;
+    private EditText mPhoneNumber2;
+    private EditText mCompany2;
+    private EditText mAddress2;
+    private OldBean quickDataBean;
+
+    /**
+     * 取自货物信息相关部分
+     */
+    private EditText mGoodsType;
+    private EditText mPackingType;
+
+    private EditText mQuickOne;
+    private EditText mQuickTwo;
+    private EditText mQuickThree;
+    private EditText mQuickFour;
+
+
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -123,6 +168,29 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
 
         initView();
         mBtnTestClose.setEnabled(false);
+
+        quickDataBean = new OldBean();
+        quickDataBean = DaoOptions.queryOldBean((String) SpUtils.get(MyApp.getInstance(), MAIN_NUMBER, "8888888888"));
+        if (quickDataBean != null) {
+            updtUi();
+        }
+    }
+
+    private void updtUi() {
+        mOddNumber.setText(quickDataBean.getMSenderOddNumber());
+        mTheSender.setText(quickDataBean.getMSenderTheSender());
+        mPhoneNumber.setText(quickDataBean.getMSenderPhoneNumber());
+        mCompany.setText(quickDataBean.getMSenderCompany());
+        mAddress.setText(quickDataBean.getMSenderAddress());
+
+        mTheCollection.setText(quickDataBean.getMCollectionTheSender());
+        mPhoneNumber2.setText(quickDataBean.getMCollectionPhoneNumber());
+        mCompany2.setText(quickDataBean.getMCollectionCompany());
+        mAddress2.setText(quickDataBean.getMCollectionAddress());
+
+        mGoodsType.setText(quickDataBean.getMTypeOfGoods());
+        mPackingType.setText(quickDataBean.getMPackingType());
+        mQuickFour.setText(quickDataBean.getQuickNumber());
     }
 
     @Override
@@ -132,25 +200,57 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
     }
 
     private void initView() {
-        mBtnScan = findViewById(R.id.btn_scan);
-        mBtnScan.setOnClickListener(this);
-        mTvCode = findViewById(R.id.tv_code);
-        mBtnLength = findViewById(R.id.btn_length);
-        mBtnLength.setOnClickListener(this);
 
-        mTvLength = findViewById(R.id.tv_length);
-        mBtnWidth = findViewById(R.id.btn_width);
-        mBtnWidth.setOnClickListener(this);
+        /*
+         *  取自寄件人的页面初始化
+         */
+        mOddNumber = findViewById(R.id.sender_odd_number);
+        mTheSender = findViewById(R.id.sender_the_sender);
+        mPhoneNumber = findViewById(R.id.sender_phone_number);
+        mCompany = findViewById(R.id.sender_company);
+        mAddress = findViewById(R.id.sender_address);
+        mScan = findViewById(R.id.sender_scan);
+        mNext = findViewById(R.id.sender_next);
+        mScan.setOnClickListener(this);
+        mNext.setOnClickListener(this);
 
-        mTvWidth = findViewById(R.id.tv_width);
-        mBtnHeight = findViewById(R.id.btn_height);
-        mBtnHeight.setOnClickListener(this);
+        /*
+         *  取自收件人的页面初始化
+         */
+        mTheCollection = findViewById(R.id.collection_the_collection);
+        mPhoneNumber2 = findViewById(R.id.collection_phone_number);
+        mCompany2 = findViewById(R.id.collection_company);
+        mAddress2 = findViewById(R.id.collection_address);
 
-        mTvHeight = findViewById(R.id.tv_height);
-        mBtnWeight = findViewById(R.id.btn_weight);
-        mBtnWeight.setOnClickListener(this);
+        /*
+         *  取自货物信息
+         */
+        mGoodsType = findViewById(R.id.type_of_goods);
+        mPackingType = findViewById(R.id.packing_type);
+        mQuickOne = findViewById(R.id.quick_one);
+        mQuickTwo = findViewById(R.id.quick_two);
+        mQuickThree = findViewById(R.id.quick_three);
+        mQuickFour = findViewById(R.id.quick_four);
 
-        mTvWeight = findViewById(R.id.tv_weight);
+//        mBtnScan = findViewById(R.id.btn_scan);
+//        mBtnScan.setOnClickListener(this);
+//        mTvCode = findViewById(R.id.tv_code);
+//        mBtnLength = findViewById(R.id.btn_length);
+//        mBtnLength.setOnClickListener(this);
+//
+//        mTvLength = findViewById(R.id.tv_length);
+//        mBtnWidth = findViewById(R.id.btn_width);
+//        mBtnWidth.setOnClickListener(this);
+//
+//        mTvWidth = findViewById(R.id.tv_width);
+//        mBtnHeight = findViewById(R.id.btn_height);
+//        mBtnHeight.setOnClickListener(this);
+//
+//        mTvHeight = findViewById(R.id.tv_height);
+//        mBtnWeight = findViewById(R.id.btn_weight);
+//        mBtnWeight.setOnClickListener(this);
+//
+//        mTvWeight = findViewById(R.id.tv_weight);
         mBtnTest = findViewById(R.id.btn_test);
         mBtnTest.setOnClickListener(this);
 
@@ -257,27 +357,74 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
             Toast.makeText(MainActivity.this, (String) msg, Toast.LENGTH_SHORT).show();
         } else if ("L".equals(type)) {
             String string = (String) msg;
-            mTvLength.setText("L:" + string);
+            mQuickThree.setText(string);
             doLoop();
         } else if ("W".equals(type)) {
             String string = (String) msg;
-            mTvWidth.setText("W:" + string);
+            String s = mQuickThree.getText().toString();
+            mQuickThree.setText(s + "*" + string);
             doLoop();
         } else if ("H".equals(type)) {
             String string = (String) msg;
-            mTvHeight.setText("H:" + string);
+            String s = mQuickThree.getText().toString();
+            mQuickThree.setText(s + "*" + string);
+
+            String four = mQuickFour.getText().toString();
+
+            if ("".equals(four)) {
+                four = "1";
+            }
+
+            if ((Integer) SpUtils.get(MyApp.getInstance(), SettingsModel.MODEL, 0) == 1) {
+                //重量长宽高
+                String[] x = mQuickThree.getText().toString().split("\\*");
+                if (x.length == 3){
+                    double a = Double.parseDouble(x[0]);
+                    double b = Double.parseDouble(x[1]);
+                    double c = Double.parseDouble(x[2]);
+                    int d = Integer.parseInt(four);
+                    //不足1位,会以0补足.
+                    DecimalFormat format=new DecimalFormat(".00");
+                    String y = format.format((a * b * c * d) / QuickModel.XISHU_XU);
+                    mQuickTwo.setText(y);
+                }
+            }
+
             doLoop();
         } else if ("G".equals(type)) {
             String string = (String) msg;
-            mTvWeight.setText("G:" + string);
+            mQuickOne.setText(string);
+
+            String four = mQuickFour.getText().toString();
+
+            if ("".equals(four)) {
+                four = "1";
+            }
+
+            if ((Integer) SpUtils.get(MyApp.getInstance(), SettingsModel.MODEL, 0) == 0) {
+                //重量长宽高
+                String[] x = mQuickThree.getText().toString().split("\\*");
+                if (x.length == 3){
+                    double a = Double.parseDouble(x[0]);
+                    double b = Double.parseDouble(x[1]);
+                    double c = Double.parseDouble(x[2]);
+                    int d = Integer.parseInt(four);
+                    //不足1位,会以0补足.
+                    DecimalFormat format=new DecimalFormat(".00");
+                    String y = format.format((a * b * c * d) / QuickModel.XISHU_XU);
+                    mQuickTwo.setText(y);
+                }
+            }
+
             doLoop();
         } else if ("SOFT".equals(type)) {
             mTvSoftware.setText(msg + "");
         } else if ("HARD".equals(type)) {
             mTvHardware.setText(msg + "");
         } else if (type.equals("codeResult")) {
-            mTvCode.setText(msg + "");
-            doLoop();
+
+            mOddNumber.setText(msg + "");
+            //doLoop();
 
         } else if ("MODEL".equals(type)) {
             String string = (String) msg;
@@ -293,6 +440,8 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
                     break;
                 case "01":
                     string = "模式更改为重量测量";
+                    break;
+                default:
                     break;
             }
             Toast.makeText(this, string, Toast.LENGTH_SHORT).show();
@@ -361,11 +510,11 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
                 case R.id.btn_test:
                     boolean b = test();
                     if (b) {
-                        mBtnScan.setEnabled(false);
-                        mBtnLength.setEnabled(false);
-                        mBtnWeight.setEnabled(false);
-                        mBtnHeight.setEnabled(false);
-                        mBtnWidth.setEnabled(false);
+//                        mBtnScan.setEnabled(false);
+//                        mBtnLength.setEnabled(false);
+//                        mBtnWeight.setEnabled(false);
+//                        mBtnHeight.setEnabled(false);
+//                        mBtnWidth.setEnabled(false);
                         mBtnSoftware.setEnabled(false);
                         mBtnHardware.setEnabled(false);
                         mBtnFengming.setEnabled(false);
@@ -388,6 +537,78 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
                     int time = Integer.parseInt(mTvSeekbarValue.getText().toString());
                     PK30DataUtils.fengMing(time);
                     break;
+                case R.id.sender_scan:
+                    startScanAct();
+                    break;
+                case R.id.sender_next:
+                    //下一步,先检测填写的信息
+                    String one = mOddNumber.getText().toString();
+                    String two = mTheSender.getText().toString();
+                    String three = mPhoneNumber.getText().toString();
+                    String four = mCompany.getText().toString();
+                    String five = mAddress.getText().toString();
+
+                    if ("".equals(one) || "".equals(two) || "".equals(three) || "".equals(four) || "".equals(five)) {
+                        ToastUtils.showShortToastSafe("存在空白项，请补全信息");
+                        return;
+                    }
+
+                    //下一步,先检测填写的信息
+                    String two2 = mTheCollection.getText().toString();
+                    String three2 = mPhoneNumber2.getText().toString();
+                    String four2 = mCompany2.getText().toString();
+                    String five2 = mAddress2.getText().toString();
+
+                    if ("".equals(two2) || "".equals(three2) || "".equals(four2) || "".equals(five2)) {
+                        ToastUtils.showShortToastSafe("存在空白项，请补全信息");
+                        return;
+                    }
+
+                    //检测上面的输入内容
+                    String goodType = mGoodsType.getText().toString();
+                    String packingType = mPackingType.getText().toString();
+
+                    if ("".equals(goodType) || "".equals(packingType)) {
+                        ToastUtils.showShortToastSafe("存在空白项，请补全信息");
+                        return;
+                    }
+
+                    String qone = mQuickOne.getText().toString();
+                    String qtwo = mQuickTwo.getText().toString();
+                    String qthree = mQuickThree.getText().toString();
+                    String qfour = mQuickFour.getText().toString();
+
+                    if ("".equals(qone) || "".equals(qtwo) || "".equals(qthree) || "".equals(qfour)) {
+                        ToastUtils.showShortToastSafe("存在空白项，请补全信息");
+                        return;
+                    }
+
+                    //检测完毕
+                    quickDataBean.setMTypeOfGoods(goodType);
+                    quickDataBean.setMPackingType(packingType);
+
+                    quickDataBean.setMSenderOddNumber(one);
+                    quickDataBean.setMSenderTheSender(two);
+                    quickDataBean.setMSenderPhoneNumber(three);
+                    quickDataBean.setMSenderCompany(four);
+                    quickDataBean.setMSenderAddress(five);
+
+                    quickDataBean.setMCollectionTheSender(two2);
+                    quickDataBean.setMCollectionPhoneNumber(three2);
+                    quickDataBean.setMCollectionCompany(four2);
+                    quickDataBean.setMCollectionAddress(five2);
+
+                    quickDataBean.setActualWeight(qone);
+                    quickDataBean.setBubbleWeight(qtwo);
+                    quickDataBean.setCargoSize(qthree);
+                    quickDataBean.setQuickNumber(qfour);
+
+                    DaoOptions.saveOldBean(quickDataBean);
+                    SpUtils.put(MyApp.getInstance(), MAIN_NUMBER, "8888888888");
+                    break;
+
+                default:
+                    break;
             }
         } else {
             Toast.makeText(this, "请先连接PK30设备", Toast.LENGTH_SHORT).show();
@@ -397,11 +618,11 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
 
     private void testClose() {
         isTest = false;
-        mBtnScan.setEnabled(true);
-        mBtnLength.setEnabled(true);
-        mBtnWeight.setEnabled(true);
-        mBtnHeight.setEnabled(true);
-        mBtnWidth.setEnabled(true);
+//        mBtnScan.setEnabled(true);
+//        mBtnLength.setEnabled(true);
+//        mBtnWeight.setEnabled(true);
+//        mBtnHeight.setEnabled(true);
+//        mBtnWidth.setEnabled(true);
         mBtnSoftware.setEnabled(true);
         mBtnHardware.setEnabled(true);
         mBtnFengming.setEnabled(true);
@@ -473,14 +694,14 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
 //        if (checked) {
 //            startScanAct();
 //        } else {
-            if (queue.size() != 0) {
-                doLoop();
-            } else {
-                Toast.makeText(this, "请先勾选需要启动的测量模式", Toast.LENGTH_SHORT).show();
-                return false;
-            }
+        if (queue.size() != 0) {
+            doLoop();
+        } else {
+            Toast.makeText(this, "请先勾选需要启动的测量模式", Toast.LENGTH_SHORT).show();
+            return false;
+        }
 
-  //      }
+        //      }
         return true;
     }
 
