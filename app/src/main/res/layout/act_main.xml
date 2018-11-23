@@ -352,7 +352,7 @@
             <EditText
                 android:background="@drawable/bg_input_work"
                 android:text="纸箱"
-                android:id="@+id/quick_five"
+                android:id="@+id/packing_type"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.2"
@@ -373,7 +373,7 @@
             <EditText
                 android:background="@drawable/bg_input_work"
                 android:text="服装"
-                android:id="@+id/quick_six"
+                android:id="@+id/type_of_goods"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -552,7 +552,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="start"
-                android:text="羊村你喜哥"
+                android:text="羊村你懒哥"
                 android:textColor="@color/text_color"
                 android:textSize="15sp" />
 

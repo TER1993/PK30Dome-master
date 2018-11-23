@@ -62,30 +62,12 @@ import static com.spd.pk30dome.settings.model.SettingsModel.MODEL;
 /**
  * MVPPlugin
  * 邮箱 784787081@qq.com
+ * @author xuyan
  */
 @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
 public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresenter> implements MainContract.View, View.OnClickListener, RadioGroup.OnCheckedChangeListener {
 
-    //    private Button mBtnScan;
-//    private TextView mTvCode;
-//    private Button mBtnLength;
-//    private TextView mTvLength;
-//    private Button mBtnWidth;
-//    private TextView mTvWidth;
-//    private Button mBtnHeight;
-//    private TextView mTvHeight;
-//    private Button mBtnWeight;
-//    private TextView mTvWeight;
     private Button mBtnTest;
-
-    /**
-     * 几个选项。把条码扫描放到外面，其他的先放到这里面。
-     */
-//    private CheckBox mCbScan;
-//    private CheckBox mCbLength;
-//    private CheckBox mCbWidth;
-//    private CheckBox mCbHeight;
-//    private CheckBox mCbWeight;
 
     private RadioGroup radioGroup;
     private RadioButton radioButton1;
@@ -232,36 +214,11 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
         mQuickThree = findViewById(R.id.quick_three);
         mQuickFour = findViewById(R.id.quick_four);
 
-//        mBtnScan = findViewById(R.id.btn_scan);
-//        mBtnScan.setOnClickListener(this);
-//        mTvCode = findViewById(R.id.tv_code);
-//        mBtnLength = findViewById(R.id.btn_length);
-//        mBtnLength.setOnClickListener(this);
-//
-//        mTvLength = findViewById(R.id.tv_length);
-//        mBtnWidth = findViewById(R.id.btn_width);
-//        mBtnWidth.setOnClickListener(this);
-//
-//        mTvWidth = findViewById(R.id.tv_width);
-//        mBtnHeight = findViewById(R.id.btn_height);
-//        mBtnHeight.setOnClickListener(this);
-//
-//        mTvHeight = findViewById(R.id.tv_height);
-//        mBtnWeight = findViewById(R.id.btn_weight);
-//        mBtnWeight.setOnClickListener(this);
-//
-//        mTvWeight = findViewById(R.id.tv_weight);
+
         mBtnTest = findViewById(R.id.btn_test);
         mBtnTest.setOnClickListener(this);
 
-        /*
-         *  注意这几个checkbox
-         */
-//        mCbScan = findViewById(R.id.cb_scan);
-//        mCbLength = findViewById(R.id.cb_length);
-//        mCbWidth = findViewById(R.id.cb_width);
-//        mCbHeight = findViewById(R.id.cb_height);
-//        mCbWeight = findViewById(R.id.cb_weight);
+
 
         //radio部分
         radioGroup = findViewById(R.id.radioGroup);
@@ -271,7 +228,8 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
         radioButton4 = findViewById(R.id.radioButton4);
 
         radioGroup.setOnCheckedChangeListener(this);
-
+        //sp保存状态
+        seButtonChecked();
 
         mTvSoftware = findViewById(R.id.tv_software);
         mTvHardware = findViewById(R.id.tv_hardware);
@@ -331,6 +289,29 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
         mTvVersion.setText("V" + getVerName(getApplicationContext()));
     }
 
+
+    private void seButtonChecked() {
+
+        switch ((Integer) SpUtils.get(MyApp.getInstance(), MODEL, 0)) {
+            case 0:
+                radioButton1.setChecked(true);
+                break;
+            case 1:
+                radioButton2.setChecked(true);
+                break;
+            case 2:
+                radioButton3.setChecked(true);
+                break;
+            case 3:
+                radioButton4.setChecked(true);
+                break;
+            default:
+                break;
+
+        }
+    }
+
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(MsgEvent mEvent) {
         String type = mEvent.getType();
@@ -378,13 +359,13 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
             if ((Integer) SpUtils.get(MyApp.getInstance(), SettingsModel.MODEL, 0) == 1) {
                 //重量长宽高
                 String[] x = mQuickThree.getText().toString().split("\\*");
-                if (x.length == 3){
+                if (x.length == 3) {
                     double a = Double.parseDouble(x[0]);
                     double b = Double.parseDouble(x[1]);
                     double c = Double.parseDouble(x[2]);
                     int d = Integer.parseInt(four);
                     //不足1位,会以0补足.
-                    DecimalFormat format=new DecimalFormat(".00");
+                    DecimalFormat format = new DecimalFormat(".00");
                     String y = format.format((a * b * c * d) / QuickModel.XISHU_XU);
                     mQuickTwo.setText(y);
                 }
@@ -404,13 +385,13 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
             if ((Integer) SpUtils.get(MyApp.getInstance(), SettingsModel.MODEL, 0) == 0) {
                 //重量长宽高
                 String[] x = mQuickThree.getText().toString().split("\\*");
-                if (x.length == 3){
+                if (x.length == 3) {
                     double a = Double.parseDouble(x[0]);
                     double b = Double.parseDouble(x[1]);
                     double c = Double.parseDouble(x[2]);
                     int d = Integer.parseInt(four);
                     //不足1位,会以0补足.
-                    DecimalFormat format=new DecimalFormat(".00");
+                    DecimalFormat format = new DecimalFormat(".00");
                     String y = format.format((a * b * c * d) / QuickModel.XISHU_XU);
                     mQuickTwo.setText(y);
                 }
@@ -510,11 +491,10 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
                 case R.id.btn_test:
                     boolean b = test();
                     if (b) {
-//                        mBtnScan.setEnabled(false);
-//                        mBtnLength.setEnabled(false);
-//                        mBtnWeight.setEnabled(false);
-//                        mBtnHeight.setEnabled(false);
-//                        mBtnWidth.setEnabled(false);
+                        radioButton1.setEnabled(false);
+                        radioButton2.setEnabled(false);
+                        radioButton3.setEnabled(false);
+                        radioButton4.setEnabled(false);
                         mBtnSoftware.setEnabled(false);
                         mBtnHardware.setEnabled(false);
                         mBtnFengming.setEnabled(false);
@@ -584,6 +564,7 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
                     }
 
                     //检测完毕
+                    quickDataBean = new OldBean();
                     quickDataBean.setMTypeOfGoods(goodType);
                     quickDataBean.setMPackingType(packingType);
 
@@ -605,6 +586,8 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
 
                     DaoOptions.saveOldBean(quickDataBean);
                     SpUtils.put(MyApp.getInstance(), MAIN_NUMBER, "8888888888");
+                    Toast.makeText(this, "保存成功", Toast.LENGTH_SHORT).show();
+                    chushihua();
                     break;
 
                 default:
@@ -616,13 +599,32 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
 
     }
 
+    private void chushihua() {
+        mOddNumber.setText("8888888888");
+        mQuickOne.setText("");
+        mQuickTwo.setText("");
+        mQuickThree.setText("");
+        mQuickFour.setText("1");
+        mPackingType.setText("纸箱");
+        mGoodsType.setText("服装");
+        mTheSender.setText("羊村你喜哥");
+        mPhoneNumber.setText("15148489963");
+        mCompany.setText("北京无脑科技有限公司");
+        mAddress.setText("北京市朝阳区新开路26-1-03");
+
+        mTheCollection.setText("羊村你懒哥");
+        mPhoneNumber2.setText("15148489963");
+        mCompany2.setText("北京有仁科技有限公司");
+        mAddress2.setText("北京市朝阳区新开路26-1-04");
+
+    }
+
     private void testClose() {
         isTest = false;
-//        mBtnScan.setEnabled(true);
-//        mBtnLength.setEnabled(true);
-//        mBtnWeight.setEnabled(true);
-//        mBtnHeight.setEnabled(true);
-//        mBtnWidth.setEnabled(true);
+        radioButton1.setEnabled(true);
+        radioButton2.setEnabled(true);
+        radioButton3.setEnabled(true);
+        radioButton4.setEnabled(true);
         mBtnSoftware.setEnabled(true);
         mBtnHardware.setEnabled(true);
         mBtnFengming.setEnabled(true);
@@ -637,22 +639,18 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
             case R.id.radioButton1:
                 //sp保存结果
                 SpUtils.put(MyApp.getInstance(), MODEL, 0);
-                //PK30DataUtils.setModel(0);
                 break;
             case R.id.radioButton2:
                 //sp保存结果
                 SpUtils.put(MyApp.getInstance(), MODEL, 1);
-                //PK30DataUtils.setModel(3);
                 break;
             case R.id.radioButton3:
                 //sp保存结果
                 SpUtils.put(MyApp.getInstance(), MODEL, 2);
-                //PK30DataUtils.setModel(0);
                 break;
             case R.id.radioButton4:
                 //sp保存结果
                 SpUtils.put(MyApp.getInstance(), MODEL, 3);
-                //PK30DataUtils.setModel(3);
                 break;
             default:
                 break;
