@@ -12,11 +12,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * @author :Reginer in  2017/11/20 17:13.
  *         联系方式:QQ:282921012
  *         功能描述:AlertDialog工具类
  */
+@SuppressWarnings("AlibabaAvoidPatternCompileInMethod")
 public class AlertUtils {
 
 
@@ -189,5 +193,15 @@ public class AlertUtils {
         return dialogBuilder.show();
     }
 
+
+    public static boolean isNumeric(String str) {
+        //这个是对的
+        Pattern pattern= Pattern.compile("^(\\-|\\+)?\\d+(\\.\\d+)?$");
+        Matcher isNum = pattern.matcher(str);
+        if (!isNum.matches()) {
+            return false;
+        }
+        return true;
+    }
 
 }

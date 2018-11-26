@@ -36,6 +36,7 @@ import com.spd.pk30dome.database.OldBean;
 import com.spd.pk30dome.mvp.MVPBaseActivity;
 import com.spd.pk30dome.quick.model.QuickModel;
 import com.spd.pk30dome.settings.model.SettingsModel;
+import com.spd.pk30dome.utils.AlertUtils;
 import com.spd.pk30dome.utils.SpUtils;
 import com.spd.pk30dome.utils.ToastUtils;
 import com.yanzhenjie.permission.AndPermission;
@@ -63,6 +64,7 @@ import static com.spd.pk30dome.settings.model.SettingsModel.MODEL;
 /**
  * MVPPlugin
  * 邮箱 784787081@qq.com
+ *
  * @author xuyan
  */
 @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
@@ -358,6 +360,10 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
             if ((Integer) SpUtils.get(MyApp.getInstance(), SettingsModel.MODEL, 0) == 1) {
                 //重量长宽高
                 String[] x = mQuickThree.getText().toString().split("\\*");
+                if (!(AlertUtils.isNumeric(x[0]) && AlertUtils.isNumeric(x[1]) && AlertUtils.isNumeric(x[2]))) {
+                    ToastUtils.showShortToastSafe("请注意货物尺寸数据是否正确");
+                    return;
+                }
                 if (x.length == 3) {
                     double a = Double.parseDouble(x[0]);
                     double b = Double.parseDouble(x[1]);
@@ -371,6 +377,10 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
             } else if ((Integer) SpUtils.get(MyApp.getInstance(), SettingsModel.MODEL, 0) == 0) {
                 //重量长宽高
                 String[] x = mQuickThree.getText().toString().split("\\*");
+                if (!(AlertUtils.isNumeric(x[0]) && AlertUtils.isNumeric(x[1]) && AlertUtils.isNumeric(x[2]))) {
+                    ToastUtils.showShortToastSafe("请注意货物尺寸数据是否正确");
+                    return;
+                }
                 if (x.length == 3) {
                     double a = Double.parseDouble(x[0]);
                     double b = Double.parseDouble(x[1]);
@@ -762,6 +772,8 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
         }
         return verName;
     }
+
+
 
     //返回键监听
     private long mkeyTime = 0;
