@@ -214,10 +214,8 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
         mQuickThree = findViewById(R.id.quick_three);
         mQuickFour = findViewById(R.id.quick_four);
 
-
         mBtnTest = findViewById(R.id.btn_test);
         mBtnTest.setOnClickListener(this);
-
 
 
         //radio部分
@@ -365,7 +363,20 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
                     double c = Double.parseDouble(x[2]);
                     int d = Integer.parseInt(four);
                     //不足1位,会以0补足.
-                    DecimalFormat format = new DecimalFormat(".00");
+                    DecimalFormat format = new DecimalFormat("0.00");
+                    String y = format.format((a * b * c * d) / QuickModel.XISHU_XU);
+                    mQuickTwo.setText(y);
+                }
+            } else if ((Integer) SpUtils.get(MyApp.getInstance(), SettingsModel.MODEL, 0) == 0) {
+                //重量长宽高
+                String[] x = mQuickThree.getText().toString().split("\\*");
+                if (x.length == 3) {
+                    double a = Double.parseDouble(x[0]);
+                    double b = Double.parseDouble(x[1]);
+                    double c = Double.parseDouble(x[2]);
+                    int d = Integer.parseInt(four);
+                    //不足1位,会以0补足.
+                    DecimalFormat format = new DecimalFormat("0.00");
                     String y = format.format((a * b * c * d) / QuickModel.XISHU_XU);
                     mQuickTwo.setText(y);
                 }
@@ -375,27 +386,6 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
         } else if ("G".equals(type)) {
             String string = (String) msg;
             mQuickOne.setText(string);
-
-            String four = mQuickFour.getText().toString();
-
-            if ("".equals(four)) {
-                four = "1";
-            }
-
-            if ((Integer) SpUtils.get(MyApp.getInstance(), SettingsModel.MODEL, 0) == 0) {
-                //重量长宽高
-                String[] x = mQuickThree.getText().toString().split("\\*");
-                if (x.length == 3) {
-                    double a = Double.parseDouble(x[0]);
-                    double b = Double.parseDouble(x[1]);
-                    double c = Double.parseDouble(x[2]);
-                    int d = Integer.parseInt(four);
-                    //不足1位,会以0补足.
-                    DecimalFormat format = new DecimalFormat(".00");
-                    String y = format.format((a * b * c * d) / QuickModel.XISHU_XU);
-                    mQuickTwo.setText(y);
-                }
-            }
 
             doLoop();
         } else if ("SOFT".equals(type)) {

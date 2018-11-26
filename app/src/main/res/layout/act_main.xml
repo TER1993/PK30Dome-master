@@ -245,6 +245,7 @@
                 android:textSize="15sp" />
 
             <EditText
+                android:inputType="number|numberDecimal"
                 android:background="@drawable/bg_input_work"
                 android:id="@+id/quick_one"
                 android:layout_width="0dp"
@@ -265,6 +266,7 @@
                 android:textSize="15sp" />
 
             <EditText
+                android:enabled="false"
                 android:background="@drawable/bg_input_work"
                 android:id="@+id/quick_two"
                 android:layout_width="0dp"
@@ -650,7 +652,7 @@
         <Button
             android:id="@+id/sender_next"
             android:layout_width="wrap_content"
-            android:layout_height="38dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/dp10"
             android:layout_marginBottom="@dimen/dp10"
