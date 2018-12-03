@@ -244,16 +244,16 @@ public class DeviceScanActivity extends ListActivity {
             } else {
                 viewHolder = (ViewHolder) view.getTag();
             }
-
-            BluetoothDevice device = mLeDevices.get(i);
-            final String deviceName = device.getName();
-            if (deviceName != null && deviceName.length() > 0) {
-                viewHolder.deviceName.setText(deviceName);
-            } else {
-                viewHolder.deviceName.setText(R.string.unknown_device);
+            if (mLeDevices.size() > i) {
+                BluetoothDevice device = mLeDevices.get(i);
+                final String deviceName = device.getName();
+                if (deviceName != null && deviceName.length() > 0) {
+                    viewHolder.deviceName.setText(deviceName);
+                } else {
+                    viewHolder.deviceName.setText(R.string.unknown_device);
+                }
+                viewHolder.deviceAddress.setText(device.getAddress());
             }
-            viewHolder.deviceAddress.setText(device.getAddress());
-
             return view;
         }
     }
