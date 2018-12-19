@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -456,6 +457,19 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
         }
     }
 
+    private void initBluetooth() {
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                /**
+                 *要执行的操作
+                 */
+                closeBle();
+            }
+            //1秒后执行Runnable中的run方法,否则初始化失败
+        }, 1000);
+    }
 
     @Override
     public void onClick(View v) {
@@ -512,6 +526,7 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
 
                 case R.id.btn_close:
                     PK30DataUtils.shutdown();
+                    initBluetooth();
                     break;
 
                 case R.id.btn_fengming:
