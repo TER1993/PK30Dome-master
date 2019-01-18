@@ -65,7 +65,7 @@
                 android:id="@+id/btn_scan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="扫描条码" />
+                android:text="@string/Scanning_barcode" />
 
             <TextView
                 android:id="@+id/tv_code"
@@ -87,7 +87,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="运单编号："
+                android:text="@string/waybill_number"
                 android:textColor="@color/text_color"
                 android:textSize="15sp" />
 
@@ -131,7 +131,7 @@
                 android:id="@+id/btn_length"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="长度" />
+                android:text="@string/length" />
 
             <TextView
                 android:id="@+id/tv_length"
@@ -151,7 +151,7 @@
                 android:id="@+id/btn_width"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="宽度" />
+                android:text="@string/width" />
 
             <TextView
                 android:id="@+id/tv_width"
@@ -180,7 +180,7 @@
                 android:id="@+id/btn_height"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="高度" />
+                android:text="@string/height" />
 
             <TextView
                 android:id="@+id/tv_height"
@@ -200,7 +200,7 @@
                 android:id="@+id/btn_weight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="重量" />
+                android:text="@string/weight" />
 
             <TextView
                 android:id="@+id/tv_weight"
@@ -220,7 +220,7 @@
 
         <TextView
             android:textSize="@dimen/sp10"
-            android:text="货物信息"
+            android:text="@string/cargo_information"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             />
@@ -240,7 +240,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="实际重量："
+                android:text="@string/actual_weight"
                 android:textColor="@color/text_color"
                 android:textSize="15sp" />
 
@@ -252,7 +252,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1.2"
                 android:gravity="center"
-                android:hint="实际重量"
+                android:hint="@string/actual_weight_"
                 android:textColor="@color/text_color"
                 android:textSize="15sp" />
 
@@ -261,7 +261,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="体积重量："
+                android:text="@string/volume_weight"
                 android:textColor="@color/text_color"
                 android:textSize="15sp" />
 
@@ -273,7 +273,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:hint="体积重量"
+                android:hint="@string/volume_weight_"
                 android:textColor="@color/text_color"
                 android:textSize="15sp" />
 
@@ -288,12 +288,13 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
+
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="货物尺寸："
+                android:text="@string/cargo_dimensions"
                 android:textColor="@color/text_color"
                 android:textSize="15sp" />
 
@@ -304,7 +305,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1.2"
                 android:gravity="center"
-                android:hint="货物尺寸"
+                android:hint="@string/cargo_dimensions_"
                 android:textColor="@color/text_color"
                 android:textSize="15sp" />
 
@@ -313,7 +314,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="件        数："
+                android:text="@string/Number"
                 android:textColor="@color/text_color"
                 android:textSize="15sp" />
 
@@ -326,7 +327,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:hint="件数"
+                android:hint="@string/Number"
                 android:textColor="@color/text_color"
                 android:textSize="15sp" />
 
@@ -347,19 +348,19 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="包装类型："
+                android:text="@string/packaging_type"
                 android:textColor="@color/text_color"
                 android:textSize="15sp" />
 
             <EditText
                 android:background="@drawable/bg_input_work"
-                android:text="纸箱"
+                android:text="@string/carton"
                 android:id="@+id/packing_type"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.2"
                 android:gravity="center"
-                android:hint="包装类型"
+                android:hint="@string/packaging_type_"
                 android:textColor="@color/text_color"
                 android:textSize="15sp" />
 
@@ -368,19 +369,19 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="货物类型："
+                android:text="@string/cargo_type"
                 android:textColor="@color/text_color"
                 android:textSize="15sp" />
 
             <EditText
                 android:background="@drawable/bg_input_work"
-                android:text="服装"
+                android:text="@string/clothing"
                 android:id="@+id/type_of_goods"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:hint="货物类型"
+                android:hint="@string/cargo_type"
                 android:textColor="@color/text_color"
                 android:textSize="15sp" />
 
@@ -394,7 +395,7 @@
 
         <TextView
             android:textSize="@dimen/sp10"
-            android:text="寄件人信息"
+            android:text="@string/consignor_information"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
              />
@@ -411,7 +412,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="寄  件  人："
+                android:text="@string/consignor"
                 android:textColor="@color/text_color"
                 android:textSize="15sp" />
 
@@ -422,7 +423,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="start"
-                android:text="羊村你喜哥"
+                android:text="@string/Aaron"
                 android:textColor="@color/text_color"
                 android:textSize="15sp" />
 
@@ -440,19 +441,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="手机号码："
+                android:text="@string/phone_number"
                 android:textColor="@color/text_color"
                 android:textSize="15sp" />
 
             <EditText
-                android:inputType="number"
+                android:inputType = "phone"
                 android:background="@drawable/bg_input_work"
                 android:id="@+id/sender_phone_number"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="start"
-                android:text="15148489963"
+                android:text="400-040-5565"
                 android:textColor="@color/text_color"
                 android:textSize="15sp" />
 
@@ -470,7 +471,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="寄件公司："
+                android:text="@string/courier"
                 android:textColor="@color/text_color"
                 android:textSize="15sp" />
 
@@ -481,7 +482,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="start"
-                android:text="北京无脑科技有限公司"
+                android:text="@string/Beijing_Speedata"
                 android:textColor="@color/text_color"
                 android:textSize="15sp" />
 
@@ -499,7 +500,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="寄件地址："
+                android:text="@string/cAddress"
                 android:textColor="@color/text_color"
                 android:textSize="15sp" />
 
@@ -510,7 +511,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="start"
-                android:text="北京市朝阳区新开路26-1-03"
+                android:text="@string/_26_1_03"
                 android:textColor="@color/text_color"
                 android:textSize="15sp" />
 
@@ -525,7 +526,7 @@
 
         <TextView
             android:textSize="@dimen/sp10"
-            android:text="收件人信息"
+            android:text="@string/Addressee_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             />
@@ -543,7 +544,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="收  件  人："
+                android:text="@string/Addressee"
                 android:textColor="@color/text_color"
                 android:textSize="15sp" />
 
@@ -554,7 +555,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="start"
-                android:text="羊村你懒哥"
+                android:text="@string/Speedatagroup"
                 android:textColor="@color/text_color"
                 android:textSize="15sp" />
 
@@ -572,19 +573,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="手机号码："
+                android:text="@string/phone_number"
                 android:textColor="@color/text_color"
                 android:textSize="15sp" />
 
             <EditText
-                android:inputType="number"
-                android:background="@drawable/bg_input_work"
                 android:id="@+id/collection_phone_number"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@drawable/bg_input_work"
                 android:gravity="start"
-                android:text="15148489963"
+                android:inputType="phone"
+                android:text="86-0755-82797385"
                 android:textColor="@color/text_color"
                 android:textSize="15sp" />
 
@@ -602,7 +603,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="收件公司："
+                android:text="@string/Receiving_company"
                 android:textColor="@color/text_color"
                 android:textSize="15sp" />
 
@@ -613,7 +614,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="start"
-                android:text="北京有仁科技有限公司"
+                android:text="@string/Beijing_Speedatagroup"
                 android:textColor="@color/text_color"
                 android:textSize="15sp" />
 
@@ -631,7 +632,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="收件地址："
+                android:text="@string/cAddress"
                 android:textColor="@color/text_color"
                 android:textSize="15sp" />
 
@@ -642,7 +643,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="start"
-                android:text="北京市朝阳区新开路26-1-04"
+                android:text="@string/_26_1_04"
                 android:textColor="@color/text_color"
                 android:textSize="15sp" />
 
@@ -656,7 +657,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/dp10"
             android:layout_marginBottom="@dimen/dp10"
-            android:text="保存上传" />
+            android:text="@string/Save" />
 
 
 

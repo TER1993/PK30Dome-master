@@ -362,7 +362,7 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
                 //重量长宽高
                 String[] x = mQuickThree.getText().toString().split("\\*");
                 if (!(AlertUtils.isNumeric(x[0]) && AlertUtils.isNumeric(x[1]) && AlertUtils.isNumeric(x[2]))) {
-                    ToastUtils.showShortToastSafe("请注意货物尺寸数据是否正确");
+                    ToastUtils.showShortToastSafe(R.string.Please_note);
                     return;
                 }
                 if (x.length == 3) {
@@ -379,7 +379,7 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
                 //重量长宽高
                 String[] x = mQuickThree.getText().toString().split("\\*");
                 if (!(AlertUtils.isNumeric(x[0]) && AlertUtils.isNumeric(x[1]) && AlertUtils.isNumeric(x[2]))) {
-                    ToastUtils.showShortToastSafe("请注意货物尺寸数据是否正确");
+                    ToastUtils.showShortToastSafe(R.string.Please_note);
                     return;
                 }
                 if (x.length == 3) {
@@ -413,16 +413,16 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
             String string = (String) msg;
             switch (string) {
                 case "00":
-                    string = "模式更改为长度测量";
+                    string = getString(R.string.Mode_change);
                     break;
                 case "02":
-                    string = "模式更改为宽度测量";
+                    string = getString(R.string.Mode_change_to_w);
                     break;
                 case "03":
-                    string = "模式更改为高度测量";
+                    string = getString(R.string.Mode_change_to_h);
                     break;
                 case "01":
-                    string = "模式更改为重量测量";
+                    string = getString(R.string.Change_mode_to_wei);
                     break;
                 default:
                     break;
@@ -431,14 +431,14 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
         } else if ("SHUTDOWN".equals(type)) {
             String string = (String) msg;
             if ("01".equals(string)) {
-                Toast.makeText(MainActivity.this, "关机成功", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, getString(R.string.Shut_down_successfully), Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(MainActivity.this, "关机失败", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, getString(R.string.Shutdown_failed), Toast.LENGTH_SHORT).show();
             }
         } else if ("FENGMING".equals(type)) {
             String string = (String) msg;
             int toInt = DataManageUtils.HexToInt(string);
-            Toast.makeText(MainActivity.this, "蜂鸣器时长设置为" + toInt, Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, getString(R.string.The_buzzer) + toInt, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -545,7 +545,7 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
                     String five = mAddress.getText().toString();
 
                     if ("".equals(one) || "".equals(two) || "".equals(three) || "".equals(four) || "".equals(five)) {
-                        ToastUtils.showShortToastSafe("存在空白项，请补全信息");
+                        ToastUtils.showShortToastSafe(R.string.There_is_a_blank);
                         return;
                     }
 
@@ -556,7 +556,7 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
                     String five2 = mAddress2.getText().toString();
 
                     if ("".equals(two2) || "".equals(three2) || "".equals(four2) || "".equals(five2)) {
-                        ToastUtils.showShortToastSafe("存在空白项，请补全信息");
+                        ToastUtils.showShortToastSafe(R.string.There_is_a_blank);
                         return;
                     }
 
@@ -565,7 +565,7 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
                     String packingType = mPackingType.getText().toString();
 
                     if ("".equals(goodType) || "".equals(packingType)) {
-                        ToastUtils.showShortToastSafe("存在空白项，请补全信息");
+                        ToastUtils.showShortToastSafe(R.string.There_is_a_blank);
                         return;
                     }
 
@@ -575,7 +575,7 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
                     String qfour = mQuickFour.getText().toString();
 
                     if ("".equals(qone) || "".equals(qtwo) || "".equals(qthree) || "".equals(qfour)) {
-                        ToastUtils.showShortToastSafe("存在空白项，请补全信息");
+                        ToastUtils.showShortToastSafe(R.string.There_is_a_blank);
                         return;
                     }
 
@@ -602,7 +602,7 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
 
                     DaoOptions.saveOldBean(quickDataBean);
                     SpUtils.put(MyApp.getInstance(), MAIN_NUMBER, "8888888888");
-                    Toast.makeText(this, "保存成功", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.Successfully_saved), Toast.LENGTH_SHORT).show();
                     chushihua();
                     break;
 
@@ -610,7 +610,7 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
                     break;
             }
         } else {
-            Toast.makeText(this, "请先连接PK30设备", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.Please_connect_the_PK), Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -621,17 +621,17 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
         mQuickTwo.setText("");
         mQuickThree.setText("");
         mQuickFour.setText("1");
-        mPackingType.setText("纸箱");
-        mGoodsType.setText("服装");
-        mTheSender.setText("羊村你喜哥");
-        mPhoneNumber.setText("15148489963");
-        mCompany.setText("北京无脑科技有限公司");
-        mAddress.setText("北京市朝阳区新开路26-1-03");
+        mPackingType.setText(R.string.carton);
+        mGoodsType.setText(R.string.clothing);
+        mTheSender.setText(R.string.Aaron);
+        mPhoneNumber.setText("400-040-5565");
+        mCompany.setText(R.string.Beijing_Speedata);
+        mAddress.setText(R.string._26_1_03);
 
-        mTheCollection.setText("羊村你懒哥");
-        mPhoneNumber2.setText("15148489963");
-        mCompany2.setText("北京有仁科技有限公司");
-        mAddress2.setText("北京市朝阳区新开路26-1-04");
+        mTheCollection.setText(R.string.Speedatagroup);
+        mPhoneNumber2.setText("86-0755-82797385");
+        mCompany2.setText(R.string.Beijing_Speedatagroup);
+        mAddress2.setText(R.string._26_1_04);
 
     }
 
@@ -711,7 +711,7 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
         if (queue.size() != 0) {
             doLoop();
         } else {
-            Toast.makeText(this, "请先勾选需要启动的测量模式", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.Please_first_check), Toast.LENGTH_SHORT).show();
             return false;
         }
 

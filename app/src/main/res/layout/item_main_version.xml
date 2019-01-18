@@ -14,7 +14,7 @@
             android:id="@+id/btn_software"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="软件版本" />
+            android:text="@string/software_version" />
 
         <TextView
             android:id="@+id/tv_software"
@@ -33,7 +33,7 @@
             android:id="@+id/btn_hardware"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="硬件版本" />
+            android:text="@string/hardware_version" />
 
         <TextView
             android:id="@+id/tv_hardware"
@@ -53,7 +53,7 @@
             android:id="@+id/btn_fengming"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:text="蜂鸣器" />
+            android:text="@string/buzzer" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -88,7 +88,7 @@
     <Button
         android:layout_marginTop="10dp"
         android:id="@+id/btn_close"
-        android:layout_width="100dp"
+        android:layout_width="105dp"
         android:layout_height="wrap_content"
-        android:text="关机" />
+        android:text="@string/Shutdown" />
 </LinearLayout>
