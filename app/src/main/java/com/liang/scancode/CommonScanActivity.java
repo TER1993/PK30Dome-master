@@ -189,7 +189,13 @@ public final class CommonScanActivity extends Activity implements ScanListener, 
         service_register_rescan.setVisibility(View.VISIBLE);
         scan_image.setVisibility(View.VISIBLE);
         tv_scan_result.setVisibility(View.VISIBLE);
-        tv_scan_result.setText("结果：" + rawResult.getText());
+        boolean cn = getApplicationContext().getResources().getConfiguration().locale.getCountry().equals("CN");
+        if (cn) {
+            tv_scan_result.setText("结果：" + rawResult.getText());
+        } else {
+            tv_scan_result.setText("Result：" + rawResult.getText());
+        }
+
         codeResult = rawResult.getText();
     }
 
