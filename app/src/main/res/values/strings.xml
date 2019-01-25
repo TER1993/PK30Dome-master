@@ -89,5 +89,8 @@
     <string name="Please_connect_the_PK">Please connect the PK30 device first.</string>
     <string name="Please_first_check">Please first check the measurement mode you want to start.</string>
     <string name="Scanning_barcode">Scanning barcode</string>
+    <string name="QR_code">QR code scanning</string>
+    <string name="haha">haha</string>
+    <string name="Scan_again">Scan again</string>
 
 </resources>

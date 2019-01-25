@@ -169,6 +169,7 @@ public final class CommonScanActivity extends Activity implements ScanListener, 
     /**
      *
      */
+    @Override
     public void scanResult(Result rawResult, Bundle bundle) {
         //扫描成功后，扫描器不会再连续扫描，如需连续扫描，调用reScan()方法。
         //scanManager.reScan();
@@ -210,9 +211,24 @@ public final class CommonScanActivity extends Activity implements ScanListener, 
     @Override
     public void scanError(Exception e) {
         Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+        // TODO: 2019/1/21 修改提示信息
+        boolean cn = getApplicationContext().getResources().getConfiguration().locale.getCountry().equals("CN");
         //相机扫描出错时
         if (e.getMessage() != null && e.getMessage().startsWith("相机")) {
+            if (cn) {
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this,"Camera open error, please check if this permission is disabled!", Toast.LENGTH_LONG).show();
+            }
             scanPreview.setVisibility(View.INVISIBLE);
+        } else if (e.getMessage() != null && e.getMessage().startsWith("图片")) {
+            if (cn) {
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this,"The picture is incorrect, or the picture is blurred!", Toast.LENGTH_LONG).show();
+            }
+        } else {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 

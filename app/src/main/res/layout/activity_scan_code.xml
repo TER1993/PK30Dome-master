@@ -13,7 +13,7 @@
     <RelativeLayout
         android:id="@+id/top_mask"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="120dp"
         android:layout_alignParentTop="true"
         android:background="@color/scan_bg">
         <RelativeLayout
@@ -41,7 +41,7 @@
                 android:layout_centerVertical="true"
                 android:ellipsize="middle"
                 android:singleLine="true"
-                android:text="二维码扫描"
+                android:text="@string/QR_code"
                 android:textSize="18sp" />
         </RelativeLayout>
         <TextView
@@ -50,7 +50,7 @@
             android:layout_below="@id/title_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="哈哈"
+            android:text="@string/haha"
             android:textSize="14sp"
             android:layout_centerInParent="true"
             android:textColor="@android:color/white"
@@ -61,7 +61,7 @@
     <RelativeLayout
         android:id="@+id/bottom_mask"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="230dp"
         android:layout_alignParentBottom="true"
         android:background="@color/scan_bg"
         android:orientation="vertical"
@@ -115,7 +115,7 @@
             android:layout_gravity="center_horizontal"
             android:background="@drawable/rescan_shape_button"
             android:padding="10dp"
-            android:text="再次扫描"
+            android:text="@string/Scan_again"
             android:textColor="@android:color/white"
             android:textSize="18sp"
             android:layout_centerHorizontal="true"

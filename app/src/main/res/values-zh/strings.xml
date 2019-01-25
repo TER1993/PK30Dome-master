@@ -90,4 +90,7 @@
     <string name="Please_connect_the_PK">请先连接PK30设备</string>
     <string name="Please_first_check">请先勾选需要启动的测量模式</string>
     <string name="Scanning_barcode">扫描条码</string>
+    <string name="QR_code">二维码扫描</string>
+    <string name="haha">哈哈</string>
+    <string name="Scan_again">再次扫描</string>
 </resources>
