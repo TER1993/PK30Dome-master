@@ -218,17 +218,19 @@ public final class CommonScanActivity extends Activity implements ScanListener, 
             if (cn) {
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
             } else {
-                Toast.makeText(this,"Camera open error, please check if this permission is disabled!", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Camera open error, please check if this permission is disabled!", Toast.LENGTH_LONG).show();
             }
             scanPreview.setVisibility(View.INVISIBLE);
         } else if (e.getMessage() != null && e.getMessage().startsWith("图片")) {
             if (cn) {
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
             } else {
-                Toast.makeText(this,"The picture is incorrect, or the picture is blurred!", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "The picture is incorrect, or the picture is blurred!", Toast.LENGTH_LONG).show();
             }
         } else {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+            if (cn) {
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+            }
         }
     }
 
