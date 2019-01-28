@@ -176,12 +176,12 @@ public class ScanManager implements SurfaceHolder.Callback{
 			Log.e(TAG,"hongliang", ioe);
 			//弹出提示，报错
 			ioe.printStackTrace();
-			listener.scanError(new Exception("相机打开出错，请检查是否被禁止了该权限！"));
+			listener.scanError(new Exception(activity.getString(R.string.Camera_open_error)));
 		} catch (RuntimeException e) {
 			Log.e(TAG, "hongliang", e);
 			//弹出提示，报错
 			e.printStackTrace();
-			listener.scanError(new Exception("相机打开出错，请检查是否被禁止了该权限！"));
+			listener.scanError(new Exception(activity.getString(R.string.Camera_open_error)));
 		}
 	}
 	/**
@@ -301,7 +301,7 @@ public class ScanManager implements SurfaceHolder.Callback{
 				} catch (Exception e) {
 					Message msg=Message.obtain();
 					msg.what=PhotoScanHandler.PHOTODECODEERROR;
-					msg.obj=new Exception("图片有误，或者图片模糊！");
+					msg.obj=new Exception(activity.getString(R.string.The_picture_is_incorrect));
 					photoScanHandler.sendMessage(msg);
 				}
 			}

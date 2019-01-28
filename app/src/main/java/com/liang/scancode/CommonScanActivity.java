@@ -211,7 +211,7 @@ public final class CommonScanActivity extends Activity implements ScanListener, 
     @Override
     public void scanError(Exception e) {
         Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
-        // TODO: 2019/1/21 修改提示信息
+
         boolean cn = getApplicationContext().getResources().getConfiguration().locale.getCountry().equals("CN");
         //相机扫描出错时
         if (e.getMessage() != null && e.getMessage().startsWith("相机")) {

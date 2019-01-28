@@ -6,8 +6,8 @@ android {
         applicationId "com.spd.pk30dome"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 4
-        versionName "1.4"
+        versionCode 5
+        versionName "1.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     //greendao 配置版本号
