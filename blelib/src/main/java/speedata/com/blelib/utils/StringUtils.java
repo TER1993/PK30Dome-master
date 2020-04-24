@@ -98,9 +98,8 @@ public class StringUtils {
     public static boolean isPhoneNumberValid(String phoneNumber) {
         boolean isValid = false;
         String expression = "^1[3|4|5|7|8]\\d{9}$";
-        CharSequence inputStr = phoneNumber;
         Pattern pattern = Pattern.compile(expression);
-        Matcher matcher = pattern.matcher(inputStr);
+        Matcher matcher = pattern.matcher(phoneNumber);
         if (matcher.matches()) {
             isValid = true;
         }
@@ -129,9 +128,8 @@ public class StringUtils {
 
         boolean isValid = false;
         String expression = "^[0-9]*$";
-        CharSequence inputStr = phoneNumber;
         Pattern pattern = Pattern.compile(expression);
-        Matcher matcher = pattern.matcher(inputStr);
+        Matcher matcher = pattern.matcher(phoneNumber);
         if (matcher.matches()) {
             isValid = true;
         }
@@ -145,7 +143,7 @@ public class StringUtils {
      * @return byte[]
      */
     public static byte[] hexStringToByteArray(String hexString) {
-        if (hexString == null || hexString.equals("")) {
+        if (hexString == null || "".equals(hexString)) {
             return null;
         }
         hexString = hexString.toUpperCase();

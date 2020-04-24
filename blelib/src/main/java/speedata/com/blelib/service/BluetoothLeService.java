@@ -20,7 +20,6 @@ import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
-import java.util.IllegalFormatCodePointException;
 import java.util.List;
 import java.util.UUID;
 
@@ -307,7 +306,7 @@ public class BluetoothLeService extends Service {
         }
 
         // Previously connected device.  Try to reconnect.以前连接设备。尝试重新连接。
-        if (mBluetoothDeviceAddress != null && address.equals(mBluetoothDeviceAddress)
+        if (address.equals(mBluetoothDeviceAddress)
                 && mBluetoothGatt != null) {
             Log.d(TAG, "Trying to use an existing mBluetoothGatt for connection.");
             if (mBluetoothGatt.connect()) {
@@ -406,7 +405,9 @@ public class BluetoothLeService extends Service {
      * @return A {@code List} of supported services.
      */
     public List<BluetoothGattService> getSupportedGattServices() {
-        if (mBluetoothGatt == null) return null;
+        if (mBluetoothGatt == null) {
+            return null;
+        }
 
         return mBluetoothGatt.getServices();
     }

@@ -1,16 +1,19 @@
 package com.spd.pk30dome.mvp;
 
 import android.app.ActivityManager;
+import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+
+import androidx.annotation.Nullable;
+
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * MVPPlugin
@@ -57,7 +60,7 @@ public abstract class MVPBaseFragment<V extends BaseView,T extends BasePresenter
         boolean isWork = false;
         ActivityManager myAM = (ActivityManager) mContext
                 .getSystemService(Context.ACTIVITY_SERVICE);
-        List<ActivityManager.RunningServiceInfo> myList = myAM.getRunningServices(40);
+        List<ActivityManager.RunningServiceInfo> myList = Objects.requireNonNull(myAM).getRunningServices(40);
         if (myList.size() <= 0) {
             return false;
         }
@@ -90,16 +93,10 @@ public abstract class MVPBaseFragment<V extends BaseView,T extends BasePresenter
 
     public  <T> T getInstance(Object o, int i) {
         try {
-            return ((Class<T>) ((ParameterizedType) (o.getClass()
-                    .getGenericSuperclass())).getActualTypeArguments()[i])
+            return ((Class<T>) ((ParameterizedType) (Objects.requireNonNull(o.getClass()
+                    .getGenericSuperclass()))).getActualTypeArguments()[i])
                     .newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (ClassCastException e) {
-            e.printStackTrace();
-        } catch (java.lang.InstantiationException e) {
+        } catch (InstantiationException | IllegalAccessException | ClassCastException | java.lang.InstantiationException e) {
             e.printStackTrace();
         }
         return null;

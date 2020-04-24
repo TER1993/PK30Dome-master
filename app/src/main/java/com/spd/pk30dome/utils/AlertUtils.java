@@ -5,12 +5,13 @@ import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface.OnClickListener;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.StringRes;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+
+import androidx.annotation.DrawableRes;
+import androidx.annotation.StringRes;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -198,10 +199,7 @@ public class AlertUtils {
         //这个是对的
         Pattern pattern= Pattern.compile("^(\\-|\\+)?\\d+(\\.\\d+)?$");
         Matcher isNum = pattern.matcher(str);
-        if (!isNum.matches()) {
-            return false;
-        }
-        return true;
+        return isNum.matches();
     }
 
 }

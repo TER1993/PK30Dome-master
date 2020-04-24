@@ -2,12 +2,11 @@ package speedata.com.blelib.utils;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.SystemClock;
-import android.support.annotation.RequiresApi;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Objects;
 
 import speedata.com.blelib.base.BaseBleApplication;
 import speedata.com.blelib.service.BluetoothLeService;
@@ -41,7 +40,6 @@ public class PK30DataUtils {
      *
      * @param bytes 数据
      */
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     public static void analysisData(final Context context, final Intent intent, final byte[] bytes) {
         new Thread(new Runnable() {
             @Override
@@ -75,8 +73,6 @@ public class PK30DataUtils {
 
     }
 
-
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     public static void replyError(byte[] bytes) {
         switch (bytes[1]) {
             case 0x0A:
@@ -103,7 +99,6 @@ public class PK30DataUtils {
     /**
      * 获取软件版本
      */
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     public static void getSoftware() {
         BaseBleApplication.writeCharacteristic3(new byte[]{(byte) 0xAA, 0x52, 0x01, (byte) 0xFD, 0x00});
     }
@@ -116,7 +111,6 @@ public class PK30DataUtils {
      * @param bytes
      * @return
      */
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     public static void analysisSoftware(Context context, Intent intent, byte[] bytes) {
         int length = bytes.length - 5;
         byte[] result = new byte[length];
@@ -133,7 +127,6 @@ public class PK30DataUtils {
     /**
      * 获取硬件版本
      */
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     public static void getHardware() {
         BaseBleApplication.writeCharacteristic3(new byte[]{(byte) 0xAA, 0x53, 0x01, (byte) 0xFE, 0x00});
     }
@@ -146,7 +139,6 @@ public class PK30DataUtils {
      * @param bytes
      * @return
      */
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     public static void analysisHardware(Context context, Intent intent, byte[] bytes) {
         int length = bytes.length - 5;
         byte[] result = new byte[length];
@@ -163,7 +155,6 @@ public class PK30DataUtils {
     /**
      * 获取MAC
      */
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     public static void getMac() {
         BaseBleApplication.writeCharacteristic3(new byte[]{(byte) 0xAA, 0x51, 0x01, (byte) 0xFC, 0x00});
     }
@@ -176,7 +167,6 @@ public class PK30DataUtils {
      * @param bytes
      * @return
      */
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     public static void analysisMac(Context context, Intent intent, byte[] bytes) {
         int length = bytes.length - 5;
         byte[] result = new byte[length];
@@ -194,7 +184,6 @@ public class PK30DataUtils {
     /**
      * 设置测量模式
      */
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     public static void setModel(int model) {
         switch (model) {
             case 0:
@@ -209,6 +198,8 @@ public class PK30DataUtils {
             case 3:
                 BaseBleApplication.writeCharacteristic3(new byte[]{(byte) 0xAA, 0x57, 0x01, (byte) 0x02, 0x00});
                 break;
+            default:
+                break;
         }
     }
 
@@ -220,7 +211,6 @@ public class PK30DataUtils {
      * @param bytes
      * @return
      */
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     public static void analysisMdoel(Context context, Intent intent, byte[] bytes) {
         int length = bytes.length - 5;
         byte[] result = new byte[length];
@@ -237,7 +227,6 @@ public class PK30DataUtils {
     /**
      * 关机
      */
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     public static void shutdown() {
         BaseBleApplication.writeCharacteristic3(new byte[]{(byte) 0xAA, 0x58, 0x01, (byte) 0x03, 0x00});
     }
@@ -250,7 +239,6 @@ public class PK30DataUtils {
      * @param bytes
      * @return
      */
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     public static void analysisShutdown(Context context, Intent intent, byte[] bytes) {
         int length = bytes.length - 5;
         byte[] result = new byte[length];
@@ -267,7 +255,6 @@ public class PK30DataUtils {
     /**
      * 蜂鸣器
      */
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     public static void fengMing(int time) {
         String timeHex = DataManageUtils.IntToHex(time);
         byte[] timeBytes = StringUtils.hexStringToByteArray(timeHex);
@@ -285,7 +272,6 @@ public class PK30DataUtils {
      * @param bytes
      * @return
      */
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     public static void analysisFengMing(Context context, Intent intent, byte[] bytes) {
         int length = bytes.length - 7;
         byte[] result = new byte[length];
@@ -319,7 +305,7 @@ public class PK30DataUtils {
         String byteArrayToString = DataManageUtils.byteArrayToString(result);
         int l = 0;
         if (!errStr.equals(byteArrayToString)) {
-            l = Integer.parseInt(byteArrayToString, 16);
+            l = Integer.parseInt(Objects.requireNonNull(byteArrayToString), 16);
             double resultDouble = (double) l / 10;
             data = resultDouble + "";
         }
@@ -346,7 +332,7 @@ public class PK30DataUtils {
             e.printStackTrace();
         }
         String byteArrayToString = DataManageUtils.byteArrayToString(result);
-        String fuHao = byteArrayToString.substring(0, 2);
+        String fuHao = Objects.requireNonNull(byteArrayToString).substring(0, 2);
         String weight = byteArrayToString.substring(2, 6);
 //        String xiShu = byteArrayToString.substring(6);
         BigInteger weightB = new BigInteger(weight, 16);
@@ -356,7 +342,7 @@ public class PK30DataUtils {
         double f1 = (double) weightInt  / 100;
         BigDecimal b = new BigDecimal(f1);
         double resultDouble = b.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-        if (fuHao.equals("01")) {
+        if ("01".equals(fuHao)) {
             data = "-" + resultDouble;
         } else {
             data = resultDouble + "";

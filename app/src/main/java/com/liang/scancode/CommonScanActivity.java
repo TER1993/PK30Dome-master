@@ -15,6 +15,7 @@
  */
 package com.liang.scancode;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -42,6 +43,8 @@ import com.liang.scancode.zxing.decode.Utils;
 import com.spd.pk30dome.R;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.util.Objects;
 
 
 /**
@@ -88,6 +91,7 @@ public final class CommonScanActivity extends Activity implements ScanListener, 
         initView();
     }
 
+    @SuppressLint("CutPasteId")
     void initView() {
 
         scanPreview = (SurfaceView) findViewById(R.id.capture_preview);
@@ -149,6 +153,8 @@ public final class CommonScanActivity extends Activity implements ScanListener, 
                 common_title_TV_center.setText(R.string.scan_allcode_title);
                 scan_hint.setText(R.string.scan_allcode_hint);
                 break;
+            default:
+                break;
         }
     }
 
@@ -169,6 +175,7 @@ public final class CommonScanActivity extends Activity implements ScanListener, 
     /**
      *
      */
+    @SuppressLint("SetTextI18n")
     @Override
     public void scanResult(Result rawResult, Bundle bundle) {
         //扫描成功后，扫描器不会再连续扫描，如需连续扫描，调用reScan()方法。
@@ -190,7 +197,7 @@ public final class CommonScanActivity extends Activity implements ScanListener, 
         service_register_rescan.setVisibility(View.VISIBLE);
         scan_image.setVisibility(View.VISIBLE);
         tv_scan_result.setVisibility(View.VISIBLE);
-        boolean cn = getApplicationContext().getResources().getConfiguration().locale.getCountry().equals("CN");
+        boolean cn = "CN".equals(getApplicationContext().getResources().getConfiguration().locale.getCountry());
         if (cn) {
             tv_scan_result.setText("结果：" + rawResult.getText());
         } else {
@@ -212,7 +219,7 @@ public final class CommonScanActivity extends Activity implements ScanListener, 
     public void scanError(Exception e) {
         Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
 
-        boolean cn = getApplicationContext().getResources().getConfiguration().locale.getCountry().equals("CN");
+        boolean cn = "CN".equals(getApplicationContext().getResources().getConfiguration().locale.getCountry());
         //相机扫描出错时
         if (e.getMessage() != null && e.getMessage().startsWith("相机")) {
             if (cn) {
@@ -245,18 +252,17 @@ public final class CommonScanActivity extends Activity implements ScanListener, 
         super.onActivityResult(requestCode, resultCode, data);
         String photo_path;
         if (resultCode == RESULT_OK) {
-            switch (requestCode) {
-                case PHOTOREQUESTCODE:
-                    String[] proj = {MediaStore.Images.Media.DATA};
-                    Cursor cursor = this.getContentResolver().query(data.getData(), proj, null, null, null);
-                    if (cursor.moveToFirst()) {
-                        int colum_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                        photo_path = cursor.getString(colum_index);
-                        if (photo_path == null) {
-                            photo_path = Utils.getPath(getApplicationContext(), data.getData());
-                        }
-                        scanManager.scanningImage(photo_path);
+            if (requestCode == PHOTOREQUESTCODE) {
+                String[] proj = {MediaStore.Images.Media.DATA};
+                @SuppressLint("Recycle") Cursor cursor = this.getContentResolver().query(Objects.requireNonNull(data.getData()), proj, null, null, null);
+                if (Objects.requireNonNull(cursor).moveToFirst()) {
+                    int colum_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                    photo_path = cursor.getString(colum_index);
+                    if (photo_path == null) {
+                        photo_path = Utils.getPath(getApplicationContext(), data.getData());
                     }
+                    scanManager.scanningImage(photo_path);
+                }
             }
         }
     }

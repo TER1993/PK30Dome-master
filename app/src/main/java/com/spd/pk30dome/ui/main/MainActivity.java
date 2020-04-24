@@ -11,9 +11,6 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -26,6 +23,9 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.liang.scancode.CommonScanActivity;
 import com.liang.scancode.MsgEvent;
@@ -35,15 +35,11 @@ import com.spd.pk30dome.R;
 import com.spd.pk30dome.database.DaoOptions;
 import com.spd.pk30dome.database.OldBean;
 import com.spd.pk30dome.mvp.MVPBaseActivity;
-import com.spd.pk30dome.quick.model.QuickModel;
-import com.spd.pk30dome.settings.model.SettingsModel;
 import com.spd.pk30dome.utils.AlertUtils;
 import com.spd.pk30dome.utils.SpUtils;
 import com.spd.pk30dome.utils.ToastUtils;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.PermissionListener;
-import com.yanzhenjie.permission.Rationale;
-import com.yanzhenjie.permission.RationaleListener;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -52,15 +48,12 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.text.DecimalFormat;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Queue;
 
 import speedata.com.blelib.base.BaseBleApplication;
 import speedata.com.blelib.utils.DataManageUtils;
 import speedata.com.blelib.utils.PK30DataUtils;
-
-import static com.spd.pk30dome.quick.model.QuickModel.MAIN_NUMBER;
-import static com.spd.pk30dome.settings.model.SettingsModel.MODEL;
-
 
 /**
  * MVPPlugin
@@ -68,7 +61,7 @@ import static com.spd.pk30dome.settings.model.SettingsModel.MODEL;
  *
  * @author xuyan
  */
-@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
+
 public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresenter> implements MainContract.View, View.OnClickListener, RadioGroup.OnCheckedChangeListener {
 
     private Button mBtnTest;
@@ -137,7 +130,13 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
     private EditText mQuickFour;
 
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
+    public static final int XISHU_XU = 5000;
+
+    public static final String MAIN_NUMBER = "MAIN_NUMBER";
+
+    public static final String MODEL = "MODEL";
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -147,7 +146,7 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
 
         // 初始化 Bluetooth adapter, 通过蓝牙管理器得到一个参考蓝牙适配器(API必须在以上android4.3或以上和版本)
         final BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
-        @SuppressLint({"NewApi", "LocalSuppress"}) BluetoothAdapter mBluetoothAdapter = bluetoothManager.getAdapter();
+        @SuppressLint({"NewApi", "LocalSuppress"}) BluetoothAdapter mBluetoothAdapter = Objects.requireNonNull(bluetoothManager).getAdapter();
         if (!mBluetoothAdapter.isEnabled()) {
             mBluetoothAdapter.enable();
         }
@@ -185,6 +184,7 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
         EventBus.getDefault().unregister(this);
     }
 
+    @SuppressLint("SetTextI18n")
     private void initView() {
 
         /*
@@ -240,6 +240,7 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
 
         mProgress = findViewById(R.id.progress);
         mProgress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 mTvSeekbarValue.setText((progress + 50) + "");
@@ -264,7 +265,7 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
         mIvOn = findViewById(R.id.iv_on);
         mIvOn.setOnClickListener(this);
 
-        boolean cn = getApplicationContext().getResources().getConfiguration().locale.getCountry().equals("CN");
+        boolean cn = "CN".equals(getApplicationContext().getResources().getConfiguration().locale.getCountry());
         if (cn) {
             kProgressHUD = KProgressHUD.create(getApplicationContext())
                     .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
@@ -314,6 +315,7 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
     }
 
 
+    @SuppressLint("SetTextI18n")
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(MsgEvent mEvent) {
         String type = mEvent.getType();
@@ -358,7 +360,7 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
                 four = "1";
             }
 
-            if ((Integer) SpUtils.get(MyApp.getInstance(), SettingsModel.MODEL, 0) == 1) {
+            if ((Integer) SpUtils.get(MyApp.getInstance(), MODEL, 0) == 1) {
                 //重量长宽高
                 String[] x = mQuickThree.getText().toString().split("\\*");
                 if (!(AlertUtils.isNumeric(x[0]) && AlertUtils.isNumeric(x[1]) && AlertUtils.isNumeric(x[2]))) {
@@ -372,10 +374,10 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
                     int d = Integer.parseInt(four);
                     //不足1位,会以0补足.
                     DecimalFormat format = new DecimalFormat("0.00");
-                    String y = format.format((a * b * c * d) / QuickModel.XISHU_XU);
+                    String y = format.format((a * b * c * d) / XISHU_XU);
                     mQuickTwo.setText(y);
                 }
-            } else if ((Integer) SpUtils.get(MyApp.getInstance(), SettingsModel.MODEL, 0) == 0) {
+            } else if ((Integer) SpUtils.get(MyApp.getInstance(), MODEL, 0) == 0) {
                 //重量长宽高
                 String[] x = mQuickThree.getText().toString().split("\\*");
                 if (!(AlertUtils.isNumeric(x[0]) && AlertUtils.isNumeric(x[1]) && AlertUtils.isNumeric(x[2]))) {
@@ -389,7 +391,7 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
                     int d = Integer.parseInt(four);
                     //不足1位,会以0补足.
                     DecimalFormat format = new DecimalFormat("0.00");
-                    String y = format.format((a * b * c * d) / QuickModel.XISHU_XU);
+                    String y = format.format((a * b * c * d) / XISHU_XU);
                     mQuickTwo.setText(y);
                 }
             }
@@ -404,7 +406,7 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
             mTvSoftware.setText(msg + "");
         } else if ("HARD".equals(type)) {
             mTvHardware.setText(msg + "");
-        } else if (type.equals("codeResult")) {
+        } else if ("codeResult".equals(type)) {
 
             mOddNumber.setText(msg + "");
             //doLoop();
@@ -459,16 +461,11 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
 
     private void initBluetooth() {
         Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                /**
-                 *要执行的操作
-                 */
-                closeBle();
-            }
-            //1秒后执行Runnable中的run方法,否则初始化失败
-        }, 1000);
+        //1秒后执行Runnable中的run方法,否则初始化失败
+        /*
+         *要执行的操作
+         */
+        handler.postDelayed(this::closeBle, 1000);
     }
 
     @Override
@@ -739,20 +736,38 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
      * 权限申请
      */
     private void permission() {
-        AndPermission.with(MainActivity.this)
-                .permission(Manifest.permission.ACCESS_COARSE_LOCATION
-                        , Manifest.permission.WRITE_EXTERNAL_STORAGE
-                        , Manifest.permission.BLUETOOTH
-                        , Manifest.permission.BLUETOOTH_ADMIN
-                        , Manifest.permission.VIBRATE
-                        , Manifest.permission.CAMERA)
-                .callback(listener)
-                .rationale(new RationaleListener() {
-                    @Override
-                    public void showRequestPermissionRationale(int requestCode, Rationale rationale) {
-                        AndPermission.rationaleDialog(MainActivity.this, rationale).show();
-                    }
-                }).start();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            AndPermission.with(MainActivity.this)
+                    .permission(Manifest.permission.ACCESS_COARSE_LOCATION
+                            , Manifest.permission.ACCESS_FINE_LOCATION
+                            , Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                            , Manifest.permission.VIBRATE
+                            , Manifest.permission.FLASHLIGHT
+                            , Manifest.permission.MODIFY_AUDIO_SETTINGS
+                            , Manifest.permission.READ_HISTORY_BOOKMARKS
+                            , Manifest.permission.WRITE_EXTERNAL_STORAGE
+                            , Manifest.permission.BLUETOOTH
+                            , Manifest.permission.BLUETOOTH_ADMIN
+                            , Manifest.permission.CAMERA)
+                    .callback(listener)
+                    .rationale((requestCode, rationale) -> AndPermission.rationaleDialog(MainActivity.this, rationale).show()).start();
+        } else {
+            AndPermission.with(MainActivity.this)
+                    .permission(Manifest.permission.ACCESS_COARSE_LOCATION
+                            , Manifest.permission.ACCESS_FINE_LOCATION
+                            , Manifest.permission.VIBRATE
+                            , Manifest.permission.FLASHLIGHT
+                            , Manifest.permission.MODIFY_AUDIO_SETTINGS
+                            , Manifest.permission.READ_HISTORY_BOOKMARKS
+                            , Manifest.permission.WRITE_EXTERNAL_STORAGE
+                            , Manifest.permission.BLUETOOTH
+                            , Manifest.permission.BLUETOOTH_ADMIN
+                            , Manifest.permission.CAMERA)
+                    .callback(listener)
+                    .rationale((requestCode, rationale) -> AndPermission.rationaleDialog(MainActivity.this, rationale).show()).start();
+
+        }
     }
 
     PermissionListener listener = new PermissionListener() {
@@ -789,7 +804,6 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
     }
 
 
-
     //返回键监听
     private long mkeyTime = 0;
 
@@ -801,7 +815,7 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
             case KeyEvent.ACTION_DOWN:
                 if ((System.currentTimeMillis() - mkeyTime) > 2000) {
                     mkeyTime = System.currentTimeMillis();
-                    boolean cn = getApplicationContext().getResources().getConfiguration().locale.getCountry().equals("CN");
+                    boolean cn = "CN".equals(getApplicationContext().getResources().getConfiguration().locale.getCountry());
                     if (cn) {
                         Toast.makeText(getApplicationContext(), "再次点击返回退出", Toast.LENGTH_LONG).show();
                     } else {
@@ -816,6 +830,8 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
                     }
                 }
                 return false;
+            default:
+                break;
         }
 
         return super.onKeyDown(keyCode, event);

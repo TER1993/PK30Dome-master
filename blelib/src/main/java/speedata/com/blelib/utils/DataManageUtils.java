@@ -3,12 +3,13 @@ package speedata.com.blelib.utils;
 
 import android.content.Context;
 import android.content.res.AssetManager;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
+import java.util.Objects;
 
 /**
  * Created by 张明_ on 2017/7/5.
@@ -72,12 +73,18 @@ public class DataManageUtils {
         int skip = 0;
         for (int index = start; index <= searched.length - find.length; ++index) {
             matched = true;
-            if (find[0] != searched[index] || find[end] != searched[index + end]) continue;
-            else skip++;
-            if (end > 10)
-                if (find[skip] != searched[index + skip] || find[end - skip] != searched[index + end - skip])
+            if (find[0] != searched[index] || find[end] != searched[index + end]) {
+                continue;
+            } else {
+                skip++;
+            }
+            if (end > 10) {
+                if (find[skip] != searched[index + skip] || find[end - skip] != searched[index + end - skip]) {
                     continue;
-                else skip++;
+                } else {
+                    skip++;
+                }
+            }
             for (int subIndex = skip; subIndex < find.length - skip; ++subIndex) {
                 if (find[subIndex] != searched[index + subIndex]) {
                     matched = false;
@@ -99,23 +106,25 @@ public class DataManageUtils {
         while (true) {
             int m = n / 16;
             int k = n % 16;
-            if (k == 15)
+            if (k == 15) {
                 ch[nIndex] = 'F';
-            else if (k == 14)
+            } else if (k == 14) {
                 ch[nIndex] = 'E';
-            else if (k == 13)
+            } else if (k == 13) {
                 ch[nIndex] = 'D';
-            else if (k == 12)
+            } else if (k == 12) {
                 ch[nIndex] = 'C';
-            else if (k == 11)
+            } else if (k == 11) {
                 ch[nIndex] = 'B';
-            else if (k == 10)
+            } else if (k == 10) {
                 ch[nIndex] = 'A';
-            else
+            } else {
                 ch[nIndex] = (char) ('0' + k);
+            }
             nIndex++;
-            if (m == 0)
+            if (m == 0) {
                 break;
+            }
             n = m;
         }
         StringBuffer sb = new StringBuffer();
@@ -127,8 +136,9 @@ public class DataManageUtils {
     //16进制转10进制
     public static int HexToInt(String strHex) {
         int nResult = 0;
-        if (!IsHex(strHex))
+        if (!IsHex(strHex)) {
             return nResult;
+        }
         String str = strHex.toUpperCase();
         if (str.length() > 2) {
             if (str.charAt(0) == '0' && str.charAt(1) == 'X') {
@@ -141,7 +151,6 @@ public class DataManageUtils {
             try {
                 nResult += (GetHex(ch) * GetPower(16, i));
             } catch (Exception e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
@@ -150,21 +159,26 @@ public class DataManageUtils {
 
     //计算16进制对应的数值
     public static int GetHex(char ch) throws Exception {
-        if (ch >= '0' && ch <= '9')
+        if (ch >= '0' && ch <= '9') {
             return (int) (ch - '0');
-        if (ch >= 'a' && ch <= 'f')
+        }
+        if (ch >= 'a' && ch <= 'f') {
             return (int) (ch - 'a' + 10);
-        if (ch >= 'A' && ch <= 'F')
+        }
+        if (ch >= 'A' && ch <= 'F') {
             return (int) (ch - 'A' + 10);
+        }
         throw new Exception("error param");
     }
 
     //计算幂
     public static int GetPower(int nValue, int nCount) throws Exception {
-        if (nCount < 0)
+        if (nCount < 0) {
             throw new Exception("nCount can't small than 1!");
-        if (nCount == 0)
+        }
+        if (nCount == 0) {
             return 1;
+        }
         int nSum = 1;
         for (int i = 0; i < nCount; ++i) {
             nSum = nSum * nValue;
@@ -182,8 +196,9 @@ public class DataManageUtils {
         }
         for (; i < strHex.length(); ++i) {
             char ch = strHex.charAt(i);
-            if ((ch >= '0' && ch <= '9') || (ch >= 'A' && ch <= 'F') || (ch >= 'a' && ch <= 'f'))
+            if ((ch >= '0' && ch <= '9') || (ch >= 'A' && ch <= 'F') || (ch >= 'a' && ch <= 'f')) {
                 continue;
+            }
             return false;
         }
         return true;
@@ -249,8 +264,8 @@ public class DataManageUtils {
         char[] chars = str.toCharArray();
 
         StringBuffer hex = new StringBuffer();
-        for (int i = 0; i < chars.length; i++) {
-            hex.append(Integer.toHexString((int) chars[i]));
+        for (char aChar : chars) {
+            hex.append(Integer.toHexString((int) aChar));
         }
 
         return hex.toString();
@@ -284,15 +299,12 @@ public class DataManageUtils {
      */
     public static byte uniteBytes(byte src0, byte src1) {
         try {
-            byte _b0 = Byte.decode("0x" + new String(new byte[]{src0}))
-                    .byteValue();
+            byte _b0 = Byte.decode("0x" + new String(new byte[]{src0}));
             _b0 = (byte) (_b0 << 4);
-            byte _b1 = Byte.decode("0x" + new String(new byte[]{src1}))
-                    .byteValue();
+            byte _b1 = Byte.decode("0x" + new String(new byte[]{src1}));
             byte ret = (byte) (_b0 ^ _b1);
             return ret;
         } catch (Exception e) {
-            // TODO: handle exception
             return 0;
         }
 
@@ -307,8 +319,8 @@ public class DataManageUtils {
         if (src == null || src.length <= 0) {
             return null;
         }
-        for (int i = 0; i < src.length; i++) {
-            int v = src[i] & 0xFF;
+        for (byte b : src) {
+            int v = b & 0xFF;
             String hv = Integer.toHexString(v);
             if (hv.length() < 2) {
                 stringBuilder.append(0);
@@ -345,7 +357,7 @@ public class DataManageUtils {
 //                inputStream.read(frameBuffer, offset, frameBuffer.length);
                 inputStream.read(frameBuffer);
             }
-            inputStream.close();
+            Objects.requireNonNull(inputStream).close();
         } catch (FileNotFoundException fileNotFoundException) {
             fileNotFoundException.printStackTrace();
         } catch (IOException iOException) {

@@ -2,9 +2,6 @@ package com.spd.pk30dome.database;
 
 import android.app.Application;
 
-import com.spd.pk30dome.bean.DaoMaster;
-import com.spd.pk30dome.bean.DaoSession;
-
 import org.greenrobot.greendao.database.Database;
 
 

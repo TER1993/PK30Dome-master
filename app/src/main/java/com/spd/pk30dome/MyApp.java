@@ -7,15 +7,16 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
+
 import com.liang.scancode.MsgEvent;
-import com.spd.pk30dome.bean.DaoMaster;
-import com.spd.pk30dome.bean.DaoSession;
 import com.spd.pk30dome.database.DaoManager;
+import com.spd.pk30dome.database.DaoMaster;
+import com.spd.pk30dome.database.DaoSession;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -68,7 +69,6 @@ public class MyApp extends BaseBleApplication {
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     public void getDeviceName(BluetoothDevice device) {
         address = device.getAddress();
         name = device.getName();
@@ -98,7 +98,7 @@ public class MyApp extends BaseBleApplication {
             final String action = intent.getAction();
             if (ACTION_GATT_CONNECTED.equals(action)) {
                 EventBus.getDefault().post(new MsgEvent("KP", false));
-                boolean cn = getApplicationContext().getResources().getConfiguration().locale.getCountry().equals("CN");
+                boolean cn = "CN".equals(getApplicationContext().getResources().getConfiguration().locale.getCountry());
                 if (cn) {
                     Toast.makeText(getApplicationContext(), "已连接", Toast.LENGTH_LONG).show();
                 } else {
@@ -107,7 +107,7 @@ public class MyApp extends BaseBleApplication {
                 EventBus.getDefault().post(new MsgEvent("ServiceConnectedStatus", true));
             } else if (ACTION_GATT_DISCONNECTED.equals(action)) {
                 EventBus.getDefault().post(new MsgEvent("ServiceConnectedStatus", false));
-                boolean cn = getApplicationContext().getResources().getConfiguration().locale.getCountry().equals("CN");
+                boolean cn = "CN".equals(getApplicationContext().getResources().getConfiguration().locale.getCountry());
                 if (cn) {
                     Toast.makeText(getApplicationContext(), "已断开", Toast.LENGTH_LONG).show();
                 } else {

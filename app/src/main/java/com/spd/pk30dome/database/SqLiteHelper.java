@@ -3,7 +3,6 @@ package com.spd.pk30dome.database;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.spd.pk30dome.bean.DaoMaster;
 
 
 /**

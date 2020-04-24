@@ -1,5 +1,6 @@
 package com.liang.scancode.defineview;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 /**
  * 类说明：画出扫描框的四个脚的脚边框，也可以直接用一张图片代替
  */
+@SuppressLint("AppCompatCustomView")
 public class MyImageView extends ImageView{
     private Context context;
     public MyImageView(Context context, AttributeSet attrs) {
@@ -28,7 +30,7 @@ public class MyImageView extends ImageView{
         int width = getWidth();
         int height = getHeight();
 
-        Paint paint = new Paint();
+        @SuppressLint("DrawAllocation") Paint paint = new Paint();
         paint.setColor(Color.rgb(9,187,7));
         paint.setAntiAlias(true);
         paint.setStrokeWidth(t(5));

@@ -2,6 +2,7 @@ package speedata.com.blelib.utils;
 
 
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * byte数据转换
@@ -62,7 +63,7 @@ public class ByteUtils {
      */
     public static int toInt(byte[] bytes) {
         String hexString = toHexString(bytes);
-        return Integer.parseInt(hexString, 16);
+        return Integer.parseInt(Objects.requireNonNull(hexString), 16);
     }
 
 

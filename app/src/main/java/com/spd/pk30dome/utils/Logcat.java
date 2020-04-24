@@ -1,14 +1,15 @@
 package com.spd.pk30dome.utils;
 
+import android.annotation.NonNull;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
-import android.support.annotation.IntDef;
-import android.support.annotation.IntRange;
 import android.util.Log;
 
-import com.spd.pk30dome.BuildConfig;
+import androidx.annotation.IntDef;
+import androidx.annotation.IntRange;
+
 import com.spd.pk30dome.MyApp;
 
 import org.json.JSONArray;
@@ -28,8 +29,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Formatter;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
@@ -42,6 +43,8 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+
+import speedata.com.blelib.BuildConfig;
 
 
 /**
@@ -399,7 +402,7 @@ public final class Logcat {
             Log.println(type, tag, msg);
             return;
         }
-        String[] lines = msg.split(LINE_SEP);
+        String[] lines = msg.split(Objects.requireNonNull(LINE_SEP));
         for (String line : lines) {
             Log.println(type, tag, LEFT_BORDER + line);
         }
@@ -493,25 +496,22 @@ public final class Logcat {
         if (sExecutor == null) {
             sExecutor = new ThreadPoolExecutor(1, 1, 0, TimeUnit.SECONDS, new ArrayBlockingQueue<>(3), new ThreadPoolExecutor.DiscardOldestPolicy());
         }
-        Future<Boolean> submit = sExecutor.submit(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                BufferedWriter bw = null;
+        Future<Boolean> submit = sExecutor.submit(() -> {
+            BufferedWriter bw = null;
+            try {
+                bw = new BufferedWriter(new FileWriter(filePath, true));
+                bw.write(input);
+                return true;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            } finally {
                 try {
-                    bw = new BufferedWriter(new FileWriter(filePath, true));
-                    bw.write(input);
-                    return true;
+                    if (bw != null) {
+                        bw.close();
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
-                    return false;
-                } finally {
-                    try {
-                        if (bw != null) {
-                            bw.close();
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
                 }
             }
         });
@@ -571,7 +571,7 @@ public final class Logcat {
             if (isSpace(dir)) {
                 sDir = null;
             } else {
-                sDir = dir.endsWith(FILE_SEP) ? dir : dir + FILE_SEP;
+                sDir = dir.endsWith(Objects.requireNonNull(FILE_SEP)) ? dir : dir + FILE_SEP;
             }
             return this;
         }
@@ -610,6 +610,7 @@ public final class Logcat {
             return this;
         }
 
+        @NonNull
         @Override
         public String toString() {
             return "switch: " + sLogSwitch

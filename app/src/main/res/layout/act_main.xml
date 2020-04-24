@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -10,13 +9,16 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:ignore="ScrollViewSize">
+
         <LinearLayout
-            android:visibility="gone"
             android:id="@+id/ll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone"
+            tools:ignore="DisableBaselineAlignment">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -48,18 +50,20 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:background="@drawable/on"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/on"
+                    tools:ignore="ContentDescription" />
 
             </LinearLayout>
         </LinearLayout>
+
         <LinearLayout
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:padding="10dp">
+            android:padding="10dp"
+            android:visibility="gone">
 
             <Button
                 android:id="@+id/btn_scan"
@@ -75,13 +79,13 @@
         </LinearLayout>
 
         <LinearLayout
-            android:gravity="center_vertical"
-            android:minHeight="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="13dp"
             android:layout_marginEnd="13dp"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:gravity="center_vertical"
+            android:minHeight="40dp"
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -92,26 +96,26 @@
                 android:textSize="15sp" />
 
             <EditText
-                android:inputType="number"
-                android:background="@drawable/bg_input_work"
                 android:id="@+id/sender_odd_number"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@drawable/bg_input_work"
                 android:gravity="start"
+                android:inputType="number"
                 android:text="888888888"
                 android:textColor="@color/text_color"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                tools:ignore="Autofill,LabelFor" />
 
             <TextView
                 android:id="@+id/sender_scan"
-                android:layout_marginStart="@dimen/dp5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text=""
+                android:layout_marginStart="@dimen/dp5"
                 android:drawableEnd="@drawable/ic_scan"
-                />
+                android:gravity="center"
+                android:text="" />
 
         </LinearLayout>
 
@@ -121,11 +125,11 @@
             android:background="@android:color/black" />
 
         <LinearLayout
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:padding="10dp">
+            android:padding="10dp"
+            android:visibility="gone">
 
             <Button
                 android:id="@+id/btn_length"
@@ -145,7 +149,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
                 android:gravity="center_vertical"
-                android:text="cm" />
+                android:text="cm"
+                tools:ignore="RtlHardcoded" />
 
             <Button
                 android:id="@+id/btn_width"
@@ -165,16 +170,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
                 android:gravity="center_vertical"
-                android:text="cm" />
+                android:text="cm"
+                tools:ignore="RtlHardcoded" />
         </LinearLayout>
 
 
         <LinearLayout
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:padding="10dp">
+            android:padding="10dp"
+            android:visibility="gone">
 
             <Button
                 android:id="@+id/btn_height"
@@ -194,7 +200,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
                 android:gravity="center_vertical"
-                android:text="cm" />
+                android:text="cm"
+                tools:ignore="RtlHardcoded" />
 
             <Button
                 android:id="@+id/btn_weight"
@@ -214,25 +221,25 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
                 android:gravity="center_vertical"
-                android:text="kg" />
+                android:text="kg"
+                tools:ignore="RtlHardcoded" />
         </LinearLayout>
 
 
         <TextView
-            android:textSize="@dimen/sp10"
-            android:text="@string/cargo_information"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            />
+            android:text="@string/cargo_information"
+            android:textSize="@dimen/sp10" />
 
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="13dp"
             android:layout_marginEnd="13dp"
             android:gravity="center_vertical"
             android:minHeight="40dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <TextView
@@ -245,16 +252,17 @@
                 android:textSize="15sp" />
 
             <EditText
-                android:inputType="number|numberDecimal"
-                android:background="@drawable/bg_input_work"
                 android:id="@+id/quick_one"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.2"
+                android:background="@drawable/bg_input_work"
                 android:gravity="center"
                 android:hint="@string/actual_weight_"
+                android:inputType="number|numberDecimal"
                 android:textColor="@color/text_color"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                tools:ignore="Autofill" />
 
             <TextView
                 android:layout_width="0dp"
@@ -266,26 +274,27 @@
                 android:textSize="15sp" />
 
             <EditText
-                android:enabled="false"
-                android:background="@drawable/bg_input_work"
                 android:id="@+id/quick_two"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@drawable/bg_input_work"
+                android:enabled="false"
                 android:gravity="center"
                 android:hint="@string/volume_weight_"
                 android:textColor="@color/text_color"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                tools:ignore="Autofill,TextFields" />
 
         </LinearLayout>
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="13dp"
             android:layout_marginEnd="13dp"
             android:gravity="center_vertical"
             android:minHeight="40dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
 
@@ -299,15 +308,16 @@
                 android:textSize="15sp" />
 
             <EditText
-                android:background="@drawable/bg_input_work"
                 android:id="@+id/quick_three"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.2"
+                android:background="@drawable/bg_input_work"
                 android:gravity="center"
                 android:hint="@string/cargo_dimensions_"
                 android:textColor="@color/text_color"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                tools:ignore="Autofill,TextFields" />
 
             <TextView
                 android:layout_width="0dp"
@@ -319,28 +329,29 @@
                 android:textSize="15sp" />
 
             <EditText
-                android:inputType="number"
-                android:background="@drawable/bg_input_work"
-                android:text="1"
                 android:id="@+id/quick_four"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@drawable/bg_input_work"
                 android:gravity="center"
                 android:hint="@string/Number"
+                android:inputType="number"
+                android:text="1"
                 android:textColor="@color/text_color"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                tools:ignore="Autofill" />
 
         </LinearLayout>
 
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="13dp"
             android:layout_marginEnd="13dp"
             android:gravity="center_vertical"
             android:minHeight="40dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <TextView
@@ -353,16 +364,17 @@
                 android:textSize="15sp" />
 
             <EditText
-                android:background="@drawable/bg_input_work"
-                android:text="@string/carton"
                 android:id="@+id/packing_type"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.2"
+                android:background="@drawable/bg_input_work"
                 android:gravity="center"
                 android:hint="@string/packaging_type_"
+                android:text="@string/carton"
                 android:textColor="@color/text_color"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                tools:ignore="Autofill,TextFields" />
 
             <TextView
                 android:layout_width="0dp"
@@ -374,16 +386,17 @@
                 android:textSize="15sp" />
 
             <EditText
-                android:background="@drawable/bg_input_work"
-                android:text="@string/clothing"
                 android:id="@+id/type_of_goods"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@drawable/bg_input_work"
                 android:gravity="center"
                 android:hint="@string/cargo_type"
+                android:text="@string/clothing"
                 android:textColor="@color/text_color"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                tools:ignore="Autofill,TextFields" />
 
         </LinearLayout>
 
@@ -394,19 +407,18 @@
             android:background="@android:color/black" />
 
         <TextView
-            android:textSize="@dimen/sp10"
-            android:text="@string/consignor_information"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-             />
+            android:text="@string/consignor_information"
+            android:textSize="@dimen/sp10" />
 
         <LinearLayout
-            android:minHeight="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="13dp"
             android:layout_marginEnd="13dp"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:minHeight="40dp"
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -417,25 +429,26 @@
                 android:textSize="15sp" />
 
             <EditText
-                android:background="@drawable/bg_input_work"
                 android:id="@+id/sender_the_sender"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@drawable/bg_input_work"
                 android:gravity="start"
                 android:text="@string/Aaron"
                 android:textColor="@color/text_color"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                tools:ignore="Autofill,LabelFor,TextFields" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:minHeight="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="13dp"
             android:layout_marginEnd="13dp"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:minHeight="40dp"
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -446,26 +459,27 @@
                 android:textSize="15sp" />
 
             <EditText
-                android:inputType = "phone"
-                android:background="@drawable/bg_input_work"
                 android:id="@+id/sender_phone_number"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@drawable/bg_input_work"
                 android:gravity="start"
+                android:inputType="phone"
                 android:text="400-040-5565"
                 android:textColor="@color/text_color"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                tools:ignore="Autofill,LabelFor" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:minHeight="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="13dp"
             android:layout_marginEnd="13dp"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:minHeight="40dp"
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -476,25 +490,26 @@
                 android:textSize="15sp" />
 
             <EditText
-                android:background="@drawable/bg_input_work"
                 android:id="@+id/sender_company"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@drawable/bg_input_work"
                 android:gravity="start"
                 android:text="@string/Beijing_Speedata"
                 android:textColor="@color/text_color"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                tools:ignore="Autofill,LabelFor,TextFields" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:minHeight="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="13dp"
             android:layout_marginEnd="13dp"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:minHeight="40dp"
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -505,18 +520,18 @@
                 android:textSize="15sp" />
 
             <EditText
-                android:background="@drawable/bg_input_work"
                 android:id="@+id/sender_address"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@drawable/bg_input_work"
                 android:gravity="start"
                 android:text="@string/_26_1_03"
                 android:textColor="@color/text_color"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                tools:ignore="Autofill,LabelFor,TextFields" />
 
         </LinearLayout>
-
 
 
         <View
@@ -525,20 +540,19 @@
             android:background="@android:color/black" />
 
         <TextView
-            android:textSize="@dimen/sp10"
-            android:text="@string/Addressee_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            />
+            android:text="@string/Addressee_info"
+            android:textSize="@dimen/sp10" />
 
 
         <LinearLayout
-            android:minHeight="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="13dp"
             android:layout_marginEnd="13dp"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:minHeight="40dp"
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -549,25 +563,26 @@
                 android:textSize="15sp" />
 
             <EditText
-                android:background="@drawable/bg_input_work"
                 android:id="@+id/collection_the_collection"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@drawable/bg_input_work"
                 android:gravity="start"
                 android:text="@string/Speedatagroup"
                 android:textColor="@color/text_color"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                tools:ignore="Autofill,LabelFor,TextFields" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:minHeight="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="13dp"
             android:layout_marginEnd="13dp"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:minHeight="40dp"
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -587,17 +602,18 @@
                 android:inputType="phone"
                 android:text="86-0755-82797385"
                 android:textColor="@color/text_color"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                tools:ignore="Autofill,LabelFor" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:minHeight="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="13dp"
             android:layout_marginEnd="13dp"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:minHeight="40dp"
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -608,25 +624,26 @@
                 android:textSize="15sp" />
 
             <EditText
-                android:background="@drawable/bg_input_work"
                 android:id="@+id/collection_company"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@drawable/bg_input_work"
                 android:gravity="start"
                 android:text="@string/Beijing_Speedatagroup"
                 android:textColor="@color/text_color"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                tools:ignore="Autofill,LabelFor,TextFields" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:minHeight="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="13dp"
             android:layout_marginEnd="13dp"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:minHeight="40dp"
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -637,15 +654,16 @@
                 android:textSize="15sp" />
 
             <EditText
-                android:background="@drawable/bg_input_work"
                 android:id="@+id/collection_address"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@drawable/bg_input_work"
                 android:gravity="start"
                 android:text="@string/_26_1_04"
                 android:textColor="@color/text_color"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                tools:ignore="Autofill,LabelFor,TextFields" />
 
         </LinearLayout>
 
@@ -658,7 +676,6 @@
             android:layout_marginTop="@dimen/dp10"
             android:layout_marginBottom="@dimen/dp10"
             android:text="@string/Save" />
-
 
 
         <View
@@ -679,6 +696,7 @@
         <TextView
             android:id="@+id/tv_version"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            tools:ignore="TooManyViews" />
     </LinearLayout>
 </ScrollView>

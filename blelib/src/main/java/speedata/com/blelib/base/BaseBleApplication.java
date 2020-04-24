@@ -10,10 +10,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.os.Build;
 import android.os.IBinder;
 import android.os.SystemClock;
-import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -29,7 +27,6 @@ import static speedata.com.blelib.service.BluetoothLeService.ACTION_GATT_DISCONN
 /**
  * Created by 张明_ on 2017/9/5.
  */
-@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
 public class BaseBleApplication extends Application {
     public static final String TAG = "pk20";
     public static BluetoothLeService mBluetoothLeService = null;
@@ -201,10 +198,10 @@ public class BaseBleApplication extends Application {
             List<BluetoothGattCharacteristic> gattCharacteristics = gattService.getCharacteristics();
             for (BluetoothGattCharacteristic gattCharacteristic : gattCharacteristics) {
                 uuid = gattCharacteristic.getUuid().toString();
-                if (uuid.equals("0000fff3-0000-1000-8000-00805f9b34fb")) {
+                if ("0000fff3-0000-1000-8000-00805f9b34fb".equals(uuid)) {
                     mNotifyCharacteristic3 = gattCharacteristic;
                     setCharacteristicNotification(mNotifyCharacteristic3, true);
-                } else if (uuid.equals("0000fff6-0000-1000-8000-00805f9b34fb")) {
+                } else if ("0000fff6-0000-1000-8000-00805f9b34fb".equals(uuid)) {
                     mNotifyCharacteristic6 = gattCharacteristic;
                     setCharacteristicNotification(mNotifyCharacteristic6, true);
                 }

@@ -4,12 +4,16 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import androidx.annotation.Nullable;
+
 import com.spd.pk30dome.R;
 import com.spd.pk30dome.ui.DeviceScanActivity;
+
 import java.lang.reflect.ParameterizedType;
+import java.util.Objects;
 
 
 /**
@@ -41,14 +45,10 @@ public abstract class MVPBaseActivity<V extends BaseView,T extends BasePresenter
 
     public  <T> T getInstance(Object o, int i) {
         try {
-            return ((Class<T>) ((ParameterizedType) (o.getClass()
-                    .getGenericSuperclass())).getActualTypeArguments()[i])
+            return ((Class<T>) ((ParameterizedType) (Objects.requireNonNull(o.getClass()
+                    .getGenericSuperclass()))).getActualTypeArguments()[i])
                     .newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (ClassCastException e) {
+        } catch (InstantiationException | IllegalAccessException | ClassCastException e) {
             e.printStackTrace();
         }
         return null;
@@ -74,6 +74,8 @@ public abstract class MVPBaseActivity<V extends BaseView,T extends BasePresenter
             case android.R.id.home:
                 onBackPressed();
                 return true;
+            default:
+                break;
         }
         return true;
     }
