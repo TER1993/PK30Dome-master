@@ -54,6 +54,13 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden"
             tools:ignore="LockedOrientationActivity">
+        </activity>
+        <activity
+            android:name=".ui.main.MainActivity2"
+            android:foregroundServiceType="location"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
