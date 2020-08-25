@@ -35,6 +35,9 @@ import com.spd.pk30dome.R;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * @author xuyan
+ */
 @SuppressLint("NewApi")
 public class DeviceScanActivity extends ListActivity {
 
@@ -72,14 +75,15 @@ public class DeviceScanActivity extends ListActivity {
             finish();
             return;
         }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {//如果 API level 是大于等于 23(Android 6.0) 时
+        //如果 API level 是大于等于 23(Android 6.0) 时
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             //判断是否具有权限
             if (ContextCompat.checkSelfPermission(this,
                     Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 //判断是否需要向用户解释为什么需要申请该权限
                 ActivityCompat.shouldShowRequestPermissionRationale(this,
-                        Manifest.permission.ACCESS_COARSE_LOCATION);//showToast("自Android 6.0开始需要打开位置权限才可以搜索到Ble设备");
+                        Manifest.permission.ACCESS_COARSE_LOCATION);
+                //showToast("自Android 6.0开始需要打开位置权限才可以搜索到Ble设备");
                 //请求权限
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
@@ -188,14 +192,16 @@ public class DeviceScanActivity extends ListActivity {
         invalidateOptionsMenu();
     }
 
-    // Adapter for holding devices found through scanning.
+    /**
+     * Adapter for holding devices found through scanning.
+     */
     private class LeDeviceListAdapter extends BaseAdapter {
         private ArrayList<BluetoothDevice> mLeDevices;
         private LayoutInflater mInflator;
 
         public LeDeviceListAdapter() {
             super();
-            mLeDevices = new ArrayList<BluetoothDevice>();
+            mLeDevices = new ArrayList<>();
             mInflator = DeviceScanActivity.this.getLayoutInflater();
         }
 
@@ -256,7 +262,9 @@ public class DeviceScanActivity extends ListActivity {
         }
     }
 
-    // Device scan callback.返蓝牙信息更新到界面
+    /**
+     * Device scan callback.返蓝牙信息更新到界面
+     */
     private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
 
         @Override
@@ -268,7 +276,10 @@ public class DeviceScanActivity extends ListActivity {
         }
     };
 
-    // 5.0+.返蓝牙信息更新到界面
+    /**
+     * 5.0+.返蓝牙信息更新到界面
+     */
+
     private ScanCallback mScanCallback = new ScanCallback() {
         @Override
         public void onScanResult(int callbackType, ScanResult result) {

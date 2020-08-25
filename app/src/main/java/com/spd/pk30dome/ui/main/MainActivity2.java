@@ -51,11 +51,9 @@ import speedata.com.blelib.utils.PK30DataUtils;
 
 /**
  * MVPPlugin
- * 邮箱 784787081@qq.com
  *
  * @author xuyan
  */
-
 public class MainActivity2 extends MVPBaseActivity<MainContract.View, MainPresenter> implements MainContract.View, View.OnClickListener, RadioGroup.OnCheckedChangeListener {
 
     private Button mBtnTest;
@@ -85,7 +83,6 @@ public class MainActivity2 extends MVPBaseActivity<MainContract.View, MainPresen
     private Button mBtnSoftware;
     private Button mBtnHardware;
     private TextView mTvVersion;
-
 
 
     public static final int XISHU_XU = 5000;
@@ -121,7 +118,6 @@ public class MainActivity2 extends MVPBaseActivity<MainContract.View, MainPresen
     }
 
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -135,7 +131,6 @@ public class MainActivity2 extends MVPBaseActivity<MainContract.View, MainPresen
         mWidth = findViewById(R.id.tv_width);
         mHeight = findViewById(R.id.tv_height);
         mWeight = findViewById(R.id.tv_weight);
-
 
 
         mBtnTest = findViewById(R.id.btn_test);
@@ -282,7 +277,7 @@ public class MainActivity2 extends MVPBaseActivity<MainContract.View, MainPresen
             mTvHardware.setText(msg + "");
         } else if ("codeResult".equals(type)) {
 
-           // mOddNumber.setText(msg + "");
+            // mOddNumber.setText(msg + "");
             //doLoop();
 
         } else if ("MODEL".equals(type)) {
@@ -347,6 +342,7 @@ public class MainActivity2 extends MVPBaseActivity<MainContract.View, MainPresen
         if (BaseBleApplication.mNotifyCharacteristic3 != null) {
             switch (v.getId()) {
                 case R.id.btn_scan:
+                case R.id.sender_scan:
                     startScanAct();
                     break;
 
@@ -404,11 +400,6 @@ public class MainActivity2 extends MVPBaseActivity<MainContract.View, MainPresen
                     int time = Integer.parseInt(mTvSeekbarValue.getText().toString());
                     PK30DataUtils.fengMing(time);
                     break;
-                case R.id.sender_scan:
-                    startScanAct();
-                    break;
-
-
                 default:
                     break;
             }
@@ -417,7 +408,6 @@ public class MainActivity2 extends MVPBaseActivity<MainContract.View, MainPresen
         }
 
     }
-
 
 
     private void testClose() {
@@ -462,7 +452,7 @@ public class MainActivity2 extends MVPBaseActivity<MainContract.View, MainPresen
      * 启动测试
      */
     private boolean test() {
-        queue = new LinkedList<Integer>();
+        queue = new LinkedList<>();
         isTest = true;
 
         boolean ckgzChecked = radioButton1.isChecked();

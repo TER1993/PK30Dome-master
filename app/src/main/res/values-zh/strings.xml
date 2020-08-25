@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">PK30Demo</string>
+    <string name="app_name">HT01Demo</string>
     <string name="ble_not_supported">你的手机不支持BLE</string>
     <string name="label_data">Data:</string>
     <string name="label_device_address">设备地址:</string>
@@ -87,7 +87,7 @@
     <string name="The_buzzer">蜂鸣器时长设置为</string>
     <string name="There_is_a_blank">存在空白项，请补全信息</string>
     <string name="Successfully_saved">保存成功</string>
-    <string name="Please_connect_the_PK">请先连接PK30设备</string>
+    <string name="Please_connect_the_PK">请先连接HT01设备</string>
     <string name="Please_first_check">请先勾选需要启动的测量模式</string>
     <string name="Scanning_barcode">扫描条码</string>
     <string name="QR_code">二维码扫描</string>

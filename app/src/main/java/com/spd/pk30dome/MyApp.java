@@ -1,5 +1,6 @@
 package com.spd.pk30dome;
 
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -29,15 +30,21 @@ import static speedata.com.blelib.service.BluetoothLeService.ACTION_GATT_DISCONN
 
 
 /**
- * Created by 张明_ on 2017/7/10.
+ * @author 张明_xuyan
+ * @date 2017/7/10
  */
 
 public class MyApp extends BaseBleApplication {
-
-    private static MyApp m_application; // 单例
+    /**
+     * 单例
+     */
+    @SuppressLint("StaticFieldLeak")
+    private static MyApp m_application;
     public static String address = "";
     public static String name = "";
-    //greendao
+    /**
+     * greendao
+     */
     private static DaoSession daoSession;
 
     private void setupDatabase() {
@@ -84,13 +91,15 @@ public class MyApp extends BaseBleApplication {
         return intentFilter;
     }
 
-    // Handles various events fired by the Service.处理由服务触发的各种事件。
-    // ACTION_GATT_CONNECTED: connected to a GATT server.连接到GATT服务器
-    // ACTION_GATT_DISCONNECTED: disconnected from a GATT server.与GATT服务器断开连接
-    // ACTION_GATT_SERVICES_DISCOVERED: discovered GATT services.发现了GATT服务
-    // ACTION_DATA_AVAILABLE: 数据通知
-    // （1、EXTRA_DATA 设置回复信息 2、NOTIFICATION_DATA_LWHG 长宽高重测量信息
-    // 3、NOTIFICATION_DATA 长宽高体积条码测量信息 4、NOTIFICATION_DATA_ERR 错误信息）
+    /**
+     * Handles various events fired by the Service.处理由服务触发的各种事件。
+     * ACTION_GATT_CONNECTED: connected to a GATT server.连接到GATT服务器
+     * ACTION_GATT_DISCONNECTED: disconnected from a GATT server.与GATT服务器断开连接
+     * ACTION_GATT_SERVICES_DISCOVERED: discovered GATT services.发现了GATT服务
+     * ACTION_DATA_AVAILABLE: 数据通知
+     * （1、EXTRA_DATA 设置回复信息 2、NOTIFICATION_DATA_LWHG 长宽高重测量信息
+     * 3、NOTIFICATION_DATA 长宽高体积条码测量信息 4、NOTIFICATION_DATA_ERR 错误信息）
+     */
     private final BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {
         @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
         @Override

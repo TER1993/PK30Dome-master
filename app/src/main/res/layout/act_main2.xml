@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -32,13 +31,15 @@
                     android:id="@+id/device_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Name:PK20" />
+                    android:text="Name:PK20"
+                    tools:ignore="HardcodedText" />
 
                 <TextView
                     android:id="@+id/device_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Address:PK20" />
+                    android:text="Address:PK20"
+                    tools:ignore="HardcodedText" />
             </LinearLayout>
 
             <LinearLayout
@@ -88,7 +89,7 @@
                 android:layout_marginRight="10dp"
                 android:gravity="center_vertical"
                 android:text="cm"
-                tools:ignore="RtlHardcoded" />
+                tools:ignore="HardcodedText,RtlHardcoded" />
 
             <Button
                 android:id="@+id/btn_width"
@@ -109,7 +110,7 @@
                 android:layout_marginRight="10dp"
                 android:gravity="center_vertical"
                 android:text="cm"
-                tools:ignore="RtlHardcoded" />
+                tools:ignore="HardcodedText,RtlHardcoded" />
         </LinearLayout>
 
 
@@ -117,8 +118,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:padding="10dp"
-            >
+            android:padding="10dp">
 
             <Button
                 android:id="@+id/btn_height"
@@ -139,7 +139,7 @@
                 android:layout_marginRight="10dp"
                 android:gravity="center_vertical"
                 android:text="cm"
-                tools:ignore="RtlHardcoded" />
+                tools:ignore="HardcodedText,RtlHardcoded" />
 
             <Button
                 android:id="@+id/btn_weight"
@@ -160,7 +160,7 @@
                 android:layout_marginRight="10dp"
                 android:gravity="center_vertical"
                 android:text="kg"
-                tools:ignore="RtlHardcoded" />
+                tools:ignore="HardcodedText,RtlHardcoded" />
         </LinearLayout>
 
 
