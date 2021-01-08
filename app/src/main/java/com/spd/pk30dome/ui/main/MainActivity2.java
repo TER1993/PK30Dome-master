@@ -32,6 +32,7 @@ import com.liang.scancode.utils.Constant;
 import com.spd.pk30dome.MyApp;
 import com.spd.pk30dome.R;
 import com.spd.pk30dome.mvp.MVPBaseActivity;
+import com.spd.pk30dome.utils.PlaySound;
 import com.spd.pk30dome.utils.SpUtils;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.PermissionListener;
@@ -87,7 +88,6 @@ public class MainActivity2 extends MVPBaseActivity<MainContract.View, MainPresen
     private TextView mTvVersion;
 
 
-
     public static final int XISHU_XU = 5000;
 
     public static final String MAIN_NUMBER = "MAIN_NUMBER";
@@ -121,7 +121,6 @@ public class MainActivity2 extends MVPBaseActivity<MainContract.View, MainPresen
     }
 
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -135,7 +134,6 @@ public class MainActivity2 extends MVPBaseActivity<MainContract.View, MainPresen
         mWidth = findViewById(R.id.tv_width);
         mHeight = findViewById(R.id.tv_height);
         mWeight = findViewById(R.id.tv_weight);
-
 
 
         mBtnTest = findViewById(R.id.btn_test);
@@ -282,7 +280,7 @@ public class MainActivity2 extends MVPBaseActivity<MainContract.View, MainPresen
             mTvHardware.setText(msg + "");
         } else if ("codeResult".equals(type)) {
 
-           // mOddNumber.setText(msg + "");
+            // mOddNumber.setText(msg + "");
             //doLoop();
 
         } else if ("MODEL".equals(type)) {
@@ -315,6 +313,9 @@ public class MainActivity2 extends MVPBaseActivity<MainContract.View, MainPresen
             String string = (String) msg;
             int toInt = DataManageUtils.HexToInt(string);
             Toast.makeText(MainActivity2.this, getString(R.string.The_buzzer) + toInt, Toast.LENGTH_SHORT).show();
+        } else if ("DIDIAN".equals(type)) {
+            PlaySound.play(PlaySound.channel_1, PlaySound.NO_CYCLE);
+            Toast.makeText(MainActivity2.this, "请注意，PK30低电。", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -417,7 +418,6 @@ public class MainActivity2 extends MVPBaseActivity<MainContract.View, MainPresen
         }
 
     }
-
 
 
     private void testClose() {

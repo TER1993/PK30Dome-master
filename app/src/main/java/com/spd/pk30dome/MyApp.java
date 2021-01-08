@@ -17,6 +17,7 @@ import com.liang.scancode.MsgEvent;
 import com.spd.pk30dome.database.DaoManager;
 import com.spd.pk30dome.database.DaoMaster;
 import com.spd.pk30dome.database.DaoSession;
+import com.spd.pk30dome.utils.PlaySound;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -61,6 +62,7 @@ public class MyApp extends BaseBleApplication {
         m_application = this;
         DaoManager.init(this);
         setupDatabase();
+        PlaySound.initSoundPool(this);
     }
 
 
@@ -166,6 +168,12 @@ public class MyApp extends BaseBleApplication {
                         if (!TextUtils.isEmpty(fengMing)) {
                             EventBus.getDefault().post(new MsgEvent("FENGMING", fengMing));
                         }
+
+                        String didian = intent.getStringExtra(BluetoothLeService.NOTIFICATION_DIDIAN);
+                        if (!TextUtils.isEmpty(didian)) {
+                            EventBus.getDefault().post(new MsgEvent("DIDIAN", didian));
+                        }
+
                     } else {
                         EventBus.getDefault().post(new MsgEvent("Save6DataErr", dataERR));
                     }

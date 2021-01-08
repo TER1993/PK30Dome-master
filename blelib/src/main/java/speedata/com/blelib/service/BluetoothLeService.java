@@ -193,7 +193,13 @@ public class BluetoothLeService extends Service {
             } else if (data[1] == (byte) 0xD4 || data[1] == (byte) 0xD5 || data[1] == (byte) 0xD6 || data[1] == (byte) 0xD7) {
                 PK30DataUtils.analysisMdoel(BluetoothLeService.this, intent, data);
             } else if (data[1] == (byte) 0xD8) {
-                PK30DataUtils.analysisShutdown(BluetoothLeService.this, intent, data);
+                if(data[2] == (byte) 0x02 && data[3] == (byte) 0x01 && data[4] == (byte) 0x85){
+                    intent.putExtra(NOTIFICATION_DIDIAN, bytesToHexString);
+                    sendBroadcast(intent);
+                } else {
+                    PK30DataUtils.analysisShutdown(BluetoothLeService.this, intent, data);
+                }
+
             } else if (data[1] == (byte) 0xD9) {
                 PK30DataUtils.analysisFengMing(BluetoothLeService.this, intent, data);
             } else {
@@ -235,6 +241,7 @@ public class BluetoothLeService extends Service {
     public final static String NOTIFICATION_DATA_MODEL = "com.example.bluetooth.le.NOTIFICATION_DATA_MODEL";
     public final static String NOTIFICATION_SHUTDOWN = "com.example.bluetooth.le.NOTIFICATION_SHUTDOWN";
     public final static String NOTIFICATION_FENGMING = "com.example.bluetooth.le.NOTIFICATION_FENGMING";
+    public final static String NOTIFICATION_DIDIAN = "com.example.bluetooth.le.NOTIFICATION_DIDIAN";
 
     //发送信道3长宽高信息
     private void sendLWHGData(Intent intent, byte[] data) {
