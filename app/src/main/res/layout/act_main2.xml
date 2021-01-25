@@ -91,57 +91,6 @@
                 tools:ignore="RtlHardcoded" />
 
             <Button
-                android:id="@+id/btn_width"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/width" />
-
-            <TextView
-                android:id="@+id/tv_width"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_vertical" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:gravity="center_vertical"
-                android:text="cm"
-                tools:ignore="RtlHardcoded" />
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:padding="10dp"
-            >
-
-            <Button
-                android:id="@+id/btn_height"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/height" />
-
-            <TextView
-                android:id="@+id/tv_height"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_vertical" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:gravity="center_vertical"
-                android:text="cm"
-                tools:ignore="RtlHardcoded" />
-
-            <Button
                 android:id="@+id/btn_weight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -169,7 +118,15 @@
             android:layout_height="1dp"
             android:background="@android:color/black" />
 
-        <include layout="@layout/item_main_test" />
+
+        <Button
+            android:layout_margin="@dimen/dp20"
+            android:layout_gravity="center"
+            android:id="@+id/btn_change"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/switch_mode" />
+
 
         <View
             android:layout_width="match_parent"

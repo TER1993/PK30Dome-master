@@ -95,4 +95,5 @@
     <string name="Scan_again">再次扫描</string>
     <string name="The_picture_is_incorrect">图片有误，或者图片模糊！</string>
     <string name="Camera_open_error">相机打开出错，请检查是否被禁止了该权限！</string>
+    <string name="switch_mode">切换模式</string>
 </resources>

@@ -16,8 +16,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,7 +31,6 @@ import com.spd.pk30dome.MyApp;
 import com.spd.pk30dome.R;
 import com.spd.pk30dome.mvp.MVPBaseActivity;
 import com.spd.pk30dome.utils.PlaySound;
-import com.spd.pk30dome.utils.SpUtils;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.PermissionListener;
 
@@ -41,7 +38,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Queue;
@@ -57,16 +53,9 @@ import speedata.com.blelib.utils.PK30DataUtils;
  * @author xuyan
  */
 
-public class MainActivity2 extends MVPBaseActivity<MainContract.View, MainPresenter> implements MainContract.View, View.OnClickListener, RadioGroup.OnCheckedChangeListener {
+public class MainActivity2 extends MVPBaseActivity<MainContract.View, MainPresenter> implements MainContract.View, View.OnClickListener {
 
     private Button mBtnTest;
-
-    private RadioGroup radioGroup;
-    private RadioButton radioButton1;
-    private RadioButton radioButton2;
-    private RadioButton radioButton3;
-    private RadioButton radioButton4;
-
 
     private TextView mTvSoftware;
     private TextView mTvHardware;
@@ -82,11 +71,10 @@ public class MainActivity2 extends MVPBaseActivity<MainContract.View, MainPresen
     private Queue<Integer> queue;
     //开始测试
     private boolean isTest = false;
-    private Button mBtnTestClose;
+
     private Button mBtnSoftware;
     private Button mBtnHardware;
     private TextView mTvVersion;
-
 
     public static final int XISHU_XU = 5000;
 
@@ -94,12 +82,8 @@ public class MainActivity2 extends MVPBaseActivity<MainContract.View, MainPresen
 
     public static final String MODEL = "MODEL";
 
-
     private TextView mLength;
-    private TextView mWidth;
-    private TextView mHeight;
     private TextView mWeight;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -116,10 +100,7 @@ public class MainActivity2 extends MVPBaseActivity<MainContract.View, MainPresen
         }
 
         initView();
-        mBtnTestClose.setEnabled(false);
-
     }
-
 
     @Override
     protected void onDestroy() {
@@ -131,25 +112,11 @@ public class MainActivity2 extends MVPBaseActivity<MainContract.View, MainPresen
     private void initView() {
 
         mLength = findViewById(R.id.tv_length);
-        mWidth = findViewById(R.id.tv_width);
-        mHeight = findViewById(R.id.tv_height);
+
         mWeight = findViewById(R.id.tv_weight);
 
-
-        mBtnTest = findViewById(R.id.btn_test);
+        mBtnTest = findViewById(R.id.btn_change);
         mBtnTest.setOnClickListener(this);
-
-
-        //radio部分
-        radioGroup = findViewById(R.id.radioGroup);
-        radioButton1 = findViewById(R.id.radioButton1);
-        radioButton2 = findViewById(R.id.radioButton2);
-        radioButton3 = findViewById(R.id.radioButton3);
-        radioButton4 = findViewById(R.id.radioButton4);
-
-        radioGroup.setOnCheckedChangeListener(this);
-        //sp保存状态
-        seButtonChecked();
 
         mTvSoftware = findViewById(R.id.tv_software);
         mTvHardware = findViewById(R.id.tv_hardware);
@@ -200,36 +167,12 @@ public class MainActivity2 extends MVPBaseActivity<MainContract.View, MainPresen
                     .setDimAmount(0.5f);
         }
 
-        mBtnTestClose = findViewById(R.id.btn_test_close);
-        mBtnTestClose.setOnClickListener(this);
         mBtnSoftware = findViewById(R.id.btn_software);
         mBtnSoftware.setOnClickListener(this);
         mBtnHardware = findViewById(R.id.btn_hardware);
         mBtnHardware.setOnClickListener(this);
         mTvVersion = findViewById(R.id.tv_version);
         mTvVersion.setText("V" + getVerName(getApplicationContext()));
-    }
-
-
-    private void seButtonChecked() {
-
-        switch ((Integer) SpUtils.get(MyApp.getInstance(), MODEL, 0)) {
-            case 0:
-                radioButton1.setChecked(true);
-                break;
-            case 1:
-                radioButton2.setChecked(true);
-                break;
-            case 2:
-                radioButton3.setChecked(true);
-                break;
-            case 3:
-                radioButton4.setChecked(true);
-                break;
-            default:
-                break;
-
-        }
     }
 
 
@@ -249,7 +192,7 @@ public class MainActivity2 extends MVPBaseActivity<MainContract.View, MainPresen
                 mDeviceName.setText("Name：" + MyApp.name);
                 mIvOn.setVisibility(View.VISIBLE);
             } else {
-                testClose();
+
                 mLl.setVisibility(View.GONE);
                 Log.d("ZM_connect", "隐藏连接按键");
                 mIvOn.setVisibility(View.GONE);
@@ -261,27 +204,24 @@ public class MainActivity2 extends MVPBaseActivity<MainContract.View, MainPresen
         } else if ("L".equals(type)) {
             String string = (String) msg;
             mLength.setText(string);
-            doLoop();
+
         } else if ("W".equals(type)) {
             String string = (String) msg;
-            mWidth.setText(string);
-            doLoop();
+            mLength.setText(string);
+
         } else if ("H".equals(type)) {
             String string = (String) msg;
-            mHeight.setText(string);
-            doLoop();
+            mLength.setText(string);
+
         } else if ("G".equals(type)) {
             String string = (String) msg;
             mWeight.setText(string);
-            doLoop();
+
         } else if ("SOFT".equals(type)) {
             mTvSoftware.setText(msg + "");
         } else if ("HARD".equals(type)) {
             mTvHardware.setText(msg + "");
         } else if ("codeResult".equals(type)) {
-
-            // mOddNumber.setText(msg + "");
-            //doLoop();
 
         } else if ("MODEL".equals(type)) {
             String string = (String) msg;
@@ -319,20 +259,6 @@ public class MainActivity2 extends MVPBaseActivity<MainContract.View, MainPresen
         }
     }
 
-    /**
-     * 循环执行测量
-     */
-    private void doLoop() {
-        if (isTest && queue != null) {
-            Integer integer = queue.poll();
-            if (integer != null) {
-                PK30DataUtils.setModel(integer);
-            } else {
-                test();
-            }
-
-        }
-    }
 
     private void initBluetooth() {
         Handler handler = new Handler();
@@ -363,37 +289,25 @@ public class MainActivity2 extends MVPBaseActivity<MainContract.View, MainPresen
                     break;
 
                 case R.id.btn_length:
-                    PK30DataUtils.setModel(0);
+                    PK30DataUtils.setModel(4);
                     break;
                 case R.id.btn_width:
-                    PK30DataUtils.setModel(1);
+                    PK30DataUtils.setModel(4);
                     break;
                 case R.id.btn_height:
-                    PK30DataUtils.setModel(2);
+                    PK30DataUtils.setModel(4);
                     break;
                 case R.id.btn_weight:
-                    PK30DataUtils.setModel(3);
+                    PK30DataUtils.setModel(4);
                     break;
 
-                case R.id.btn_test:
-                    boolean b = test();
-                    if (b) {
-                        radioButton1.setEnabled(false);
-                        radioButton2.setEnabled(false);
-                        radioButton3.setEnabled(false);
-                        radioButton4.setEnabled(false);
-                        mBtnSoftware.setEnabled(false);
-                        mBtnHardware.setEnabled(false);
-                        mBtnFengming.setEnabled(false);
-                        mBtnClose.setEnabled(false);
-                        mBtnTest.setEnabled(false);
-                        mBtnTestClose.setEnabled(true);
+                case R.id.btn_change:
+
+                    if ((System.currentTimeMillis() - mkeyTime) > 500) {
+                        PK30DataUtils.setModel(4);
+                        mkeyTime = System.currentTimeMillis();
                     }
 
-                    break;
-
-                case R.id.btn_test_close:
-                    testClose();
                     break;
 
                 case R.id.btn_close:
@@ -409,7 +323,6 @@ public class MainActivity2 extends MVPBaseActivity<MainContract.View, MainPresen
                     startScanAct();
                     break;
 
-
                 default:
                     break;
             }
@@ -419,97 +332,11 @@ public class MainActivity2 extends MVPBaseActivity<MainContract.View, MainPresen
 
     }
 
-
-    private void testClose() {
-        isTest = false;
-        radioButton1.setEnabled(true);
-        radioButton2.setEnabled(true);
-        radioButton3.setEnabled(true);
-        radioButton4.setEnabled(true);
-        mBtnSoftware.setEnabled(true);
-        mBtnHardware.setEnabled(true);
-        mBtnFengming.setEnabled(true);
-        mBtnClose.setEnabled(true);
-        mBtnTest.setEnabled(true);
-        mBtnTestClose.setEnabled(false);
-    }
-
-    @Override
-    public void onCheckedChanged(RadioGroup group, int checkedId) {
-        switch (checkedId) {
-            case R.id.radioButton1:
-                //sp保存结果
-                SpUtils.put(MyApp.getInstance(), MODEL, 0);
-                break;
-            case R.id.radioButton2:
-                //sp保存结果
-                SpUtils.put(MyApp.getInstance(), MODEL, 1);
-                break;
-            case R.id.radioButton3:
-                //sp保存结果
-                SpUtils.put(MyApp.getInstance(), MODEL, 2);
-                break;
-            case R.id.radioButton4:
-                //sp保存结果
-                SpUtils.put(MyApp.getInstance(), MODEL, 3);
-                break;
-            default:
-                break;
-        }
-    }
-
-    /**
-     * 启动测试
-     */
-    private boolean test() {
-        queue = new LinkedList<Integer>();
-        isTest = true;
-
-        boolean ckgzChecked = radioButton1.isChecked();
-        boolean zckghChecked = radioButton2.isChecked();
-        boolean changChecked = radioButton3.isChecked();
-        boolean zhongChecked = radioButton4.isChecked();
-        if (ckgzChecked) {
-            //长宽高重量
-            queue.offer(0);
-            queue.offer(1);
-            queue.offer(2);
-            queue.offer(3);
-        } else if (zckghChecked) {
-            //重量长宽高
-            queue.offer(3);
-            queue.offer(0);
-            queue.offer(1);
-            queue.offer(2);
-        } else if (changChecked) {
-            //长
-            queue.offer(0);
-        } else if (zhongChecked) {
-            //重量
-            queue.offer(3);
-        }
-
-//        boolean checked = mCbScan.isChecked();
-//        if (checked) {
-//            startScanAct();
-//        } else {
-        if (queue.size() != 0) {
-            doLoop();
-        } else {
-            Toast.makeText(this, getString(R.string.Please_first_check), Toast.LENGTH_SHORT).show();
-            return false;
-        }
-
-        //      }
-        return true;
-    }
-
     private void startScanAct() {
         Intent intent = new Intent(this, CommonScanActivity.class);
         intent.putExtra(Constant.REQUEST_SCAN_MODE, Constant.REQUEST_SCAN_MODE_BARCODE_MODE);
         startActivity(intent);
     }
-
 
     private void closeBle() {
         MyApp.getInstance().wantDisconnectBle();
@@ -518,7 +345,6 @@ public class MainActivity2 extends MVPBaseActivity<MainContract.View, MainPresen
         Log.d("ZM_connect", "点击了断开");
         mIvOn.setVisibility(View.GONE);
     }
-
 
     /**
      * 权限申请
@@ -572,7 +398,6 @@ public class MainActivity2 extends MVPBaseActivity<MainContract.View, MainPresen
         }
     };
 
-
     /**
      * 得到软件显示版本信息
      *
@@ -590,7 +415,6 @@ public class MainActivity2 extends MVPBaseActivity<MainContract.View, MainPresen
         }
         return verName;
     }
-
 
     //返回键监听
     private long mkeyTime = 0;

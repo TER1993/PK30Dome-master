@@ -94,5 +94,6 @@
     <string name="Scan_again">Scan again</string>
     <string name="The_picture_is_incorrect">The picture is incorrect, or the picture is blurred!</string>
     <string name="Camera_open_error">Camera open error, please check if this permission is disabled!</string>
+    <string name="switch_mode">Switch mode</string>
 
 </resources>

@@ -182,7 +182,7 @@ public class PK30DataUtils {
 
 
     /**
-     * 设置测量模式
+     * 设置测量模式,4为切换按钮指令
      */
     public static void setModel(int model) {
         switch (model) {
@@ -198,6 +198,11 @@ public class PK30DataUtils {
             case 3:
                 BaseBleApplication.writeCharacteristic3(new byte[]{(byte) 0xAA, 0x57, 0x01, (byte) 0x02, 0x00});
                 break;
+
+            case 4:
+                BaseBleApplication.writeCharacteristic3(new byte[]{(byte) 0xAA, 0x60, 0x01});
+                break;
+
             default:
                 break;
         }
@@ -339,7 +344,7 @@ public class PK30DataUtils {
 //        BigInteger xiShuB = new BigInteger(xiShu, 16);
         int weightInt = weightB.intValue();
 //        int xiShuInt = xiShuB.intValue();
-        double f1 = (double) weightInt  / 100;
+        double f1 = (double) weightInt / 100;
         BigDecimal b = new BigDecimal(f1);
         double resultDouble = b.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
         if ("01".equals(fuHao)) {
