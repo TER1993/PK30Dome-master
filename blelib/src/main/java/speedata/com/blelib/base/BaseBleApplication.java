@@ -1,5 +1,9 @@
 package speedata.com.blelib.base;
 
+import static speedata.com.blelib.service.BluetoothLeService.ACTION_DATA_AVAILABLE;
+import static speedata.com.blelib.service.BluetoothLeService.ACTION_GATT_CONNECTED;
+import static speedata.com.blelib.service.BluetoothLeService.ACTION_GATT_DISCONNECTED;
+
 import android.app.Application;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGattCharacteristic;
@@ -19,10 +23,6 @@ import java.util.List;
 
 import speedata.com.blelib.service.BluetoothLeService;
 import speedata.com.blelib.utils.DataManageUtils;
-
-import static speedata.com.blelib.service.BluetoothLeService.ACTION_DATA_AVAILABLE;
-import static speedata.com.blelib.service.BluetoothLeService.ACTION_GATT_CONNECTED;
-import static speedata.com.blelib.service.BluetoothLeService.ACTION_GATT_DISCONNECTED;
 
 /**
  * Created by 张明_ on 2017/9/5.
@@ -198,11 +198,16 @@ public class BaseBleApplication extends Application {
             List<BluetoothGattCharacteristic> gattCharacteristics = gattService.getCharacteristics();
             for (BluetoothGattCharacteristic gattCharacteristic : gattCharacteristics) {
                 uuid = gattCharacteristic.getUuid().toString();
-                if ("0000fff3-0000-1000-8000-00805f9b34fb".equals(uuid)) {
+                //发送 write
+                Log.d(TAG, "gattCharacteristic: " + uuid);
+                if ("0000b352-d6d8-c7ec-bdf0-eab1bfc6bcbc".equals(uuid)) {
                     mNotifyCharacteristic3 = gattCharacteristic;
+                    Log.d("ZM", "mNotifyCharacteristic3:" + mNotifyCharacteristic3);
                     setCharacteristicNotification(mNotifyCharacteristic3, true);
-                } else if ("0000fff6-0000-1000-8000-00805f9b34fb".equals(uuid)) {
+                    //接收 notify
+                } else if ("0000b351-d6d8-c7ec-bdf0-eab1bfc6bcbc".equals(uuid)) {
                     mNotifyCharacteristic6 = gattCharacteristic;
+                    Log.d("ZM", "mNotifyCharacteristic6:" + mNotifyCharacteristic6);
                     setCharacteristicNotification(mNotifyCharacteristic6, true);
                 }
             }

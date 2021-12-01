@@ -116,7 +116,7 @@ public class MainActivity2 extends MVPBaseActivity<MainContract.View, MainPresen
         }
 
         initView();
-        mBtnTestClose.setEnabled(false);
+       // mBtnTestClose.setEnabled(false);
 
     }
 
@@ -136,47 +136,52 @@ public class MainActivity2 extends MVPBaseActivity<MainContract.View, MainPresen
         mWeight = findViewById(R.id.tv_weight);
 
 
-        mBtnTest = findViewById(R.id.btn_test);
-        mBtnTest.setOnClickListener(this);
+        findViewById(R.id.btn_length).setOnClickListener(this);
+        findViewById(R.id.btn_width).setOnClickListener(this);
+        findViewById(R.id.btn_height).setOnClickListener(this);
+        findViewById(R.id.btn_weight).setOnClickListener(this);
+
+//        mBtnTest = findViewById(R.id.btn_test);
+//        mBtnTest.setOnClickListener(this);
 
 
         //radio部分
-        radioGroup = findViewById(R.id.radioGroup);
-        radioButton1 = findViewById(R.id.radioButton1);
-        radioButton2 = findViewById(R.id.radioButton2);
-        radioButton3 = findViewById(R.id.radioButton3);
-        radioButton4 = findViewById(R.id.radioButton4);
-
-        radioGroup.setOnCheckedChangeListener(this);
+//        radioGroup = findViewById(R.id.radioGroup);
+//        radioButton1 = findViewById(R.id.radioButton1);
+//        radioButton2 = findViewById(R.id.radioButton2);
+//        radioButton3 = findViewById(R.id.radioButton3);
+//        radioButton4 = findViewById(R.id.radioButton4);
+//
+//        radioGroup.setOnCheckedChangeListener(this);
         //sp保存状态
-        seButtonChecked();
+        //seButtonChecked();
 
-        mTvSoftware = findViewById(R.id.tv_software);
-        mTvHardware = findViewById(R.id.tv_hardware);
-        mBtnFengming = findViewById(R.id.btn_fengming);
-        mBtnFengming.setOnClickListener(this);
+//        mTvSoftware = findViewById(R.id.tv_software);
+//        mTvHardware = findViewById(R.id.tv_hardware);
+//        mBtnFengming = findViewById(R.id.btn_fengming);
+//        mBtnFengming.setOnClickListener(this);
 
-        mProgress = findViewById(R.id.progress);
-        mProgress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                mTvSeekbarValue.setText((progress + 50) + "");
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-        mTvSeekbarValue = findViewById(R.id.tv_seekbar_value);
-        mBtnClose = findViewById(R.id.btn_close);
-        mBtnClose.setOnClickListener(this);
+//        mProgress = findViewById(R.id.progress);
+//        mProgress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+//            @SuppressLint("SetTextI18n")
+//            @Override
+//            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+//                mTvSeekbarValue.setText((progress + 50) + "");
+//            }
+//
+//            @Override
+//            public void onStartTrackingTouch(SeekBar seekBar) {
+//
+//            }
+//
+//            @Override
+//            public void onStopTrackingTouch(SeekBar seekBar) {
+//
+//            }
+//        });
+//        mTvSeekbarValue = findViewById(R.id.tv_seekbar_value);
+//        mBtnClose = findViewById(R.id.btn_close);
+//        mBtnClose.setOnClickListener(this);
         mLl = findViewById(R.id.ll);
         mDeviceName = findViewById(R.id.device_name);
         mDeviceAddress = findViewById(R.id.device_address);
@@ -200,14 +205,14 @@ public class MainActivity2 extends MVPBaseActivity<MainContract.View, MainPresen
                     .setDimAmount(0.5f);
         }
 
-        mBtnTestClose = findViewById(R.id.btn_test_close);
-        mBtnTestClose.setOnClickListener(this);
-        mBtnSoftware = findViewById(R.id.btn_software);
-        mBtnSoftware.setOnClickListener(this);
-        mBtnHardware = findViewById(R.id.btn_hardware);
-        mBtnHardware.setOnClickListener(this);
-        mTvVersion = findViewById(R.id.tv_version);
-        mTvVersion.setText("V" + getVerName(getApplicationContext()));
+//        mBtnTestClose = findViewById(R.id.btn_test_close);
+//        mBtnTestClose.setOnClickListener(this);
+//        mBtnSoftware = findViewById(R.id.btn_software);
+//        mBtnSoftware.setOnClickListener(this);
+//        mBtnHardware = findViewById(R.id.btn_hardware);
+//        mBtnHardware.setOnClickListener(this);
+//        mTvVersion = findViewById(R.id.tv_version);
+//        mTvVersion.setText("V" + getVerName(getApplicationContext()));
     }
 
 
@@ -363,7 +368,11 @@ public class MainActivity2 extends MVPBaseActivity<MainContract.View, MainPresen
                     break;
 
                 case R.id.btn_length:
-                    PK30DataUtils.setModel(0);
+                    //PK30DataUtils.setModel(0);
+
+                    //按钮点击事件，发数据出去。
+                    PK30DataUtils.setOne(MyApp.name);
+
                     break;
                 case R.id.btn_width:
                     PK30DataUtils.setModel(1);

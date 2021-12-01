@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.UUID;
 
 import speedata.com.blelib.bean.SampleGattAttributes;
+import speedata.com.blelib.utils.ByteUtils;
 import speedata.com.blelib.utils.DataManageUtils;
 import speedata.com.blelib.utils.PK30DataUtils;
 
@@ -145,10 +146,27 @@ public class BluetoothLeService extends Service {
         sendBroadcast(intent);
     }
 
+    /**
+     * 是否接收1结束
+     */
+    private boolean over = true;
+    /**
+     * 1的完整命令
+     */
+    private byte[] all = new byte[27];
+    /**
+     * 1的第一段20长度部分
+     */
+    private byte[] all1 = new byte[20];
+    /**
+     * 1的第二段7长度部分
+     */
+    private byte[] all2 = new byte[7];
+
     private void broadcastUpdate(final String action,
                                  final BluetoothGattCharacteristic characteristic) {
         final Intent intent = new Intent(action);
-
+        Log.d(TAG, "characteristic:" + characteristic.getUuid());
         // This is special handling for the Heart Rate Measurement profile.  Data parsing is
         // carried out as per profile specifications:
         // http://developer.bluetooth.org/gatt/characteristics/Pages/CharacteristicViewer.aspx?u=org.bluetooth.characteristic.heart_rate_measurement.xml
@@ -166,7 +184,8 @@ public class BluetoothLeService extends Service {
             Log.d(TAG, String.format("Received heart rate: %d", heartRate));
             intent.putExtra(EXTRA_DATA, String.valueOf(heartRate));
             sendBroadcast(intent);
-        } else if ("0000fff6-0000-1000-8000-00805f9b34fb".equals(characteristic.getUuid().toString())) {
+            //就这一个接收
+        } else if ("0000b351-d6d8-c7ec-bdf0-eab1bfc6bcbc".equals(characteristic.getUuid().toString())) {
             final byte[] data = characteristic.getValue();
             String bytesToHexString = DataManageUtils.bytesToHexString(data);
             Log.d("ZM", "信道6接收: " + bytesToHexString);
@@ -175,59 +194,78 @@ public class BluetoothLeService extends Service {
                 sendBroadcast(intent);
                 return;
             }
-            boolean checkData = PK30DataUtils.checkData(data);
+
+            if (data.length == 20 && data[9] == (byte) 0x01 && over) {
+                over = false;
+                all1 = data;
+                Log.d("ZM", "all1: " + DataManageUtils.bytesToHexString(all1));
+                return;
+            } else if (data.length == 7 && !over) {
+                over = true;
+                all2 = data;
+                Log.d("ZM", "all2: " + DataManageUtils.bytesToHexString(all2));
+                all = ByteUtils.concatAll(all1, all2);
+                Log.d("ZM", "all: " + DataManageUtils.bytesToHexString(all));
+                boolean checkData = PK30DataUtils.checkData2(all);
+                Log.d("ZM", "checkData: " + checkData);
+                // TODO: 2021/12/1/001 校验好了之后再用它
+//                if (!checkData) {
+//                    Log.d("ZM", "数据错误");
+//                    intent.putExtra(NOTIFICATION_DATA_ERR, "数据错误" + bytesToHexString);
+//                    sendBroadcast(intent);
+//                    return;
+//                }
+                if (all[9] == (byte) 0x01) {
+                    Log.d("ZM", "readOne");
+                    //矿灯主叫测定器数据命令返回，3种气体数据AA，甲烷 氧气 一氧化碳
+                    //根据命令，获取显示数据
+                    PK30DataUtils.readOne(BluetoothLeService.this, intent, all);
+                }
+                return;
+            }
+
+            boolean checkData = PK30DataUtils.checkData2(data);
+
             if (!checkData) {
                 PK30DataUtils.replyError(data);
                 intent.putExtra(NOTIFICATION_DATA_ERR, "数据错误" + bytesToHexString);
                 sendBroadcast(intent);
                 return;
             }
-            if (data[1] == (byte) 0x0A || data[1] == (byte) 0x0B || data[1] == (byte) 0x0C || data[1] == (byte) 0x0D) {
-                sendLWHGData(intent, data);
-            } else if (data[1] == (byte) 0xD1) {
+
+            if (data[1] == (byte) 0x02) {
+                //高报警值 区分每种气体
+
+
                 PK30DataUtils.analysisMac(BluetoothLeService.this, intent, data);
-            } else if (data[1] == (byte) 0xD2) {
+            } else if (data[1] == (byte) 0x03) {
+                //低报警值 区分每种气体
                 PK30DataUtils.analysisSoftware(BluetoothLeService.this, intent, data);
-            } else if (data[1] == (byte) 0xD3) {
+            } else if (data[1] == (byte) 0x04) {
+                //调零 区分每种气体
                 PK30DataUtils.analysisHardware(BluetoothLeService.this, intent, data);
-            } else if (data[1] == (byte) 0xD4 || data[1] == (byte) 0xD5 || data[1] == (byte) 0xD6 || data[1] == (byte) 0xD7) {
+            } else if (data[1] == (byte) 0x05) {
+                //校准 区分每种气体
                 PK30DataUtils.analysisMdoel(BluetoothLeService.this, intent, data);
-            } else if (data[1] == (byte) 0xD8) {
-                if(data[2] == (byte) 0x02 && data[3] == (byte) 0x01 && data[4] == (byte) 0x85){
+            } else if (data[1] == (byte) 0x06) {
+                //标气值 区分每种气体
+                if (data[2] == (byte) 0x02 && data[3] == (byte) 0x01 && data[4] == (byte) 0x85) {
                     intent.putExtra(NOTIFICATION_DIDIAN, bytesToHexString);
                     sendBroadcast(intent);
                 } else {
                     PK30DataUtils.analysisShutdown(BluetoothLeService.this, intent, data);
                 }
 
-            } else if (data[1] == (byte) 0xD9) {
+            } else if (data[1] == (byte) 0x07) {
+                //复位 固定指令 除蓝牙名
+                PK30DataUtils.analysisFengMing(BluetoothLeService.this, intent, data);
+            } else if (data[1] == (byte) 0x08) {
+                //修改蓝牙名称 固定指令 除了新名字
                 PK30DataUtils.analysisFengMing(BluetoothLeService.this, intent, data);
             } else {
-                intent.putExtra(NOTIFICATION_DATA_ERR, "数据错误" + bytesToHexString);
+                intent.putExtra(NOTIFICATION_DATA_ERR, "其他" + bytesToHexString);
                 sendBroadcast(intent);
             }
-        } else {
-            // For all other profiles, writes the data formatted in HEX.
-            // 对于所有其他配置文件，用十六进制格式编写数据。
-            final byte[] data = characteristic.getValue();
-            Log.d("ZM", "信道3接收: " + DataManageUtils.bytesToHexString(data));
-            if (data == null) {
-                intent.putExtra(NOTIFICATION_DATA_ERR, "数据为空");
-                sendBroadcast(intent);
-                return;
-            }
-            boolean checkData = PK30DataUtils.checkData(data);
-            if (!checkData) {
-                intent.putExtra(NOTIFICATION_DATA_ERR, "数据错误");
-                sendBroadcast(intent);
-                return;
-            }
-            final StringBuilder stringBuilder = new StringBuilder(data.length);
-            for (byte byteChar : data) {
-                stringBuilder.append(String.format("%02X ", byteChar));
-            }
-            intent.putExtra(EXTRA_DATA, stringBuilder.toString());
-            sendBroadcast(intent);
         }
     }
 

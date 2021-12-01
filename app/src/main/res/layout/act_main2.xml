@@ -117,8 +117,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:padding="10dp"
-            >
+            android:padding="10dp">
 
             <Button
                 android:id="@+id/btn_height"
@@ -162,21 +161,6 @@
                 android:text="kg"
                 tools:ignore="RtlHardcoded" />
         </LinearLayout>
-
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/black" />
-
-        <include layout="@layout/item_main_test" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/black" />
-
-        <include layout="@layout/item_main_version" />
 
 
         <TextView

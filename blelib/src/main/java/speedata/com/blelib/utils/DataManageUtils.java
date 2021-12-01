@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigInteger;
 import java.util.Objects;
 
 /**
@@ -221,7 +222,6 @@ public class DataManageUtils {
     }
 
 
-
     @NonNull
     public static String toHexString(int result) {
         String toHexString = Integer.toHexString(result).toUpperCase();
@@ -233,7 +233,6 @@ public class DataManageUtils {
         }
         return toHexString;
     }
-
 
 
     //16进制转换为ASCII
@@ -380,5 +379,84 @@ public class DataManageUtils {
         byte[] bytess = new byte[length];
         System.arraycopy(bytes, off, bytess, 0, length);
         return bytess;
+    }
+
+
+    public static String stringToAscii(String value) {
+        StringBuffer sbu = new StringBuffer();
+        char[] chars = value.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            if (i != chars.length - 1) {
+                sbu.append(Integer.toHexString((int) chars[i]));
+            } else {
+                sbu.append(Integer.toHexString((int) chars[i]));
+            }
+        }
+        return sbu.toString();
+    }
+
+    public static String exChange(String str) {
+        StringBuffer sb = new StringBuffer();
+        if (str != null) {
+            for (int i = 0; i < str.length(); i++) {
+                char c = str.charAt(i);
+                if (Character.isUpperCase(c)) {
+                    sb.append(c);
+                } else if (Character.isLowerCase(c)) {
+                    sb.append(Character.toUpperCase(c));
+                } else {
+                    sb.append(c);
+                }
+            }
+        }
+
+        return sb.toString();
+    }
+
+
+    /**
+     * 计算CRC16校验码
+     *
+     * @param bytes 字节数组
+     * @return {@link String} 校验码
+     * @since 1.0
+     */
+    public static String getCRC(byte[] bytes) {
+        int CRC = 0x0000ffff;
+        int POLYNOMIAL = 0x0000a001;
+        int i, j;
+        for (i = 0; i < bytes.length; i++) {
+            CRC ^= ((int) bytes[i] & 0x000000ff);
+            for (j = 0; j < 8; j++) {
+                if ((CRC & 0x00000001) != 0) {
+                    CRC >>= 1;
+                    CRC ^= POLYNOMIAL;
+                } else {
+                    CRC >>= 1;
+                }
+            }
+        }
+        return Integer.toHexString(CRC);
+    }
+
+    /**
+     * 将16进制单精度浮点型转换为10进制浮点型
+     *
+     * @return float
+     * @since 1.0
+     */
+    private float parseHex2Float(String hexStr) {
+        BigInteger bigInteger = new BigInteger(hexStr, 16);
+        return Float.intBitsToFloat(bigInteger.intValue());
+    }
+
+    /**
+     * 将十进制浮点型转换为十六进制浮点型
+     *
+     * @return String
+     * @since 1.0
+     */
+    private String parseFloat2Hex(float data) {
+        return Integer.toHexString(Float.floatToIntBits(data));
     }
 }
