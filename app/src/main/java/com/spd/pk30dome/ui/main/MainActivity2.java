@@ -7,18 +7,14 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,8 +28,7 @@ import com.liang.scancode.utils.Constant;
 import com.spd.pk30dome.MyApp;
 import com.spd.pk30dome.R;
 import com.spd.pk30dome.mvp.MVPBaseActivity;
-import com.spd.pk30dome.utils.PlaySound;
-import com.spd.pk30dome.utils.SpUtils;
+import com.spd.pk30dome.utils.ToastUtils;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.PermissionListener;
 
@@ -41,13 +36,10 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Queue;
 
 import speedata.com.blelib.base.BaseBleApplication;
-import speedata.com.blelib.utils.DataManageUtils;
 import speedata.com.blelib.utils.PK30DataUtils;
 
 /**
@@ -57,49 +49,31 @@ import speedata.com.blelib.utils.PK30DataUtils;
  * @author xuyan
  */
 
-public class MainActivity2 extends MVPBaseActivity<MainContract.View, MainPresenter> implements MainContract.View, View.OnClickListener, RadioGroup.OnCheckedChangeListener {
+public class MainActivity2 extends MVPBaseActivity<MainContract.View, MainPresenter> implements MainContract.View, View.OnClickListener {
 
-    private Button mBtnTest;
-
-    private RadioGroup radioGroup;
-    private RadioButton radioButton1;
-    private RadioButton radioButton2;
-    private RadioButton radioButton3;
-    private RadioButton radioButton4;
-
-
-    private TextView mTvSoftware;
-    private TextView mTvHardware;
-    private Button mBtnFengming;
-    private SeekBar mProgress;
-    private TextView mTvSeekbarValue;
-    private Button mBtnClose;
     private LinearLayout mLl;
     private TextView mDeviceName;
     private TextView mDeviceAddress;
     private LinearLayout mIvOn;
-    private KProgressHUD kProgressHUD;
-    private Queue<Integer> queue;
-    //开始测试
-    private boolean isTest = false;
-    private Button mBtnTestClose;
-    private Button mBtnSoftware;
-    private Button mBtnHardware;
-    private TextView mTvVersion;
 
+    private TextView mOne;
+    private TextView mTwo;
+    private TextView mThree;
 
-    public static final int XISHU_XU = 5000;
+    private EditText mE1;
+    private EditText mE2;
+    private EditText mE3;
+    private EditText mE22;
+    private EditText mE61;
+    private EditText mE62;
+    private EditText mE63;
+    private EditText mName;
 
-    public static final String MAIN_NUMBER = "MAIN_NUMBER";
+    private TextView mTypeShow;
+    private TextView mReceive;
 
-    public static final String MODEL = "MODEL";
-
-
-    private TextView mLength;
-    private TextView mWidth;
-    private TextView mHeight;
-    private TextView mWeight;
-
+    private String mType = "";
+    private int type = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -116,10 +90,8 @@ public class MainActivity2 extends MVPBaseActivity<MainContract.View, MainPresen
         }
 
         initView();
-       // mBtnTestClose.setEnabled(false);
 
     }
-
 
     @Override
     protected void onDestroy() {
@@ -130,58 +102,53 @@ public class MainActivity2 extends MVPBaseActivity<MainContract.View, MainPresen
     @SuppressLint("SetTextI18n")
     private void initView() {
 
-        mLength = findViewById(R.id.tv_length);
-        mWidth = findViewById(R.id.tv_width);
-        mHeight = findViewById(R.id.tv_height);
-        mWeight = findViewById(R.id.tv_weight);
+        //显示气体结果
+        mOne = findViewById(R.id.tv_show_one);
+        mTwo = findViewById(R.id.tv_show_two);
+        mThree = findViewById(R.id.tv_show_three);
 
+        Button mb1 = findViewById(R.id.btn_one);
+        mb1.setOnClickListener(this);
+        Button mb2 = findViewById(R.id.btn_two);
+        mb2.setOnClickListener(this);
+        Button mb3 = findViewById(R.id.btn_three);
+        mb3.setOnClickListener(this);
 
-        findViewById(R.id.btn_length).setOnClickListener(this);
-        findViewById(R.id.btn_width).setOnClickListener(this);
-        findViewById(R.id.btn_height).setOnClickListener(this);
-        findViewById(R.id.btn_weight).setOnClickListener(this);
+        Button mq1 = findViewById(R.id.btn_ch4);
+        mq1.setOnClickListener(this);
+        Button mq2 = findViewById(R.id.btn_o2);
+        mq2.setOnClickListener(this);
+        Button mq3 = findViewById(R.id.btn_co);
+        mq3.setOnClickListener(this);
 
-//        mBtnTest = findViewById(R.id.btn_test);
-//        mBtnTest.setOnClickListener(this);
+        mE1 = findViewById(R.id.et_two_one);
+        mE2 = findViewById(R.id.et_two_two);
+        mE3 = findViewById(R.id.et_two_three);
+        mE22 = findViewById(R.id.et_three_two);
+        mE61 = findViewById(R.id.et_six_one);
+        mE62 = findViewById(R.id.et_six_two);
+        mE63 = findViewById(R.id.et_six_three);
 
+        mTypeShow = findViewById(R.id.tv_type);
+        mReceive = findViewById(R.id.tv_receive);
 
-        //radio部分
-//        radioGroup = findViewById(R.id.radioGroup);
-//        radioButton1 = findViewById(R.id.radioButton1);
-//        radioButton2 = findViewById(R.id.radioButton2);
-//        radioButton3 = findViewById(R.id.radioButton3);
-//        radioButton4 = findViewById(R.id.radioButton4);
-//
-//        radioGroup.setOnCheckedChangeListener(this);
-        //sp保存状态
-        //seButtonChecked();
+        Button mFour = findViewById(R.id.btn_four);
+        mFour.setOnClickListener(this);
 
-//        mTvSoftware = findViewById(R.id.tv_software);
-//        mTvHardware = findViewById(R.id.tv_hardware);
-//        mBtnFengming = findViewById(R.id.btn_fengming);
-//        mBtnFengming.setOnClickListener(this);
+        Button mFive = findViewById(R.id.btn_five);
+        mFive.setOnClickListener(this);
 
-//        mProgress = findViewById(R.id.progress);
-//        mProgress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-//            @SuppressLint("SetTextI18n")
-//            @Override
-//            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-//                mTvSeekbarValue.setText((progress + 50) + "");
-//            }
-//
-//            @Override
-//            public void onStartTrackingTouch(SeekBar seekBar) {
-//
-//            }
-//
-//            @Override
-//            public void onStopTrackingTouch(SeekBar seekBar) {
-//
-//            }
-//        });
-//        mTvSeekbarValue = findViewById(R.id.tv_seekbar_value);
-//        mBtnClose = findViewById(R.id.btn_close);
-//        mBtnClose.setOnClickListener(this);
+        Button mSix = findViewById(R.id.btn_six);
+        mSix.setOnClickListener(this);
+
+        Button mSeven = findViewById(R.id.btn_seven);
+        mSeven.setOnClickListener(this);
+
+        mName = findViewById(R.id.et_name);
+
+        Button mEight = findViewById(R.id.btn_eight);
+        mEight.setOnClickListener(this);
+
         mLl = findViewById(R.id.ll);
         mDeviceName = findViewById(R.id.device_name);
         mDeviceAddress = findViewById(R.id.device_address);
@@ -189,6 +156,7 @@ public class MainActivity2 extends MVPBaseActivity<MainContract.View, MainPresen
         mIvOn.setOnClickListener(this);
 
         boolean cn = "CN".equals(getApplicationContext().getResources().getConfiguration().locale.getCountry());
+        KProgressHUD kProgressHUD;
         if (cn) {
             kProgressHUD = KProgressHUD.create(getApplicationContext())
                     .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
@@ -205,36 +173,6 @@ public class MainActivity2 extends MVPBaseActivity<MainContract.View, MainPresen
                     .setDimAmount(0.5f);
         }
 
-//        mBtnTestClose = findViewById(R.id.btn_test_close);
-//        mBtnTestClose.setOnClickListener(this);
-//        mBtnSoftware = findViewById(R.id.btn_software);
-//        mBtnSoftware.setOnClickListener(this);
-//        mBtnHardware = findViewById(R.id.btn_hardware);
-//        mBtnHardware.setOnClickListener(this);
-//        mTvVersion = findViewById(R.id.tv_version);
-//        mTvVersion.setText("V" + getVerName(getApplicationContext()));
-    }
-
-
-    private void seButtonChecked() {
-
-        switch ((Integer) SpUtils.get(MyApp.getInstance(), MODEL, 0)) {
-            case 0:
-                radioButton1.setChecked(true);
-                break;
-            case 1:
-                radioButton2.setChecked(true);
-                break;
-            case 2:
-                radioButton3.setChecked(true);
-                break;
-            case 3:
-                radioButton4.setChecked(true);
-                break;
-            default:
-                break;
-
-        }
     }
 
 
@@ -246,7 +184,6 @@ public class MainActivity2 extends MVPBaseActivity<MainContract.View, MainPresen
         if ("ServiceConnectedStatus".equals(type)) {
             boolean result = (boolean) msg;
             Log.d("ZM_connect", "First:" + result);
-
             if (result) {
                 mLl.setVisibility(View.VISIBLE);
                 Log.d("ZM_connect", "显示连接按键");
@@ -254,100 +191,92 @@ public class MainActivity2 extends MVPBaseActivity<MainContract.View, MainPresen
                 mDeviceName.setText("Name：" + MyApp.name);
                 mIvOn.setVisibility(View.VISIBLE);
             } else {
-                testClose();
                 mLl.setVisibility(View.GONE);
                 Log.d("ZM_connect", "隐藏连接按键");
                 mIvOn.setVisibility(View.GONE);
             }
             Log.d("ZM_connect", "" + result);
-
         } else if ("Save6DataErr".equals(type)) {
             Toast.makeText(MainActivity2.this, (String) msg, Toast.LENGTH_SHORT).show();
-        } else if ("L".equals(type)) {
+        } else if ("ONE1".equals(type)) {
             String string = (String) msg;
-            mLength.setText(string);
-            doLoop();
-        } else if ("W".equals(type)) {
+            mOne.setText(string);
+        } else if ("ONE2".equals(type)) {
             String string = (String) msg;
-            mWidth.setText(string);
-            doLoop();
-        } else if ("H".equals(type)) {
+            mTwo.setText(string);
+        } else if ("ONE3".equals(type)) {
             String string = (String) msg;
-            mHeight.setText(string);
-            doLoop();
-        } else if ("G".equals(type)) {
+            mThree.setText(string);
+        } else if ("TWO".equals(type)) {
             String string = (String) msg;
-            mWeight.setText(string);
-            doLoop();
-        } else if ("SOFT".equals(type)) {
-            mTvSoftware.setText(msg + "");
-        } else if ("HARD".equals(type)) {
-            mTvHardware.setText(msg + "");
-        } else if ("codeResult".equals(type)) {
-
-            // mOddNumber.setText(msg + "");
-            //doLoop();
-
-        } else if ("MODEL".equals(type)) {
-            String string = (String) msg;
-            switch (string) {
-                case "00":
-                    string = getString(R.string.Mode_change);
-                    break;
-                case "02":
-                    string = getString(R.string.Mode_change_to_w);
-                    break;
-                case "03":
-                    string = getString(R.string.Mode_change_to_h);
-                    break;
-                case "01":
-                    string = getString(R.string.Change_mode_to_wei);
-                    break;
-                default:
-                    break;
+            if ("A1".equals(string)) {
+                string = "甲烷高报警值已接收";
+            } else if ("A4".equals(string)) {
+                string = "氧气高报警值已接收";
+            } else if ("A2".equals(string)) {
+                string = "一氧化碳高报警值已接收";
             }
-            Toast.makeText(this, string, Toast.LENGTH_SHORT).show();
-        } else if ("SHUTDOWN".equals(type)) {
+            mReceive.setText(string);
+        } else if ("THREE".equals(type)) {
             String string = (String) msg;
-            if ("01".equals(string)) {
-                Toast.makeText(MainActivity2.this, getString(R.string.Shut_down_successfully), Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(MainActivity2.this, getString(R.string.Shutdown_failed), Toast.LENGTH_SHORT).show();
+            if ("A1".equals(string)) {
+                string = "甲烷低报警值已接收";
+            } else if ("A4".equals(string)) {
+                string = "氧气低报警值已接收";
+            } else if ("A2".equals(string)) {
+                string = "一氧化碳低报警值已接收";
             }
-        } else if ("FENGMING".equals(type)) {
+            mReceive.setText(string);
+        } else if ("FOUR".equals(type)) {
             String string = (String) msg;
-            int toInt = DataManageUtils.HexToInt(string);
-            Toast.makeText(MainActivity2.this, getString(R.string.The_buzzer) + toInt, Toast.LENGTH_SHORT).show();
-        } else if ("DIDIAN".equals(type)) {
-            PlaySound.play(PlaySound.channel_1, PlaySound.NO_CYCLE);
-            Toast.makeText(MainActivity2.this, "请注意，PK30低电。", Toast.LENGTH_LONG).show();
+            if ("A1".equals(string)) {
+                string = "甲烷调零已接收";
+            } else if ("A4".equals(string)) {
+                string = "氧气调零已接收";
+            } else if ("A2".equals(string)) {
+                string = "一氧化碳调零已接收";
+            }
+            mReceive.setText(string);
+        } else if ("FIVE".equals(type)) {
+            String string = (String) msg;
+            if ("A1".equals(string)) {
+                string = "甲烷校准已接收";
+            } else if ("A4".equals(string)) {
+                string = "氧气校准已接收";
+            } else if ("A2".equals(string)) {
+                string = "一氧化碳校准已接收";
+            }
+            mReceive.setText(string);
+        } else if ("SIX".equals(type)) {
+            String string = (String) msg;
+            if ("A1".equals(string)) {
+                string = "甲烷标气值已接收";
+            } else if ("A4".equals(string)) {
+                string = "氧气标气值已接收";
+            } else if ("A2".equals(string)) {
+                string = "一氧化碳标气值已接收";
+            }
+            mReceive.setText(string);
+        } else if ("SEVEN".equals(type)) {
+            String string = (String) msg;
+            if ("AA".equals(string)) {
+                string = "复位指令已接收";
+            }
+            mReceive.setText(string);
+        } else if ("EIGHT1".equals(type)) {
+            String string = (String) msg;
+            mReceive.setText("重命名指令已接收:" + string);
+            MyApp.name = string;
+        } else if ("EIGHT2".equals(type)) {
+            String string = (String) msg;
+            if ("AA".equals(string)) {
+                string = "重命名指令已接收";
+            }
+            ToastUtils.showShortToastSafe(string);
         }
     }
 
-    /**
-     * 循环执行测量
-     */
-    private void doLoop() {
-        if (isTest && queue != null) {
-            Integer integer = queue.poll();
-            if (integer != null) {
-                PK30DataUtils.setModel(integer);
-            } else {
-                test();
-            }
-
-        }
-    }
-
-    private void initBluetooth() {
-        Handler handler = new Handler();
-        //1秒后执行Runnable中的run方法,否则初始化失败
-        /*
-         *要执行的操作
-         */
-        handler.postDelayed(this::closeBle, 1000);
-    }
-
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
         if (BaseBleApplication.mNotifyCharacteristic3 != null) {
@@ -355,70 +284,106 @@ public class MainActivity2 extends MVPBaseActivity<MainContract.View, MainPresen
                 case R.id.btn_scan:
                     startScanAct();
                     break;
-
                 case R.id.iv_on:
                     closeBle();
                     break;
-
-                case R.id.btn_software:
-                    PK30DataUtils.getSoftware();
+                case R.id.btn_ch4:
+                    type = 1;
+                    mType = "A1";
+                    mTypeShow.setText("甲烷");
                     break;
-                case R.id.btn_hardware:
-                    PK30DataUtils.getHardware();
+                case R.id.btn_o2:
+                    type = 2;
+                    mType = "A4";
+                    mTypeShow.setText("氧气");
                     break;
-
-                case R.id.btn_length:
-                    //PK30DataUtils.setModel(0);
-
-                    //按钮点击事件，发数据出去。
+                case R.id.btn_co:
+                    type = 3;
+                    mType = "A2";
+                    mTypeShow.setText("一氧化碳");
+                    break;
+                case R.id.btn_one:
+                    //01命令。
                     PK30DataUtils.setOne(MyApp.name);
-
                     break;
-                case R.id.btn_width:
-                    PK30DataUtils.setModel(1);
-                    break;
-                case R.id.btn_height:
-                    PK30DataUtils.setModel(2);
-                    break;
-                case R.id.btn_weight:
-                    PK30DataUtils.setModel(3);
-                    break;
-
-                case R.id.btn_test:
-                    boolean b = test();
-                    if (b) {
-                        radioButton1.setEnabled(false);
-                        radioButton2.setEnabled(false);
-                        radioButton3.setEnabled(false);
-                        radioButton4.setEnabled(false);
-                        mBtnSoftware.setEnabled(false);
-                        mBtnHardware.setEnabled(false);
-                        mBtnFengming.setEnabled(false);
-                        mBtnClose.setEnabled(false);
-                        mBtnTest.setEnabled(false);
-                        mBtnTestClose.setEnabled(true);
+                case R.id.btn_two:
+                    String data;
+                    if (type == 1) {
+                        data = mE1.getText().toString();
+                    } else if (type == 2) {
+                        data = mE2.getText().toString();
+                    } else if (type == 3) {
+                        data = mE3.getText().toString();
+                    } else {
+                        ToastUtils.showShortToastSafe("请选择气体类型");
+                        return;
                     }
-
+                    if (data.length() != 4) {
+                        ToastUtils.showShortToastSafe("请输入正确的数据");
+                        return;
+                    }
+                    PK30DataUtils.setTwo(MyApp.name, mType, data);
                     break;
-
-                case R.id.btn_test_close:
-                    testClose();
+                case R.id.btn_three:
+                    String data3;
+                    data3 = mE22.getText().toString();
+                    if (data3.length() != 4) {
+                        ToastUtils.showShortToastSafe("请输入正确的数据");
+                        return;
+                    }
+                    PK30DataUtils.setThree(MyApp.name, "A4", data3);
                     break;
+                case R.id.btn_four:
+                    //04命令。
+                    if (type == 1 || type == 2 || type == 3) {
 
-                case R.id.btn_close:
-                    PK30DataUtils.shutdown();
-                    initBluetooth();
+                    } else {
+                        ToastUtils.showShortToastSafe("请选择气体类型");
+                        return;
+                    }
+                    PK30DataUtils.setFour(MyApp.name, mType);
                     break;
+                case R.id.btn_five:
+                    //04命令。
+                    if (type == 1 || type == 2 || type == 3) {
 
-                case R.id.btn_fengming:
-                    int time = Integer.parseInt(mTvSeekbarValue.getText().toString());
-                    PK30DataUtils.fengMing(time);
+                    } else {
+                        ToastUtils.showShortToastSafe("请选择气体类型");
+                        return;
+                    }
+                    PK30DataUtils.setFive(MyApp.name, mType);
                     break;
-                case R.id.sender_scan:
-                    startScanAct();
+                case R.id.btn_six:
+                    String data6;
+                    if (type == 1) {
+                        data6 = mE61.getText().toString();
+                    } else if (type == 2) {
+                        data6 = mE62.getText().toString();
+                    } else if (type == 3) {
+                        data6 = mE63.getText().toString();
+                    } else {
+                        ToastUtils.showShortToastSafe("请选择气体类型");
+                        return;
+                    }
+                    if (data6.length() != 4) {
+                        ToastUtils.showShortToastSafe("请输入正确的数据");
+                        return;
+                    }
+                    PK30DataUtils.setSix(MyApp.name, mType, data6);
                     break;
-
-
+                case R.id.btn_seven:
+                    //07命令。
+                    PK30DataUtils.setSeven(MyApp.name);
+                    break;
+                case R.id.btn_eight:
+                    String data8;
+                    data8 = mName.getText().toString();
+                    if (data8.length() != 8) {
+                        ToastUtils.showShortToastSafe("请输入正确的数据");
+                        return;
+                    }
+                    PK30DataUtils.setEight(data8);
+                    break;
                 default:
                     break;
             }
@@ -428,90 +393,6 @@ public class MainActivity2 extends MVPBaseActivity<MainContract.View, MainPresen
 
     }
 
-
-    private void testClose() {
-        isTest = false;
-        radioButton1.setEnabled(true);
-        radioButton2.setEnabled(true);
-        radioButton3.setEnabled(true);
-        radioButton4.setEnabled(true);
-        mBtnSoftware.setEnabled(true);
-        mBtnHardware.setEnabled(true);
-        mBtnFengming.setEnabled(true);
-        mBtnClose.setEnabled(true);
-        mBtnTest.setEnabled(true);
-        mBtnTestClose.setEnabled(false);
-    }
-
-    @Override
-    public void onCheckedChanged(RadioGroup group, int checkedId) {
-        switch (checkedId) {
-            case R.id.radioButton1:
-                //sp保存结果
-                SpUtils.put(MyApp.getInstance(), MODEL, 0);
-                break;
-            case R.id.radioButton2:
-                //sp保存结果
-                SpUtils.put(MyApp.getInstance(), MODEL, 1);
-                break;
-            case R.id.radioButton3:
-                //sp保存结果
-                SpUtils.put(MyApp.getInstance(), MODEL, 2);
-                break;
-            case R.id.radioButton4:
-                //sp保存结果
-                SpUtils.put(MyApp.getInstance(), MODEL, 3);
-                break;
-            default:
-                break;
-        }
-    }
-
-    /**
-     * 启动测试
-     */
-    private boolean test() {
-        queue = new LinkedList<Integer>();
-        isTest = true;
-
-        boolean ckgzChecked = radioButton1.isChecked();
-        boolean zckghChecked = radioButton2.isChecked();
-        boolean changChecked = radioButton3.isChecked();
-        boolean zhongChecked = radioButton4.isChecked();
-        if (ckgzChecked) {
-            //长宽高重量
-            queue.offer(0);
-            queue.offer(1);
-            queue.offer(2);
-            queue.offer(3);
-        } else if (zckghChecked) {
-            //重量长宽高
-            queue.offer(3);
-            queue.offer(0);
-            queue.offer(1);
-            queue.offer(2);
-        } else if (changChecked) {
-            //长
-            queue.offer(0);
-        } else if (zhongChecked) {
-            //重量
-            queue.offer(3);
-        }
-
-//        boolean checked = mCbScan.isChecked();
-//        if (checked) {
-//            startScanAct();
-//        } else {
-        if (queue.size() != 0) {
-            doLoop();
-        } else {
-            Toast.makeText(this, getString(R.string.Please_first_check), Toast.LENGTH_SHORT).show();
-            return false;
-        }
-
-        //      }
-        return true;
-    }
 
     private void startScanAct() {
         Intent intent = new Intent(this, CommonScanActivity.class);
@@ -580,25 +461,6 @@ public class MainActivity2 extends MVPBaseActivity<MainContract.View, MainPresen
             }
         }
     };
-
-
-    /**
-     * 得到软件显示版本信息
-     *
-     * @param context 上下文
-     * @return 当前版本信息
-     */
-    public static String getVerName(Context context) {
-        String verName = "";
-        try {
-            String packageName = context.getPackageName();
-            verName = context.getPackageManager()
-                    .getPackageInfo(packageName, 0).versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return verName;
-    }
 
 
     //返回键监听

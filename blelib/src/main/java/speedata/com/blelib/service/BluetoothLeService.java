@@ -172,7 +172,7 @@ public class BluetoothLeService extends Service {
         // http://developer.bluetooth.org/gatt/characteristics/Pages/CharacteristicViewer.aspx?u=org.bluetooth.characteristic.heart_rate_measurement.xml
         if (UUID_HEART_RATE_MEASUREMENT.equals(characteristic.getUuid())) {
             int flag = characteristic.getProperties();
-            int format = -1;
+            int format;
             if ((flag & 0x01) != 0) {
                 format = BluetoothGattCharacteristic.FORMAT_UINT16;
                 Log.d(TAG, "Heart rate format UINT16.");
@@ -227,41 +227,32 @@ public class BluetoothLeService extends Service {
             boolean checkData = PK30DataUtils.checkData2(data);
 
             if (!checkData) {
-                PK30DataUtils.replyError(data);
                 intent.putExtra(NOTIFICATION_DATA_ERR, "数据错误" + bytesToHexString);
                 sendBroadcast(intent);
                 return;
             }
 
-            if (data[1] == (byte) 0x02) {
+            if (data[9] == (byte) 0x02) {
                 //高报警值 区分每种气体
-
-
-                PK30DataUtils.analysisMac(BluetoothLeService.this, intent, data);
-            } else if (data[1] == (byte) 0x03) {
+                PK30DataUtils.readTwo(BluetoothLeService.this, intent, data);
+            } else if (data[9] == (byte) 0x03) {
                 //低报警值 区分每种气体
-                PK30DataUtils.analysisSoftware(BluetoothLeService.this, intent, data);
-            } else if (data[1] == (byte) 0x04) {
+                PK30DataUtils.readThree(BluetoothLeService.this, intent, data);
+            } else if (data[9] == (byte) 0x04) {
                 //调零 区分每种气体
-                PK30DataUtils.analysisHardware(BluetoothLeService.this, intent, data);
-            } else if (data[1] == (byte) 0x05) {
+                PK30DataUtils.readFour(BluetoothLeService.this, intent, data);
+            } else if (data[9] == (byte) 0x05) {
                 //校准 区分每种气体
-                PK30DataUtils.analysisMdoel(BluetoothLeService.this, intent, data);
-            } else if (data[1] == (byte) 0x06) {
+                PK30DataUtils.readFive(BluetoothLeService.this, intent, data);
+            } else if (data[9] == (byte) 0x06) {
                 //标气值 区分每种气体
-                if (data[2] == (byte) 0x02 && data[3] == (byte) 0x01 && data[4] == (byte) 0x85) {
-                    intent.putExtra(NOTIFICATION_DIDIAN, bytesToHexString);
-                    sendBroadcast(intent);
-                } else {
-                    PK30DataUtils.analysisShutdown(BluetoothLeService.this, intent, data);
-                }
-
-            } else if (data[1] == (byte) 0x07) {
+                PK30DataUtils.readSix(BluetoothLeService.this, intent, data);
+            } else if (data[9] == (byte) 0x07) {
                 //复位 固定指令 除蓝牙名
-                PK30DataUtils.analysisFengMing(BluetoothLeService.this, intent, data);
-            } else if (data[1] == (byte) 0x08) {
+                PK30DataUtils.readSeven(BluetoothLeService.this, intent, data);
+            } else if (data[9] == (byte) 0x08) {
                 //修改蓝牙名称 固定指令 除了新名字
-                PK30DataUtils.analysisFengMing(BluetoothLeService.this, intent, data);
+                PK30DataUtils.readEight(BluetoothLeService.this, intent, data);
             } else {
                 intent.putExtra(NOTIFICATION_DATA_ERR, "其他" + bytesToHexString);
                 sendBroadcast(intent);
@@ -269,22 +260,17 @@ public class BluetoothLeService extends Service {
         }
     }
 
-    public final static String NOTIFICATION_DATA_L = "com.example.bluetooth.le.NOTIFICATION_DATA_L";
-    public final static String NOTIFICATION_DATA_W = "com.example.bluetooth.le.NOTIFICATION_DATA_W";
-    public final static String NOTIFICATION_DATA_H = "com.example.bluetooth.le.NOTIFICATION_DATA_H";
-    public final static String NOTIFICATION_DATA_G = "com.example.bluetooth.le.NOTIFICATION_DATA_G";
-    public final static String NOTIFICATION_DATA_MAC = "com.example.bluetooth.le.NOTIFICATION_DATA_MAC";
-    public final static String NOTIFICATION_DATA_SOFT = "com.example.bluetooth.le.NOTIFICATION_DATA_SOFT";
-    public final static String NOTIFICATION_DATA_HARD = "com.example.bluetooth.le.NOTIFICATION_DATA_HARD";
-    public final static String NOTIFICATION_DATA_MODEL = "com.example.bluetooth.le.NOTIFICATION_DATA_MODEL";
-    public final static String NOTIFICATION_SHUTDOWN = "com.example.bluetooth.le.NOTIFICATION_SHUTDOWN";
-    public final static String NOTIFICATION_FENGMING = "com.example.bluetooth.le.NOTIFICATION_FENGMING";
-    public final static String NOTIFICATION_DIDIAN = "com.example.bluetooth.le.NOTIFICATION_DIDIAN";
-
-    //发送信道3长宽高信息
-    private void sendLWHGData(Intent intent, byte[] data) {
-        PK30DataUtils.analysisData(BluetoothLeService.this, intent, data);
-    }
+    public final static String NOTIFICATION_DATA_ONE1 = "com.example.bluetooth.le.NOTIFICATION_DATA_L";
+    public final static String NOTIFICATION_DATA_ONE2 = "com.example.bluetooth.le.NOTIFICATION_DATA_W";
+    public final static String NOTIFICATION_DATA_ONE3 = "com.example.bluetooth.le.NOTIFICATION_DATA_H";
+    public final static String NOTIFICATION_DATA_TWO = "com.example.bluetooth.le.NOTIFICATION_DATA_G";
+    public final static String NOTIFICATION_DATA_THREE = "com.example.bluetooth.le.NOTIFICATION_DATA_MAC";
+    public final static String NOTIFICATION_DATA_FOUR = "com.example.bluetooth.le.NOTIFICATION_DATA_SOFT";
+    public final static String NOTIFICATION_DATA_FIVE = "com.example.bluetooth.le.NOTIFICATION_DATA_HARD";
+    public final static String NOTIFICATION_DATA_SIX = "com.example.bluetooth.le.NOTIFICATION_DATA_MODEL";
+    public final static String NOTIFICATION_DATA_SEVEN = "com.example.bluetooth.le.NOTIFICATION_SHUTDOWN";
+    public final static String NOTIFICATION_DATA_EIGHT1 = "com.example.bluetooth.le.NOTIFICATION_FENGMING";
+    public final static String NOTIFICATION_DATA_EIGHT2 = "com.example.bluetooth.le.NOTIFICATION_DIDIAN";
 
 
     public class LocalBinder extends Binder {

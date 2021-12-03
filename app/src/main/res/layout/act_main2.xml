@@ -32,13 +32,15 @@
                     android:id="@+id/device_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Name:PK20" />
+                    android:text="Name:PK20"
+                    tools:ignore="HardcodedText" />
 
                 <TextView
                     android:id="@+id/device_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Address:PK20" />
+                    android:text="Address:PK20"
+                    tools:ignore="HardcodedText" />
             </LinearLayout>
 
             <LinearLayout
@@ -69,47 +71,303 @@
             android:orientation="horizontal"
             android:padding="10dp">
 
-            <Button
-                android:id="@+id/btn_length"
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/length" />
 
-            <TextView
-                android:id="@+id/tv_length"
+                android:gravity="center"
+                android:text="蓝牙名称修改"
+                tools:ignore="HardcodedText,RtlHardcoded" />
+
+
+            <EditText
+                android:id="@+id/et_name"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center_vertical" />
+                android:gravity="center"
+                android:hint="MK000001"
+                tools:ignore="Autofill,HardcodedText,TextFields" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:padding="10dp">
 
             <TextView
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
                 android:gravity="center_vertical"
-                android:text="cm"
-                tools:ignore="RtlHardcoded" />
-
-            <Button
-                android:id="@+id/btn_width"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/width" />
+                android:text="当前选择的气体类型："
+                tools:ignore="HardcodedText,RtlHardcoded" />
 
             <TextView
-                android:id="@+id/tv_width"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_vertical" />
-
-            <TextView
+                android:id="@+id/tv_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
                 android:gravity="center_vertical"
-                android:text="cm"
-                tools:ignore="RtlHardcoded" />
+                android:text="当前未选择"
+                tools:ignore="HardcodedText,RtlHardcoded" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:gravity="center_vertical"
+                android:text="当前模块最新回复："
+                tools:ignore="HardcodedText,RtlHardcoded" />
+
+            <TextView
+                android:id="@+id/tv_receive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:gravity="center_vertical"
+                android:text="命令回复"
+                tools:ignore="HardcodedText,RtlHardcoded" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="气体类型"
+                tools:ignore="HardcodedText,RtlHardcoded" />
+
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text=" 甲烷 "
+                tools:ignore="HardcodedText,RtlHardcoded" />
+
+
+            <TextView
+                android:layout_width="0dp"
+
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text=" 氧气 "
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="一氧化碳"
+                tools:ignore="HardcodedText,RtlHardcoded" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <Button
+                android:id="@+id/btn_two"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="高报警值"
+                android:textSize="14sp"
+                tools:ignore="HardcodedText,RtlHardcoded" />
+
+
+            <EditText
+                android:id="@+id/et_two_one"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:hint="1.00"
+                tools:ignore="Autofill,HardcodedText,RtlHardcoded,TextFields" />
+
+
+            <EditText
+                android:id="@+id/et_two_two"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:hint="24.0"
+                tools:ignore="Autofill,HardcodedText,TextFields" />
+
+            <EditText
+                android:id="@+id/et_two_three"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:hint="0024"
+                tools:ignore="Autofill,HardcodedText,RtlHardcoded,TextFields" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+
+            <Button
+                android:id="@+id/btn_one"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="显示数值"
+                android:textSize="14sp"
+                tools:ignore="HardcodedText,RtlHardcoded" />
+
+            <TextView
+                android:id="@+id/tv_show_one"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="甲烷值"
+                tools:ignore="HardcodedText,RtlHardcoded" />
+
+            <TextView
+                android:id="@+id/tv_show_two"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="氧气值"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/tv_show_three"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="一氧化碳值"
+                tools:ignore="HardcodedText,RtlHardcoded" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <Button
+                android:id="@+id/btn_three"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="低报警值"
+                android:textSize="14sp"
+                tools:ignore="HardcodedText,RtlHardcoded" />
+
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:hint="无"
+                android:visibility="invisible"
+                tools:ignore="Autofill,HardcodedText,RtlHardcoded,TextFields" />
+
+
+            <EditText
+                android:id="@+id/et_three_two"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:hint="18.0"
+                tools:ignore="Autofill,HardcodedText,TextFields" />
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:hint="0024"
+                android:visibility="invisible"
+                tools:ignore="Autofill,HardcodedText,RtlHardcoded,TextFields" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <Button
+                android:id="@+id/btn_six"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text=" 标气值 "
+                android:textSize="14sp"
+                tools:ignore="HardcodedText,RtlHardcoded" />
+
+
+            <EditText
+                android:id="@+id/et_six_one"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:hint="1.00"
+                tools:ignore="Autofill,HardcodedText,RtlHardcoded,TextFields" />
+
+
+            <EditText
+                android:id="@+id/et_six_two"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:hint="20.9"
+                tools:ignore="Autofill,HardcodedText,TextFields" />
+
+            <EditText
+                android:id="@+id/et_six_three"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:hint="0500"
+                tools:ignore="Autofill,HardcodedText,RtlHardcoded,TextFields" />
         </LinearLayout>
 
 
@@ -119,54 +377,87 @@
             android:orientation="horizontal"
             android:padding="10dp">
 
-            <Button
-                android:id="@+id/btn_height"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/height" />
-
             <TextView
-                android:id="@+id/tv_height"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_vertical" />
-
-            <TextView
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:gravity="center_vertical"
-                android:text="cm"
-                tools:ignore="RtlHardcoded" />
+
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="气体类型选择"
+                tools:ignore="HardcodedText,RtlHardcoded" />
 
             <Button
-                android:id="@+id/btn_weight"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/weight" />
-
-            <TextView
-                android:id="@+id/tv_weight"
+                android:id="@+id/btn_ch4"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_vertical" />
-
-            <TextView
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:gravity="center_vertical"
-                android:text="kg"
-                tools:ignore="RtlHardcoded" />
+                android:layout_weight="1"
+                android:text="甲烷"
+                android:textSize="14sp"
+                tools:ignore="HardcodedText" />
+
+            <Button
+                android:id="@+id/btn_o2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="氧气"
+                android:textSize="14sp"
+                tools:ignore="HardcodedText" />
+
+            <Button
+                android:id="@+id/btn_co"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="一氧化碳"
+                android:textSize="14sp"
+                tools:ignore="HardcodedText" />
+
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:padding="10dp">
 
-        <TextView
-            android:id="@+id/tv_version"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:ignore="TooManyViews" />
+            <Button
+                android:id="@+id/btn_four"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="调零"
+                android:textSize="14sp"
+                tools:ignore="ButtonStyle,HardcodedText" />
+
+            <Button
+                android:id="@+id/btn_five"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="校准"
+                android:textSize="14sp"
+                tools:ignore="ButtonStyle,HardcodedText" />
+
+            <Button
+                android:id="@+id/btn_seven"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="复位"
+                android:textSize="14sp"
+                tools:ignore="ButtonStyle,HardcodedText" />
+
+            <Button
+                android:id="@+id/btn_eight"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="改名"
+                android:textSize="14sp"
+                tools:ignore="ButtonStyle,HardcodedText" />
+
+        </LinearLayout>
+
     </LinearLayout>
 </ScrollView>

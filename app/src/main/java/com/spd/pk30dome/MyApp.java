@@ -1,5 +1,10 @@
 package com.spd.pk30dome;
 
+import static speedata.com.blelib.service.BluetoothLeService.ACTION_DATA_AVAILABLE;
+import static speedata.com.blelib.service.BluetoothLeService.ACTION_GATT_CONNECTED;
+import static speedata.com.blelib.service.BluetoothLeService.ACTION_GATT_DISCONNECTED;
+
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -24,10 +29,6 @@ import org.greenrobot.eventbus.EventBus;
 import speedata.com.blelib.base.BaseBleApplication;
 import speedata.com.blelib.service.BluetoothLeService;
 
-import static speedata.com.blelib.service.BluetoothLeService.ACTION_DATA_AVAILABLE;
-import static speedata.com.blelib.service.BluetoothLeService.ACTION_GATT_CONNECTED;
-import static speedata.com.blelib.service.BluetoothLeService.ACTION_GATT_DISCONNECTED;
-
 
 /**
  * Created by 张明_ on 2017/7/10.
@@ -35,11 +36,10 @@ import static speedata.com.blelib.service.BluetoothLeService.ACTION_GATT_DISCONN
 
 public class MyApp extends BaseBleApplication {
 
+    @SuppressLint("StaticFieldLeak")
     private static MyApp m_application; // 单例
     public static String address = "";
     public static String name = "";
-    //greendao
-    private static DaoSession daoSession;
 
     private void setupDatabase() {
         //创建数据库
@@ -49,11 +49,8 @@ public class MyApp extends BaseBleApplication {
         //获得数据库对象
         DaoMaster daoMaster = new DaoMaster(db);
         //获得dao对象管理者
-        daoSession = daoMaster.newSession();
-    }
-
-    public static DaoSession getDaoInstant() {
-        return daoSession;
+        //greendao
+        DaoSession daoSession = daoMaster.newSession();
     }
 
     @Override
@@ -127,51 +124,51 @@ public class MyApp extends BaseBleApplication {
                 if (TextUtils.isEmpty(data)) {
                     String dataERR = intent.getStringExtra(BluetoothLeService.NOTIFICATION_DATA_ERR);
                     if (TextUtils.isEmpty(dataERR)) {
-                        String l = intent.getStringExtra(BluetoothLeService.NOTIFICATION_DATA_L);
+                        String l = intent.getStringExtra(BluetoothLeService.NOTIFICATION_DATA_ONE1);
                         if (!TextUtils.isEmpty(l)) {
-                            EventBus.getDefault().post(new MsgEvent("L", l));
+                            EventBus.getDefault().post(new MsgEvent("ONE1", l));
                         }
-                        String w = intent.getStringExtra(BluetoothLeService.NOTIFICATION_DATA_W);
+                        String w = intent.getStringExtra(BluetoothLeService.NOTIFICATION_DATA_ONE2);
                         if (!TextUtils.isEmpty(w)) {
-                            EventBus.getDefault().post(new MsgEvent("W", w));
+                            EventBus.getDefault().post(new MsgEvent("ONE2", w));
                         }
-                        String h = intent.getStringExtra(BluetoothLeService.NOTIFICATION_DATA_H);
+                        String h = intent.getStringExtra(BluetoothLeService.NOTIFICATION_DATA_ONE3);
                         if (!TextUtils.isEmpty(h)) {
-                            EventBus.getDefault().post(new MsgEvent("H", h));
+                            EventBus.getDefault().post(new MsgEvent("ONE3", h));
                         }
-                        String g = intent.getStringExtra(BluetoothLeService.NOTIFICATION_DATA_G);
+                        String g = intent.getStringExtra(BluetoothLeService.NOTIFICATION_DATA_TWO);
                         if (!TextUtils.isEmpty(g)) {
-                            EventBus.getDefault().post(new MsgEvent("G", g));
+                            EventBus.getDefault().post(new MsgEvent("TWO", g));
                         }
-                        String mac = intent.getStringExtra(BluetoothLeService.NOTIFICATION_DATA_MAC);
+                        String mac = intent.getStringExtra(BluetoothLeService.NOTIFICATION_DATA_THREE);
                         if (!TextUtils.isEmpty(mac)) {
-                            EventBus.getDefault().post(new MsgEvent("MAC", mac));
+                            EventBus.getDefault().post(new MsgEvent("THREE", mac));
                         }
-                        String soft = intent.getStringExtra(BluetoothLeService.NOTIFICATION_DATA_SOFT);
+                        String soft = intent.getStringExtra(BluetoothLeService.NOTIFICATION_DATA_FOUR);
                         if (!TextUtils.isEmpty(soft)) {
-                            EventBus.getDefault().post(new MsgEvent("SOFT", soft));
+                            EventBus.getDefault().post(new MsgEvent("FOUR", soft));
                         }
-                        String hard = intent.getStringExtra(BluetoothLeService.NOTIFICATION_DATA_HARD);
+                        String hard = intent.getStringExtra(BluetoothLeService.NOTIFICATION_DATA_FIVE);
                         if (!TextUtils.isEmpty(hard)) {
-                            EventBus.getDefault().post(new MsgEvent("HARD", hard));
+                            EventBus.getDefault().post(new MsgEvent("FIVE", hard));
                         }
-                        String model = intent.getStringExtra(BluetoothLeService.NOTIFICATION_DATA_MODEL);
+                        String model = intent.getStringExtra(BluetoothLeService.NOTIFICATION_DATA_SIX);
                         if (!TextUtils.isEmpty(model)) {
-                            EventBus.getDefault().post(new MsgEvent("MODEL", model));
+                            EventBus.getDefault().post(new MsgEvent("SIX", model));
                         }
-                        String shutdown = intent.getStringExtra(BluetoothLeService.NOTIFICATION_SHUTDOWN);
+                        String shutdown = intent.getStringExtra(BluetoothLeService.NOTIFICATION_DATA_SEVEN);
                         if (!TextUtils.isEmpty(shutdown)) {
-                            EventBus.getDefault().post(new MsgEvent("SHUTDOWN", shutdown));
+                            EventBus.getDefault().post(new MsgEvent("SEVEN", shutdown));
                         }
 
-                        String fengMing = intent.getStringExtra(BluetoothLeService.NOTIFICATION_FENGMING);
+                        String fengMing = intent.getStringExtra(BluetoothLeService.NOTIFICATION_DATA_EIGHT1);
                         if (!TextUtils.isEmpty(fengMing)) {
-                            EventBus.getDefault().post(new MsgEvent("FENGMING", fengMing));
+                            EventBus.getDefault().post(new MsgEvent("EIGHT1", fengMing));
                         }
 
-                        String didian = intent.getStringExtra(BluetoothLeService.NOTIFICATION_DIDIAN);
-                        if (!TextUtils.isEmpty(didian)) {
-                            EventBus.getDefault().post(new MsgEvent("DIDIAN", didian));
+                        String fengMing2 = intent.getStringExtra(BluetoothLeService.NOTIFICATION_DATA_EIGHT2);
+                        if (!TextUtils.isEmpty(fengMing2)) {
+                            EventBus.getDefault().post(new MsgEvent("EIGHT2", fengMing));
                         }
 
                     } else {
